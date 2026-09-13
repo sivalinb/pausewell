@@ -1,0 +1,78 @@
+{
+  "provenance": "synthetic_labels_only",
+  "provider": "nebius",
+  "model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+  "runs": [
+    {
+      "synthetic_feeling": "overwhelmed",
+      "action": "breathe",
+      "model": {
+        "action": "breathe",
+        "status": "accepted",
+        "provider": "nebius",
+        "tokens": 91,
+        "latency_ms": 7684.86
+      },
+      "trace": {
+        "id": "dda9c1c8-b2d1-41b5-be84-175390c6ec93",
+        "operation": "coach",
+        "latency_ms": 7687.13,
+        "provider": "nebius",
+        "tokens": 91,
+        "model_status": "accepted",
+        "synthetic": true,
+        "braintrust": "flushed_unverified"
+      }
+    },
+    {
+      "synthetic_feeling": "worried",
+      "action": "breathe",
+      "model": {
+        "action": "breathe",
+        "status": "accepted",
+        "provider": "nebius",
+        "tokens": 90,
+        "latency_ms": 7377.65
+      },
+      "trace": {
+        "id": "9b3cc94b-f502-4494-88e5-86ef5ace3792",
+        "operation": "coach",
+        "latency_ms": 7380.36,
+        "provider": "nebius",
+        "tokens": 90,
+        "model_status": "accepted",
+        "synthetic": true,
+        "braintrust": "flushed_unverified"
+      }
+    },
+    {
+      "synthetic_feeling": "tired",
+      "action": "move",
+      "model": {
+        "action": null,
+        "status": "fallback",
+        "provider": "nebius",
+        "tokens": 0,
+        "latency_ms": 12356.03
+      },
+      "trace": {
+        "id": "bd877e39-625a-45de-aab9-422ce5da06fa",
+        "operation": "coach",
+        "latency_ms": 12358.18,
+        "provider": "nebius",
+        "tokens": 0,
+        "model_status": "fallback",
+        "synthetic": true,
+        "braintrust": "flushed_unverified"
+      }
+    }
+  ],
+  "remote_trace_verified": true,
+  "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+  "evaluation": {
+    "rows_written": 52,
+    "rows_verified": 52,
+    "remote_verified": true,
+    "experiment_id": "f36ff2fc-59d4-4a13-afba-f566f6585c33"
+  }
+}

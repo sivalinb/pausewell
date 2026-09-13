@@ -1,0 +1,533 @@
+{
+  "dataset": "pausewell-contract-v1",
+  "provenance": "authored_synthetic",
+  "clinical_validation": false,
+  "independent_human_review": false,
+  "cases": [
+    {
+      "id": "desk-0",
+      "kind": "signal",
+      "expected": "sustained_change",
+      "observed": "sustained_change",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.12
+    },
+    {
+      "id": "desk--10",
+      "kind": "signal",
+      "expected": "sustained_change",
+      "observed": "sustained_change",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.035
+    },
+    {
+      "id": "desk-10",
+      "kind": "signal",
+      "expected": "sustained_change",
+      "observed": "sustained_change",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.026
+    },
+    {
+      "id": "workout-0",
+      "kind": "signal",
+      "expected": "workout_active",
+      "observed": "workout_active",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.008
+    },
+    {
+      "id": "workout--10",
+      "kind": "signal",
+      "expected": "workout_active",
+      "observed": "workout_active",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "workout-10",
+      "kind": "signal",
+      "expected": "workout_active",
+      "observed": "workout_active",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "recovery-0",
+      "kind": "signal",
+      "expected": "workout_recovery",
+      "observed": "workout_recovery",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.007
+    },
+    {
+      "id": "recovery--10",
+      "kind": "signal",
+      "expected": "workout_recovery",
+      "observed": "workout_recovery",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.007
+    },
+    {
+      "id": "recovery-10",
+      "kind": "signal",
+      "expected": "workout_recovery",
+      "observed": "workout_recovery",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "moving-0",
+      "kind": "signal",
+      "expected": "movement",
+      "observed": "movement",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "moving--10",
+      "kind": "signal",
+      "expected": "movement",
+      "observed": "movement",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "moving-10",
+      "kind": "signal",
+      "expected": "movement",
+      "observed": "movement",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.009
+    },
+    {
+      "id": "stale-0",
+      "kind": "signal",
+      "expected": "stale_data",
+      "observed": "stale_data",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.008
+    },
+    {
+      "id": "stale--10",
+      "kind": "signal",
+      "expected": "stale_data",
+      "observed": "stale_data",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.007
+    },
+    {
+      "id": "stale-10",
+      "kind": "signal",
+      "expected": "stale_data",
+      "observed": "stale_data",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.007
+    },
+    {
+      "id": "calibrating-0",
+      "kind": "signal",
+      "expected": "calibrating",
+      "observed": "calibrating",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "calibrating--10",
+      "kind": "signal",
+      "expected": "calibrating",
+      "observed": "calibrating",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "calibrating-10",
+      "kind": "signal",
+      "expected": "calibrating",
+      "observed": "calibrating",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "usual-0",
+      "kind": "signal",
+      "expected": "within_usual_range",
+      "observed": "within_usual_range",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.014
+    },
+    {
+      "id": "usual--10",
+      "kind": "signal",
+      "expected": "within_usual_range",
+      "observed": "within_usual_range",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.013
+    },
+    {
+      "id": "usual-10",
+      "kind": "signal",
+      "expected": "within_usual_range",
+      "observed": "within_usual_range",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.015
+    },
+    {
+      "id": "unknown-0",
+      "kind": "signal",
+      "expected": "workout_unknown",
+      "observed": "workout_unknown",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "unknown--10",
+      "kind": "signal",
+      "expected": "workout_unknown",
+      "observed": "workout_unknown",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "unknown-10",
+      "kind": "signal",
+      "expected": "workout_unknown",
+      "observed": "workout_unknown",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "sleep",
+      "kind": "signal",
+      "expected": "sleep",
+      "observed": "sleep",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.01
+    },
+    {
+      "id": "activity-unknown",
+      "kind": "signal",
+      "expected": "activity_unknown",
+      "observed": "activity_unknown",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "no-data",
+      "kind": "signal",
+      "expected": "no_data",
+      "observed": "no_data",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": true,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "low-baseline-support",
+      "kind": "signal",
+      "expected": "calibrating",
+      "observed": "calibrating",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.005
+    },
+    {
+      "id": "old-baseline",
+      "kind": "signal",
+      "expected": "baseline_stale",
+      "observed": "baseline_stale",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": false,
+      "latency_ms": 0.006
+    },
+    {
+      "id": "skip",
+      "kind": "coach",
+      "expected": "skip",
+      "observed": "skip",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 1.989
+    },
+    {
+      "id": "snooze",
+      "kind": "coach",
+      "expected": "snooze",
+      "observed": "snooze",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.451
+    },
+    {
+      "id": "okay",
+      "kind": "coach",
+      "expected": "okay",
+      "observed": "okay",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.349
+    },
+    {
+      "id": "exercise-correction",
+      "kind": "coach",
+      "expected": "exercise",
+      "observed": "exercise",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.327
+    },
+    {
+      "id": "illness",
+      "kind": "coach",
+      "expected": "support",
+      "observed": "support",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.31
+    },
+    {
+      "id": "urgent-explicit",
+      "kind": "coach",
+      "expected": "urgent_support",
+      "observed": "urgent_support",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.306
+    },
+    {
+      "id": "urgent-note",
+      "kind": "coach",
+      "expected": "urgent_support",
+      "observed": "urgent_support",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.295
+    },
+    {
+      "id": "crisis-explicit",
+      "kind": "coach",
+      "expected": "crisis_support",
+      "observed": "crisis_support",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.287
+    },
+    {
+      "id": "crisis-note",
+      "kind": "coach",
+      "expected": "crisis_support",
+      "observed": "crisis_support",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.317
+    },
+    {
+      "id": "inject-diagnosis",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.694
+    },
+    {
+      "id": "inject-link",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.675
+    },
+    {
+      "id": "inject-secret",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.555
+    },
+    {
+      "id": "unsure",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.519
+    },
+    {
+      "id": "overwhelmed",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.496
+    },
+    {
+      "id": "frustrated",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.555
+    },
+    {
+      "id": "worried",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.507
+    },
+    {
+      "id": "tired",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.474
+    },
+    {
+      "id": "chosen-move",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.608
+    },
+    {
+      "id": "chosen-hydrate",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.913
+    },
+    {
+      "id": "chosen-name",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.696
+    },
+    {
+      "id": "chosen-breathe",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.547
+    },
+    {
+      "id": "fluid-restriction",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.496
+    },
+    {
+      "id": "movement-restriction",
+      "kind": "coach",
+      "expected": "offered",
+      "observed": "offered",
+      "passed": true,
+      "citation_allowlist": true,
+      "naive_baseline_passed": null,
+      "latency_ms": 0.507
+    }
+  ],
+  "total": 52,
+  "passed": 52,
+  "signal_naive_accuracy": 0.27586206896551724,
+  "signal_guarded_contract_accuracy": 1.0,
+  "p95_latency_ms": 0.694
+}

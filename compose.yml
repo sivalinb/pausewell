@@ -1,0 +1,9 @@
+services:
+  pausewell:
+    build: .
+    ports: ["127.0.0.1:8765:8765"]
+    env_file: .env
+    volumes: ["pausewell-data:/app/data"]
+    restart: unless-stopped
+volumes:
+  pausewell-data:

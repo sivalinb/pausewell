@@ -1,0 +1,19 @@
+name: Pausewell
+options:
+  bundleIdPrefix: com.pausewell
+  deploymentTarget:
+    iOS: '17.0'
+targets:
+  Pausewell:
+    type: application
+    platform: iOS
+    sources: [Pausewell]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pausewell.app
+        SWIFT_VERSION: '5.0'
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Pausewell/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Pausewell/Pausewell.entitlements
+    scheme:
+      testTargets: []
