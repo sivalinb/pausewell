@@ -98,3 +98,18 @@ Complete these sentences in plain language:
 - The next independent check should be …
 
 Use the [exemplar checklist](../../docs/week6-exemplar-checklist.md) before calling your work complete. Leave unsupported claims unchecked; an honest WARN can be the most useful finding.
+
+## Explain a local input/output rail
+
+For one supported request and one adversarial request, record which boundary each check tests. Keep the result of a policy action separate from authentication, source validation and provider availability.
+
+| Observation | Your evidence | Limit of the claim |
+|---|---|---|
+| Input policy action actually ran | | A pre-retrieval authorization denial is not a rail refusal. |
+| Output policy action actually ran | | A valid schema alone does not establish source truth. |
+| Useful source evidence remained available | | A blocked attack is insufficient if supported tasks are also blocked. |
+| Rail duration and outcome were recorded | | CPU policy duration is not model HTTP latency. |
+| Provider call count and credentials needed | | Local rails can execute without model inference; a separately selected cloud brief still has provider costs. |
+| No private text in the observed telemetry | | Content-free tracing does not establish a complete production privacy program. |
+
+If a runtime error occurs, distinguish a fail-closed service result from a policy decision. Preserve the failing request and its non-sensitive reason code in a synthetic experiment. A replay of recorded provider output is a new local policy observation, not a new provider response.

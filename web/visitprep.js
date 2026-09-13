@@ -292,6 +292,23 @@ async function visitprepObserve() {
   $('vp-traces').replaceChildren();
   for (const trace of data.traces) $('vp-traces').append(text('div', `${trace.operation} · ${trace.outcome} · ${Math.round(trace.latency_ms)} ms · ${trace.tokens} tokens · ${trace.provider} · ${trace.synthetic ? 'fictional demo' : 'private workspace'}`, 'trace'));
   if (!data.traces.length) $('vp-traces').append(text('p', 'No appointment operations yet.'));
+  const rails = await api('visitprep/guardrails/observability');
+  const cards = $('vp-rail-counters'); cards.replaceChildren();
+  for (const metric of rails.metrics || []) {
+    const card = document.createElement('article');
+    card.append(text('span', `${metric.stage} · ${metric.outcome}`.toUpperCase()), text('strong', metric.count));
+    card.append(text('small', `${(1000 * metric.total_seconds / metric.count).toFixed(1)} ms mean`));
+    cards.append(card);
+  }
+  const spanList = $('vp-rail-spans'); spanList.replaceChildren();
+  for (const span of (rails.spans || []).slice(0, 15)) {
+    const row = document.createElement('div'); row.className = 'trace';
+    row.append(text('strong', `${span.name} · ${span.attributes.outcome || span.status} · ${span.latency_ms.toFixed(1)} ms`));
+    row.append(text('small', `Trace ${span.trace_id.slice(0, 12)} · ${span.parent_span_id ? 'child span' : 'request span'} · ${new Date(span.started_at_ns / 1000000).toLocaleTimeString()}`));
+    spanList.append(row);
+  }
+  if (!rails.spans?.length) spanList.append(text('p', 'Prepare a brief to capture local request and NeMo check spans.'));
+  $('vp-rail-notice').textContent = rails.notice;
 }
 
 $('vp-print-close').onclick = () => { $('vp-print-dialog').close(); $('vp-print-frame').removeAttribute('srcdoc'); };

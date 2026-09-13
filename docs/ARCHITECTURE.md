@@ -9,10 +9,14 @@ flowchart TD
     A[Owner selects plain-text records and a question] --> B[Bearer authentication and strict schema]
     B --> C[Authorize patient and every record ID using metadata]
     C --> D[Retrieve only authorized selected text]
-    D --> E{New record-text cloud consent?}
+    D --> P[Local NeMo input policy on the preparation question]
+    P -->|Passed| E{New record-text cloud consent?}
+    P -->|Blocked or unavailable| G[Deterministic excerpt selection]
     E -->|Yes, configured provider selected| F[Nebius or Fireworks: untrusted text and allowed excerpts]
-    E -->|No or local selected| G[Deterministic excerpt selection]
-    F --> H[Validate schema, known ID, exact quote and section]
+    E -->|No or local selected| G
+    F --> Q[Local NeMo output policy on model JSON]
+    Q -->|Passed| H[Validate schema, known ID, exact quote and section]
+    Q -->|Blocked or unavailable| G
     H -->|Invalid or provider unavailable| G
     H -->|Valid| I[Source excerpts and reviewed questions]
     G --> I
@@ -29,6 +33,8 @@ The LangGraph stages are `authorize → retrieve → model → validate → brie
 Imports are bounded plain text: at most 6,000 characters per record, 40 records and 120,000 text characters in the workspace. A brief accepts at most 10 records and 24,000 text characters. Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions. Stable legacy IDs remain technical regression keys. Mixed or non-synthetic imports display **Your record workspace**; record subject identity is not verified.
 
 With new per-request consent, the provider receives actual selected record text, titles, dates, source IDs, the question and candidate exact excerpts. Documents and questions are marked untrusted. There is no URL-fetching, shell, messaging, prescribing or arbitrary tool executor. This is selected-record retrieval, not semantic vector search or OCR.
+
+[NeMo Guardrails 0.24.0](NEMO-INTEGRATION.md) executes local custom input/output actions through explicit `LLMRails.check_async()` checks with no configured model. The input policy checks the preparation question, not every document; blocked or unavailable input checks prevent cloud selection while retaining the validated local-brief path. The output policy checks raw model JSON before the mandatory exact-source validator. Ephemeral per-check engines avoid carrying conversation history across requests. These rails do not grant permissions, execute external tools or establish source truth.
 
 The model can select up to eight `{record_id, quote, section}` objects. Code rejects extra fields, unknown IDs, altered/unsupported quotations, duplicate evidence, incorrect sections and invalid response envelopes. It adds trusted source metadata and fixed clinician-question templates. Obvious instruction-like excerpts are excluded by a supplementary bounded filter; that filter is not proof of comprehensive prompt-injection detection. Local fallback is labeled honestly. Exact quotation does not establish source truth, relevance or clinical completeness.
 
@@ -64,6 +70,7 @@ The Watch model receives only selected feeling/context enums and allowed action 
 | Watch feeling/context enums | Sent only with separate Watch cloud consent |
 | Watch decisions, check-ins and feedback | Seven-day pruning on ingest/history requests; explicit deletion |
 | Local decision/operation telemetry | Maximum 100 traces per module; cleared on restart/delete |
+| Dedicated NeMo operational telemetry | App-owned OpenTelemetry SDK spans exported only to local SQLite; 500 retained / latest 100 returned, with cumulative rail counters and duration histograms; restart persistent and cleared on explicit data erase |
 | Explicit synthetic evaluation exports | Separate Braintrust retention; no automatic VisitPrep content export |
 
 Inherited LangSmith tracing is disabled around both graphs because their state contains sensitive input. SQLite files use mode 0600; newly created parent directories use 0700. Filesystem permissions are not database encryption. Use owner-controlled encrypted storage and private HTTPS for private data. The project makes no compliance certification claim.

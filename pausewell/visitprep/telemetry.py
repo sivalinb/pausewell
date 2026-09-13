@@ -33,6 +33,9 @@ STATUSES = {
     "exported",
     "revision_conflict",
     "not_approved",
+    "guardrail_blocked",
+    "guardrail_error",
+    "guardrail_timeout",
 }
 
 

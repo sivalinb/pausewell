@@ -138,7 +138,7 @@ The [authored dataset](../visitprep_eval/cases.json) assigns a primary family to
 | Oracle | The expected answer or criterion used to judge a test. Authored fact fragments are limited oracles, not complete clinical ground truth. |
 | PASS, WARN and FAIL | This evaluator's case verdicts: contract held; a relevant limitation remains; or expected behavior was violated. Their numeric scores are 1, 0.5 and 0. They are not course grades. |
 | Safety, utility and reliability | Safety concerns prohibited behavior; utility concerns useful task completion; reliability concerns consistent availability and valid completion. A timeout fallback can be safe yet less useful. |
-| Raw model validity | Whether the provider returned evidence that passed the model-output contract. The current safety run accepted 24 selections from 26 attempts; its two empty outputs were rejected. The historical full run accepted 20/26. An appropriate empty selection can still fail this strict non-empty application contract. |
+| Raw model validity | Whether the provider returned evidence that passed the model-output contract. The fresh NeMo-enabled run accepted 19 selections from 21 provider attempts, with five input-rail local fallbacks before provider access. The pre-NeMo run accepted 24/26; both rejected two empty outputs. The historical full run accepted 20/26. An appropriate empty selection can still fail this strict non-empty application contract. |
 | Application outcome | What the whole system returned after permission checks, validation and fallback. It must be reported separately from raw model validity. |
 | Benign overblocking | Rejecting or degrading a supported ordinary request unnecessarily. The historical four-control denominator is small. |
 | False escalation | The Watch workflow routing a benign disclosure to urgent support unnecessarily. This is distinct from VisitPrep overblocking or source fidelity. |
@@ -174,9 +174,9 @@ The [authored dataset](../visitprep_eval/cases.json) assigns a primary family to
 | Cost reservation | A conservative amount set aside before dispatch to prevent exceeding a budget. It is not a provider invoice. |
 | Usage-based estimate | A calculation using reported tokens and the captured price rates. It can omit unreturned failure usage and does not include unrelated runs. |
 | Aggregate dashboard total | Account/project usage grouped by the provider. A screenshot refreshed before a run cannot verify that run's bill. |
-| Prometheus counters | Numeric operational measurements exposed in text form by the Watch API. They do not contain a measured clinical stress score. |
+| Prometheus counters | Numeric operational measurements exposed in text form. Watch counters remain separate from the new authenticated NeMo check counters and duration histogram. A metrics endpoint does not mean a Prometheus server is deployed or a clinical outcome measured. |
 | LangSmith | Another hosted tracing system. Inherited tracing is disabled around both graphs because graph state can contain sensitive input. |
-| OpenTelemetry, Jaeger and OpenSearch | Common instrumentation, trace-viewing and search/logging components. A full collector/stack is not deployed here. |
+| OpenTelemetry, Jaeger and OpenSearch | OpenTelemetry supplies instrumentation; the app now uses its SDK for local NeMo request and rail spans. Jaeger is a trace viewer and OpenSearch a search/logging platform; neither is deployed here, nor is a remote collector or Grafana stack. |
 | TTFT, GPU utilization and KV cache | Time to first generated token, accelerator activity, and attention-state reuse during serving. These internals are not measured by this project's ordinary hosted chat calls. |
 
 ## Apple and the secondary Watch workflow
@@ -225,7 +225,19 @@ The taxonomy below follows the official [OWASP 2026 resource](https://genai.owas
 | Least privilege | Give each component only the permissions needed for its job. The provider selects quotations; it receives no shell, arbitrary database query or messaging tool. |
 | Residual risk / recovery | A limitation remaining after controls, and the actions used to restore a safe state after failure. Known local omissions remain; a full operational incident-response program is future work. |
 | Promptfoo | Evaluation and red-team tooling used in the supplied course repository. VisitPrep's completed campaigns use a custom harness. A Promptfoo adapter is PLANNED, not an executed experiment. |
-| NeMo Guardrails / NIM screening | Potential screening/orchestration components discussed in the course. They are not installed or evaluated controls here; the current app uses deterministic schema, ownership and quote checks. |
+| NeMo Guardrails | Installed policy-flow library, version 0.24.0. VisitPrep executes custom local input/output actions without a model or new API key. Input checks the question; output checks parsed model selection. Authorization and exact-source validation remain separate requirements. |
+| NIM safety screening | NVIDIA inference-service safety models discussed in the course. No NIM classifier is configured or evaluated in this local NeMo integration. NeMo the library does not imply NIM inference. |
+| Colang flow | A policy flow written in NeMo's configuration language. The project uses Colang 1.0 input/output subflows to invoke fixed custom actions; it does not let a model invent the control flow. |
+| Custom system action | A registered local Python function invoked by a configured NeMo flow. Here it returns an allow/block policy outcome and cannot call a model, fetch a URL or authorize a record. |
+| Check-only API | NeMo's `check_async()` executes explicitly selected input/output rails without main-model generation. A custom action could do other work in another configuration; this project's actions remain local CPU checks. |
+| Execution receipt | Evidence that the expected policy action actually ran. The adapter requires exactly one action result and agreement with the runtime verdict; an unexplained library pass becomes an error. |
+| Ephemeral rail engine | A new NeMo runtime for one check, with private event history cleared afterward. This avoids reusing conversational state across requests; it is not a production identity system. |
+| Policy decision versus runtime failure | A rule can block an input; a runtime can instead error, time out or be busy. The app records these separately and keeps cloud selection closed while retaining the validated local path. |
+| Bounded rail work | At most four outstanding local rail jobs and a two-second async check deadline. A cancellation-resistant job holds its slot until it ends. These limits do not implement a production cloud-spend quota. |
+| Local span exporter / OTLP | An exporter sends completed telemetry spans to storage; OTLP is a network telemetry protocol. This app uses an instance-owned SDK exporter to SQLite only and does not configure OTLP export. |
+| Histogram and cumulative bucket | A count of observations at or below a duration bound, alongside total count and sum. NeMo duration metrics use seconds; skipped checks are explicitly labeled and contribute zero duration. |
+| Metric label cardinality | The number of distinct label combinations. Fixed input/output stages and five outcomes bound the rail series; record IDs and private text never become metric labels. |
+| Existing-controls comparison | A current-checkout evaluation with NeMo disabled by server configuration while authorization and exact-source validation remain active. It is neither an unguarded app nor a historical weak-model baseline. |
 | LLM-as-judge | Using another model to grade text or behavior. The completed scoring is custom code over declared contracts; no independent clinical model judge is claimed. |
 | PII / de-identification | Personally identifying information, and attempts to reduce identifying content. VisitPrep does not automatically de-identify consented cloud record text. Consent permits transmission; it does not remove names, symptoms or contextual clues. |
 | Presidio / entity recognizer | Candidate tooling for finding and transforming identifying entities. A local preview experiment is PLANNED. Missed entities and clinical-text distortion would need evaluation. |
@@ -248,7 +260,7 @@ The taxonomy below follows the official [OWASP 2026 resource](https://genai.owas
 | Graph database / Neo4j | Storage/search emphasizing entities and relationships. Different from a LangGraph execution workflow; not deployed here. |
 | Fine-tuning | Updating model weights using training examples. No model was trained for VisitPrep or Watch stress detection. |
 | LoRA / LLaMA-Factory | Low-rank adaptation is a parameter-efficient fine-tuning approach; LLaMA-Factory is training tooling mentioned in an unexecuted recipe. No training result is claimed. |
-| NeMo Guardrails / Guardrails AI | Optional libraries for structured checks and conversational policies. They are not installed/tested defenses in this app. |
+| Guardrails AI | A separate optional library for structured checks. It is not configured or tested here; it should not be confused with the installed NeMo Guardrails runtime. |
 | vLLM and GPU serving | Software/infrastructure for running model inference directly. The current app uses hosted provider APIs and does not operate a model-serving GPU stack. |
 | Prefill and decode | Processing input tokens and generating output tokens during inference. Separating those stages is a serving architecture choice, not a measured project capability. |
 | Voice / Deepgram | Speech interaction and a possible speech service. Not implemented; it would introduce additional input, consent and privacy considerations. |

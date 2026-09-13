@@ -1,0 +1,117 @@
+{
+  "engine": "OpenTelemetry SDK",
+  "export": "local_sqlite_only",
+  "sdk_tracing_enabled": true,
+  "retained_span_limit": 500,
+  "returned_span_limit": 100,
+  "spans": [
+    {
+      "name": "visitprep.brief",
+      "trace_id": "0a5869219594031e6dc96676e379605e",
+      "span_id": "0bcf305d6703b004",
+      "parent_span_id": null,
+      "started_at_ns": 1789334459526579000,
+      "ended_at_ns": 1789334459603597000,
+      "latency_ms": 77.018,
+      "status": "UNSET",
+      "attributes": {
+        "provider": "local"
+      }
+    },
+    {
+      "name": "visitprep.nemo.output",
+      "trace_id": "0a5869219594031e6dc96676e379605e",
+      "span_id": "89a4e99b379c539d",
+      "parent_span_id": "0bcf305d6703b004",
+      "started_at_ns": 1789334459600512000,
+      "ended_at_ns": 1789334459600512000,
+      "latency_ms": 0.0,
+      "status": "UNSET",
+      "attributes": {
+        "stage": "output",
+        "outcome": "skipped",
+        "mode": "local_custom_actions"
+      }
+    },
+    {
+      "name": "visitprep.nemo.input",
+      "trace_id": "0a5869219594031e6dc96676e379605e",
+      "span_id": "a83f794cb911ad39",
+      "parent_span_id": "0bcf305d6703b004",
+      "started_at_ns": 1789334459528477000,
+      "ended_at_ns": 1789334459598323000,
+      "latency_ms": 69.846,
+      "status": "UNSET",
+      "attributes": {
+        "stage": "input",
+        "outcome": "blocked",
+        "mode": "local_custom_actions"
+      }
+    },
+    {
+      "name": "visitprep.brief",
+      "trace_id": "cd73aa50a800d05a24e9c92637d11e5a",
+      "span_id": "f33f3446aef407f7",
+      "parent_span_id": null,
+      "started_at_ns": 1789334451681311000,
+      "ended_at_ns": 1789334451764716000,
+      "latency_ms": 83.405,
+      "status": "UNSET",
+      "attributes": {
+        "provider": "local"
+      }
+    },
+    {
+      "name": "visitprep.nemo.output",
+      "trace_id": "cd73aa50a800d05a24e9c92637d11e5a",
+      "span_id": "3aa33eab83298ae1",
+      "parent_span_id": "f33f3446aef407f7",
+      "started_at_ns": 1789334451760645000,
+      "ended_at_ns": 1789334451760645000,
+      "latency_ms": 0.0,
+      "status": "UNSET",
+      "attributes": {
+        "stage": "output",
+        "outcome": "skipped",
+        "mode": "local_custom_actions"
+      }
+    },
+    {
+      "name": "visitprep.nemo.input",
+      "trace_id": "cd73aa50a800d05a24e9c92637d11e5a",
+      "span_id": "5f1124243e67339e",
+      "parent_span_id": "f33f3446aef407f7",
+      "started_at_ns": 1789334451684374000,
+      "ended_at_ns": 1789334451759118000,
+      "latency_ms": 74.744,
+      "status": "UNSET",
+      "attributes": {
+        "stage": "input",
+        "outcome": "passed",
+        "mode": "local_custom_actions"
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "stage": "input",
+      "outcome": "blocked",
+      "count": 1,
+      "total_seconds": 0.069842
+    },
+    {
+      "stage": "input",
+      "outcome": "passed",
+      "count": 1,
+      "total_seconds": 0.07474
+    },
+    {
+      "stage": "output",
+      "outcome": "skipped",
+      "count": 2,
+      "total_seconds": 0.0
+    }
+  ],
+  "export_errors_since_start": 0,
+  "notice": "Local decision metadata only. Spans persist across restarts and are bounded; aggregate metrics reset when local app data is erased. This is not an immutable audit or a hosted monitoring service."
+}

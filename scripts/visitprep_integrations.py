@@ -101,6 +101,9 @@ def captured_span_times(observation):
 def source_manifest():
     paths = [
         *(ROOT / "pausewell").rglob("*.py"),
+        *(ROOT / "pausewell/visitprep/rails").glob("*.yml"),
+        *(ROOT / "pausewell/visitprep/rails").glob("*.co"),
+        ROOT / "pyproject.toml",
         ROOT / "visitprep_eval/run_eval.py", ROOT / "visitprep_eval/scoring.py",
         ROOT / "scripts/visitprep_integrations.py", ROOT / "requirements.lock",
         ROOT / "web/index.html", ROOT / "web/app.js", ROOT / "web/visitprep.js",

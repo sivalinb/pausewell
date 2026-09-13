@@ -24,6 +24,8 @@ jobs:
         run: python -m visitprep_eval.teaching --output "${{ runner.temp }}/visitprep-teaching"
       - name: VisitPrep offline adversarial evaluation
         run: python visitprep_eval/run_eval.py --app-root . --output "${{ runner.temp }}/visitprep-ci" --fail-on-fail
+      - name: Real local NeMo comparison with outbound network blocked
+        run: python scripts/visitprep_nemo_evaluation.py --output "${{ runner.temp }}/visitprep-nemo" --repeats 1 --fail-on-fail
       - run: python scripts/evaluate.py
       - run: python week6/run_redteam.py --app-root . --output work/week6-ci --label "CI application boundary retest" --fail-on-fail
       - uses: actions/upload-artifact@v4
@@ -34,3 +36,4 @@ jobs:
             work/week6-ci.*
             ${{ runner.temp }}/visitprep-ci/
             ${{ runner.temp }}/visitprep-teaching/
+            ${{ runner.temp }}/visitprep-nemo/

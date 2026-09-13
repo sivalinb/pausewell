@@ -6,7 +6,7 @@ Documentation examples describe a person preparing for an appointment and a seco
 
 The initial user is an adult preparing for a follow-up appointment with scattered or conflicting record entries. The job is to assemble a reviewable conversation brief. The current product does not decide which medication entry is correct, interpret a laboratory result or establish complete medical reconciliation.
 
-VisitPrep is the primary experience within Pausewell. Keep the illustrated Watch/hydration artwork as the umbrella-brand story or founder identity; use the actual source-linked brief to explain VisitPrep's central task. The [90-second demo](../training/visitprep/demo-script.md) leads with the person's appointment problem before showing the technology.
+VisitPrep is the primary experience within Pausewell. The current generic appointment-preparation illustrations show selected records, source inspection and a reviewed agenda; the former Watch portrait remains a historical asset. The [90-second demo](../training/visitprep/demo-script.md) leads with the person's appointment problem before showing the technology.
 
 This roadmap uses acceptance gates rather than promised dates. **DONE** means scoped evidence exists, **PARTIAL** means an acceptance gate remains open, and **PLANNED** means proposed work. Neither a passing synthetic suite nor a polished interface demonstrates product-market fit.
 
@@ -36,7 +36,7 @@ Implemented acceptance evidence includes [agenda tests](../tests/test_visitprep_
 - Source deletion revokes dependent agendas and future exports; downloaded copies remain outside that revocation.
 - A separately authored synthetic utility set measures historical-note preservation, coverage and difference flags. Publish actual results and limitations before promoting them as improvements.
 
-The [current local comparison](../visitprep_eval/reports/teaching-siva/summary.json) retains 20/24 target spans versus 13/24 for frozen local v1, with 16/16 safety checks passing in both. Separately displayed differences raise revised presented coverage to 21/24 and preserve both designated source pairs. UT-07 and UT-08 still have omissions, so this evidence shows a bounded improvement rather than complete preparation utility. This local comparison uses no new model inference or human study; its renamed successor cases were already seen by developers.
+The [pre-NeMo local comparison](../visitprep_eval/reports/teaching-siva/summary.json) retains 20/24 target spans versus 13/24 for frozen local v1, with 16/16 safety checks passing in both. Separately displayed differences raise revised presented coverage to 21/24 and preserve both designated source pairs. UT-07 and UT-08 still have omissions, so this evidence shows a bounded improvement rather than complete preparation utility. This local comparison uses no new model inference or human study; its renamed successor cases were already seen by developers.
 
 Do not hold this gate open to add a conversational doctor, more models or broad medical interpretation. Those features do not answer the current preparation job.
 
@@ -80,6 +80,8 @@ Compare local extraction and model-assisted selection on useful evidence, mislea
 
 The [actual paired Nebius comparison](../visitprep_eval/reports/utility-live-siva/summary.json) completed 16 cases for each system: prompt-only/full target spans are 21/24 vs 24/24, raw source-and-instruction safety is 15/16 vs 16/16 and strict validator acceptance is 11/16 vs 15/16. The full system's one fallback follows an appropriate empty selection for instruction-only input and rescues no missing useful evidence. Prompt-only UT-13 quotes an injected command; no tool executes. These observations justify continued evaluation, not a broad model advantage: several application components differ, the cases were previously seen, and no repeated or human-utility study has been run.
 
+The [local NeMo integration](NEMO-INTEGRATION.md) adds custom input/output policy execution and sanitized local OpenTelemetry spans and metrics without another model or API key. Evaluate it separately on direct-question scope, output contracts, fault handling, useful-evidence preservation and CPU latency. The [controlled comparison](../visitprep_eval/reports/nemo-local/README.md) finds no final-safety or useful-evidence improvement/regression: both arms retain 22/22 authored targets and 23 PASS / 1 WARN. It measures added local latency and preserves the malicious-title warning. The [fresh NeMo-enabled hosted run](../visitprep_eval/reports/nemo-live/README.md) confirms the actual provider path but is not a causal model-quality comparison. Next, test a narrowly scoped treatment of instruction-like source metadata alongside ordinary titles; preserve source provenance and useful content. NIM classifiers and model-based screening remain unconfigured.
+
 Try another provider, retrieval strategy or fine-tuning only when a documented failure remains and a test set can measure improvement. Fireworks is currently an optional adapter, not a live-evaluated alternative. Vector databases, fine-tuning, voice and self-hosted GPU serving remain optional future choices.
 
 ## Gate 6 — Validate the secondary Watch experience independently
@@ -97,7 +99,7 @@ Only after device behavior is established should a separate research plan examin
 | Source fidelity | Did the output preserve the authorized source? | Measured in authored cases. |
 | Preparation utility | Did the person form useful priorities and questions? | Synthetic checks exist; human usefulness is unvalidated. |
 | Scope comprehension | Did the person understand what the app did and omitted? | Study planned. |
-| Raw provider validity | Did the model return usable evidence? | Current live safety run: 24 accepted selections out of 26 attempts; paired utility acceptance is reported separately. |
+| Raw provider validity | Did the model return usable evidence? | Fresh NeMo-enabled live run: 19 accepted selections out of 21 provider attempts; five input blocks take the local path. Pre-NeMo and paired-utility results remain separate. |
 | End-to-end reliability | Was a useful, honest result available despite errors? | Fallback and selected timeout retest measured; production availability unvalidated. |
 | Burden | How much import, waiting and correction did preparation require? | Representative user measurement planned. |
 | Adoption | Did the person actually bring and reuse the brief? | No observed adoption or product-market-fit evidence. |

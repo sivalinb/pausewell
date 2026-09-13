@@ -16,6 +16,8 @@ The authored fictional demo includes medication lists that record different metf
 6. Edit up to three personal priorities and three questions. Save a private draft, then explicitly approve the current version. Agenda text is never included in provider requests or local telemetry. Export the approved agenda as printable HTML, Markdown or JSON. Editing invalidates prior approval; stale edits cannot overwrite a newer version. Imported records persist locally until deleted; the latest 20 briefs and their agendas are retained.
 7. Delete a source to remove dependent saved briefs and future exports, or erase all local app data. Fictional records return only through explicit restoration when the workspace is empty.
 
+Local NeMo policy actions check the preparation question before cloud selection and parsed model output before exact-source validation. They require no additional key or model call. A blocked or unavailable input check preserves the local brief path; a failed output check rejects that model selection. **Behind the scenes** exposes sanitized rail outcomes and durations. The [integration guide](NEMO-INTEGRATION.md) explains the narrow policy scope.
+
 If inference times out or returns altered quotes, unknown IDs or unapproved fields, deterministic local excerpts are used with an identified fallback. A correct quotation may still be incomplete, misleading or clinically irrelevant. Independent usefulness evaluation and clinician review remain necessary.
 
 ## The secondary Watch journey

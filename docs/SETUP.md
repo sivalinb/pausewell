@@ -5,7 +5,7 @@
 ```bash
 git clone https://github.com/sivalinb/pausewell.git
 cd pausewell
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.lock
 python scripts/bootstrap.py
@@ -21,6 +21,12 @@ Documentation examples describe a person preparing for an appointment and a seco
 **Add a record** accepts pasted text or a `.txt` file, a title, date and record type. It does not process PDFs, images, OCR, FHIR, EHR accounts or an Apple Health export. Preserve original wording and units. Imports are saved on your private server, are not independently verified and are not automatically attributed to the fictional demo patient.
 
 The workspace allows 40 records and 120,000 text characters, with 6,000 characters per record. Each brief can use up to 10 selected records and 24,000 text characters. If the selection is too large, choose a smaller subset. The latest 20 briefs remain local. Deleting a source removes dependent saved briefs and future exports. **Delete all local app data** also erases VisitPrep records and telemetry. Demo records do not reappear on restart; explicit restoration is available when the workspace is empty.
+
+## Local NeMo policy checks
+
+The locked dependencies include NeMo Guardrails 0.24.0 and the OpenTelemetry SDK. NeMo runs custom CPU input/output actions with `models: []`; no extra key, GPU, model download or safety-model call is needed. Install the lock and start the app normally. The server-only `VISITPREP_NEMO_ENABLED` setting defaults on; keep it on outside an explicitly labeled existing-controls comparison. A caller cannot override it in a brief request.
+
+Open **Behind the scenes** to inspect rail decisions and measured durations. The authenticated endpoints `/api/visitprep/guardrails/observability` and `/api/visitprep/guardrails/metrics` provide local spans and Prometheus-format aggregates. Use the same owner bearer token as the application; never paste it into documentation, screenshots or shared logs. The dedicated SQLite telemetry file survives restarts and is cleared by explicit local-data erasure. See [integration and reproduction](NEMO-INTEGRATION.md) and [observability](OBSERVABILITY.md).
 
 ## Optional Nebius record-text inference
 
@@ -39,6 +45,7 @@ ruff check .
 pytest -q
 python visitprep_eval/run_eval.py --app-root . --output work/visitprep-reproduction --fail-on-fail
 python -m visitprep_eval.teaching --output work/visitprep-teaching-reproduction
+python scripts/visitprep_nemo_evaluation.py --app-root . --output work/nemo-reproduction --repeats 3 --fail-on-fail
 python scripts/evaluate.py
 python week6/run_redteam.py --app-root . --output work/watch-redteam-reproduction --fail-on-fail
 node --check web/app.js
@@ -49,11 +56,13 @@ swiftc -frontend -parse ios/Pausewell/*.swift
 
 The tests and VisitPrep offline evaluator require no provider credentials and make no live inference calls. Use a new output path when reproducing evaluations so the checked-in evidence remains frozen. See [VisitPrep evaluation](../visitprep_eval/README.md). `requirements.lock` records the tested Python 3.12 dependency set.
 
-The recorded final suite has 230 passing Python tests and six passing Node state-boundary checks. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
+The current suite has 290 passing Python tests and six passing Node state-boundary checks. The earlier pre-NeMo release recorded 230 Python tests. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
 
-Current evidence is in [the offline report](../visitprep_eval/reports/offline-siva/summary.json) and [the teaching report](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed synthetic utility cases were already visible to developers and are not a new holdout.
+Pre-NeMo evidence is in [the offline report](../visitprep_eval/reports/offline-siva/summary.json) and [the teaching report](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed synthetic utility cases were already visible to developers and are not a new holdout.
 
-The completed [paired live utility report](../visitprep_eval/reports/utility-live-siva/summary.json) records 32 actual Nebius calls across prompt-only and full-application systems. It is distinct from the completed [current live safety run](../visitprep_eval/reports/siva-live/README.md): 29 cases, 28 PASS / 1 WARN, 26 calls, 24 accepted outputs, two rejected empty outputs and no timeouts. Reading either report makes no inference call. A new paid comparison requires its own budget and execution opt-in; adding a model is not necessary to reproduce the local teaching exercises.
+The [fresh NeMo-enabled live run](../visitprep_eval/reports/nemo-live/README.md) has 29 cases / 35 responses, 28 PASS / 1 WARN, 21 actual Nebius calls (19 accepted, two empty outputs rejected) and five input-rail local fallbacks before provider access. Its Braintrust receipt verifies 29 rows / 21 LLM spans. Reading it makes no call. The separate local NeMo comparison requires no provider key; starting a fresh cloud evaluation remains an explicitly budgeted action.
+
+The completed [paired live utility report](../visitprep_eval/reports/utility-live-siva/summary.json) records 32 actual Nebius calls across prompt-only and full-application systems. It is distinct from the completed [pre-NeMo live safety run](../visitprep_eval/reports/siva-live/README.md): 29 cases, 28 PASS / 1 WARN, 26 calls, 24 accepted outputs, two rejected empty outputs and no timeouts. Reading either report makes no inference call. A new paid comparison requires its own budget and execution opt-in; adding a model is not necessary to reproduce the local teaching exercises.
 
 A separate paid, authored-synthetic Nebius runner requires explicit opt-in. For example, after configuring credentials:
 

@@ -1,0 +1,8 @@
+# Custom CPU-only checks. No LLM, embedding model, remote action, or tracing sink.
+models: []
+colang_version: '1.0'
+rails:
+  input:
+    flows: [visitprep input scope]
+  output:
+    flows: [visitprep output scope]

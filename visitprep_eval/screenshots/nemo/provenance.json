@@ -1,0 +1,16 @@
+{
+  "capture": "Actual Codex browser screenshot of localhost:8771, no image synthesis or pixel editing",
+  "captured_file_time": "2026-09-13T21:23:54.929090+00:00",
+  "synthetic_only": true,
+  "steps": [
+    "Connect to a fresh synthetic demo workspace",
+    "Prepare default local brief: input passed, output skipped",
+    "Prepare direct role-override medication question: input blocked, output skipped, validated local fallback preserved",
+    "Open authenticated Behind the scenes panel"
+  ],
+  "provider_network_calls": 0,
+  "nemo_version": "0.24.0",
+  "otel_sdk_version": "1.44.0",
+  "screenshot_sha256": "336d2785c055ef5d2ead37bb1e1bbaf970e694b43c69dbff7bbdb9c3b29b19b1",
+  "notice": "UI evidence and local SDK spans are distinct from the isolated comparison, which intentionally disabled SDK export. Six spans cover two requests; only part of the scrollable list is visible in the screenshot."
+}

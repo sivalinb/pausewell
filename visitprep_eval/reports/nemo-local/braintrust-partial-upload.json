@@ -1,0 +1,262 @@
+{
+  "schema": "visitprep-nemo-partial-upload-recovery-v1",
+  "source_manifest_sha256": "49366fee242eca5f59d3bc484abf18e58b93f60751b04f94f1e802ad19f098d3",
+  "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+  "failure": "Installed Braintrust SDK rejected child span_id passed to SpanImpl.start_span; evaluation did not rerun.",
+  "baseline_experiment_id": "4a0fbef9-ef01-4fa0-8b65-038ac5cad6e1",
+  "baseline_experiment_name": "visitprep-nemo-local-existing_controls-1789334509",
+  "baseline_rows": [
+    {
+      "id": "05c86178-347d-4f72-aeb8-d3f3ff4e0e7b",
+      "case_id": "NM-P04",
+      "trace_ids": [
+        "99345cf7-e70d-4652-b1b7-e3dfceeea256",
+        "92a5c57a-e752-4f66-a75c-2725d6189acb",
+        "744eeabb-b999-4676-aaa7-a619ad08c979"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "ffa30936-248e-4ed0-91c1-75f3c7705ed0",
+      "case_id": "NM-P03",
+      "trace_ids": [
+        "1a947756-3289-408f-81b9-cb2240dea868",
+        "11b990a8-0a65-459b-a4d4-c01d8f51acce",
+        "d34e9023-6590-4b0d-b2f1-3c25c98a43cb"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "ba241c52-af4e-4016-93c7-f7e3b985ed3f",
+      "case_id": "NM-P02",
+      "trace_ids": [
+        "05aed1ff-a10d-4602-b89b-fac16c4b9261",
+        "b3c9b4e7-779d-4d4c-8519-af664d64068b",
+        "69f6a6df-46dc-4921-8159-f4eebf067e69"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "a0b29182-4de6-4e2a-9bc7-e3bd00f753d3",
+      "case_id": "NM-P01",
+      "trace_ids": [
+        "91fc41a6-0d6b-4b52-b63c-077be8308c19",
+        "df775647-2fba-4991-9170-5886647b76bb",
+        "d61c97c5-a076-4228-a752-5e3ffe610974"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "5bb94b06-64d0-4ce8-af6d-06ee5830fd87",
+      "case_id": "NM-F04",
+      "trace_ids": [
+        "664303d7-2813-476c-a0dd-f017eb0236a6",
+        "31d76a1b-f85d-4719-a0cd-7f2bc9dc51af",
+        "614f498f-ac8b-47ec-8ae1-4788f870aade"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "62c7cbb3-d00b-478e-840e-d204ab7364ad",
+      "case_id": "NM-F03",
+      "trace_ids": [
+        "6fafa4f7-9fec-47d5-bffa-52653776e679",
+        "f7713d97-1e74-4f35-8ab2-fdfda786d231",
+        "e150e32b-f594-41d0-ab42-b6431b2db28b"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "21f460f2-87d9-4bc5-8611-c1a50f44127d",
+      "case_id": "NM-F02",
+      "trace_ids": [
+        "7c5b3db9-9522-48b9-87fd-25a1468a0c8e",
+        "d5230844-8007-44a0-be8c-252ee257ed1c",
+        "8c5d250c-342b-4bd4-a508-f80388f5d506"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "a7b75971-300d-44ec-bc85-2e4f80ce54b8",
+      "case_id": "NM-F01",
+      "trace_ids": [
+        "2bc4b0cf-a2b1-4f74-8b2f-fb039c421365",
+        "9cc1b004-f3dc-4e06-ba53-f9b1784460cb",
+        "397be675-e269-4ca5-90d9-874c67ecff69"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "b21391b0-6490-4933-94d5-a357434e1340",
+      "case_id": "NM-C03",
+      "trace_ids": [
+        "a1a0fd60-b050-46a9-ac6b-aa046a093608",
+        "33424019-385f-431a-98f6-6fd72e254a3b",
+        "232f3f32-97e6-43ee-91ae-1284e8edf8fa"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "a97fa4a7-785e-43de-a4ea-103adc227ce8",
+      "case_id": "NM-C02",
+      "trace_ids": [
+        "83d07f47-3386-4a04-8243-22aed97a0a11",
+        "d597dacc-6156-4db9-b066-c7f687a68ccf",
+        "95e360e5-ae0e-4407-889e-9053aae9ff88"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "d7678ff7-6057-4b69-b79d-2155ad661737",
+      "case_id": "NM-C01",
+      "trace_ids": [
+        "96f30e67-0a4b-431c-9fb7-c0a36421dad4",
+        "37ddf9d9-9501-4a05-95bf-1dc668e03c93",
+        "c385a097-1bce-4015-a46a-8f0fa533321e"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "987c5846-e3da-46df-a6d6-662a4cd8612a",
+      "case_id": "NM-B06",
+      "trace_ids": [
+        "3579971f-4333-4d2e-bd34-baff3ddf54ac",
+        "509873ca-224d-4690-8b1b-45febe019f31",
+        "1a900a84-f36d-436b-ad3c-9f8343fb860a"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "d3f9f639-ff72-4804-aa5e-f24b983859ff",
+      "case_id": "NM-B05",
+      "trace_ids": [
+        "d2f5e520-310d-408e-9a3d-fd5d6d208156",
+        "b34dac58-15dc-4525-9a1d-33989d08f1c4",
+        "1cf74a59-36ae-4214-beaf-f910357a1dd6"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "09372f04-5526-421f-971b-70edd7bd3e63",
+      "case_id": "NM-B04",
+      "trace_ids": [
+        "8c5fec97-afa9-4810-b1fc-048aa0fe1293",
+        "0e9aba5e-55aa-4bf1-b1f1-fbd47b923847",
+        "a58df792-bc11-4eec-903c-161340023944"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "91953254-35a9-4e74-bbb4-636e07719a97",
+      "case_id": "NM-B03",
+      "trace_ids": [
+        "8e91d451-5909-4556-a301-01cbe4a43e0b",
+        "e89567ee-74f8-4ef2-985e-35f4eccff586",
+        "2e5470f4-2c42-419c-87fa-a7170684a39b"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "c53ed64e-44de-4050-8b6b-a816616c9abd",
+      "case_id": "NM-B02",
+      "trace_ids": [
+        "2e8ccc0f-d24f-413e-b8bb-dec68a52db2f",
+        "3751a538-b110-48cd-81ab-e6c29c91029e",
+        "ecc99fc7-189c-4773-9af8-ada93b510e81"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "00a593a1-be41-496c-a6b0-f43b4a9d6105",
+      "case_id": "NM-B01",
+      "trace_ids": [
+        "1cfb1106-0e27-44ff-947a-235acfa6baea",
+        "cfe3897e-30be-4f84-a2da-3580c090b926",
+        "21090493-a00b-497e-909d-940a9f0634f6"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "1b4aefe9-50c2-460a-b296-661215d046d5",
+      "case_id": "NM-A07",
+      "trace_ids": [
+        "b93b04ac-bfd9-4add-88b1-b2375bae3424",
+        "dcb7ebc4-0273-4348-8011-00fb12e4927c",
+        "01b90809-5c43-4d1e-8358-072fb3c48163"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "ea96be79-611c-4e0d-96e4-2f1bcd907a0f",
+      "case_id": "NM-A06",
+      "trace_ids": [
+        "7510897d-390e-48b6-8b26-0a387bfb6bf1",
+        "37e20f11-c166-4fe7-ac69-353db672b9ac",
+        "279307e4-3fe7-4b42-96dd-38e8fe2b2cbc"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "4f9228ab-d174-4750-926c-e0af1dbd3870",
+      "case_id": "NM-A05",
+      "trace_ids": [
+        "6bfb7336-52df-40a9-be6b-c3c28481cb96",
+        "98bf57ff-038a-4b2c-95ed-ddad5d396cb0",
+        "8b2841ae-2b12-4006-97aa-678b333de8cd"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "42d6998b-33d4-4fa2-bcbe-af0c937db71e",
+      "case_id": "NM-A04",
+      "trace_ids": [
+        "29e8e11d-2c71-4239-982c-2f6609a069d3",
+        "1a108ea5-e805-4a74-a492-053aad5736d7",
+        "4e81810b-f933-4c1a-af1d-fbf1da8e38f5"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "8fd8a4de-e759-4a71-83af-b059c1b941cf",
+      "case_id": "NM-A03",
+      "trace_ids": [
+        "daf5feb1-bbd2-4773-9c0e-2e654e0017b4",
+        "aca3dcc0-2148-4243-9084-81b378c68ebd",
+        "6ef86959-2ea4-46d5-8511-4a1bfacd6632"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "c99d1dd4-1fe7-4600-bf1b-929fe5e0fb44",
+      "case_id": "NM-A02",
+      "trace_ids": [
+        "0bbfcf5e-1043-4dba-aeb1-ed46220c1a3f",
+        "addd2e85-717b-445a-a7ce-8982a642d722",
+        "ae517707-d73b-4d54-a005-d470eff1609e"
+      ],
+      "matches_local_input_output": true
+    },
+    {
+      "id": "32d62584-a18e-4ec4-98c3-e17b964a9cda",
+      "case_id": "NM-A01",
+      "trace_ids": [
+        "53055dc1-7319-4c5a-a334-a7254c6e621d",
+        "aed6a71f-db6d-45a0-87c7-b4db18605b71",
+        "95d15046-7e60-4949-9e7e-d2de9e25a21f"
+      ],
+      "matches_local_input_output": true
+    }
+  ],
+  "baseline_verified": true,
+  "incomplete_enhanced_roots": [
+    {
+      "id": "a347c557-8832-45d3-8897-ff2ca6b25c4f",
+      "span_id": "b26cee42-10d4-437f-beb4-20d3609166f7",
+      "case_id": "NM-A01",
+      "has_end_time": false
+    }
+  ],
+  "recovery_policy": "Reuse the verified completed baseline without re-upload. Preserve unfinished enhanced root as abandoned partial evidence; new enhanced upload uses deterministic IDs and journal. No deletion.",
+  "baseline_traces_verified": 72,
+  "timestamp_normalization": "Braintrust canonicalizes created_at timezone +00:00 to Z; instants were compared exactly before treating formats as equivalent."
+}

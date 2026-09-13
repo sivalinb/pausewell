@@ -180,6 +180,7 @@ def create_app(db_path=None, token=None, clock=utcnow):
         telemetry.clear()
         app.state.visitprep_store.erase()
         app.state.visitprep_telemetry.clear()
+        app.state.visitprep_guardrail_observability.clear()
         return {
             "deleted": True,
             "scope": "Local app records and settings. Apple Health and remote synthetic traces are separate.",

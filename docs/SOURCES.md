@@ -30,3 +30,11 @@ VisitPrep's exact-quote and authorization behavior is demonstrated by code and t
 No source establishes that this policy can detect stress, dehydration, an anxiety disorder, or a cause of elevated heart rate. The “name the feeling” sentence is an app reflection exercise, not a quotation from NHS.
 
 VisitPrep's runtime model identity, pricing and returned token usage are preserved in each live report. Future pricing, retention and availability can change; provider terms need review before sending real record text.
+
+## Local NeMo implementation references
+
+- [Released NeMo Guardrails 0.24.0](https://pypi.org/project/nemoguardrails/0.24.0/) identifies the installed library release. The dependency lock pins the tested Python environment.
+- [NVIDIA check-only input/output API](https://docs.nvidia.com/nemo/guardrails/latest/run-guardrailed-inference/using-python-apis/check-messages) explains explicit `check_async()` validation without main-model generation. Project actions are local CPU policies.
+- [NVIDIA usage telemetry](https://docs.nvidia.com/nemo/guardrails/latest/resources/telemetry) explains the startup opt-out used before importing the runtime. This is separate from the app-owned local OpenTelemetry exporter.
+
+The [integration guide](NEMO-INTEGRATION.md) ties those APIs to actual code, tests and reports. These sources do not imply deployment of a NIM model, an LLM judge or NVIDIA's hosted monitoring services.

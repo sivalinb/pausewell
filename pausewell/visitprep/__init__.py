@@ -7,7 +7,7 @@ from html import escape as escape_html
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import Response
+from fastapi.responses import Response, PlainTextResponse
 
 from .fixtures import PATIENT, PATIENT_ID, display_patient
 from .agenda import agenda_html, agenda_markdown
@@ -16,6 +16,7 @@ from .models import BriefRequest, RecordInput, AgendaInput
 from .provider import configured
 from .store import VisitPrepStore, AccessDenied, CapacityExceeded, AgendaConflict
 from .telemetry import VisitPrepTelemetry
+from .guardrail_observability import GuardrailObservability
 
 SCOPE_NOTICE = (
     "Seed demo records are authored fictional; imported record identity is not verified. Prepare a cited, extractive appointment brief; "
@@ -77,8 +78,10 @@ def markdown_brief(brief):
 def register_visitprep(app, auth, db_path):
     store = VisitPrepStore(db_path)
     telemetry = VisitPrepTelemetry()
+    guardrail_observability = GuardrailObservability(str(db_path) + ".guardrails.sqlite")
     app.state.visitprep_store = store
     app.state.visitprep_telemetry = telemetry
+    app.state.visitprep_guardrail_observability = guardrail_observability
     router = APIRouter(prefix="/api/visitprep", dependencies=[Depends(auth)])
 
     def guarded(operation, callback):
@@ -134,7 +137,10 @@ def register_visitprep(app, auth, db_path):
     @router.post("/brief")
     def brief(request: BriefRequest):
         start = time.perf_counter()
-        result = guarded("brief", lambda: make_brief(store, request))
+        with guardrail_observability.request(request.provider):
+            result = guarded(
+                "brief", lambda: make_brief(store, request, rail_observer=guardrail_observability.record_rail)
+            )
         telemetry.record(
             "brief",
             result["model"]["status"],
@@ -213,10 +219,19 @@ def register_visitprep(app, auth, db_path):
     def observability():
         return telemetry.snapshot()
 
+    @router.get("/guardrails/observability")
+    def guardrail_observe():
+        return guardrail_observability.snapshot()
+
+    @router.get("/guardrails/metrics", response_class=PlainTextResponse)
+    def guardrail_metrics():
+        return guardrail_observability.prometheus()
+
     @router.delete("/data")
     def erase():
         store.erase()
         telemetry.clear()
+        guardrail_observability.clear()
         return {
             "deleted": True,
             "scope": "VisitPrep records, saved briefs, patient agendas and local operation telemetry",

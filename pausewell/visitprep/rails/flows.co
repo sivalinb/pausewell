@@ -1,0 +1,11 @@
+define subflow visitprep input scope
+  $result = execute visitprep_input_scope
+  if $result.is_blocked
+    bot refuse to respond
+    stop
+
+define subflow visitprep output scope
+  $result = execute visitprep_output_scope
+  if $result.is_blocked
+    bot refuse to respond
+    stop

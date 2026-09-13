@@ -2,9 +2,9 @@
 
 **Prepare for a better conversation with your clinician.** Choose records → inspect dated evidence → edit your priorities → approve an appointment agenda.
 
-![Illustrated VisitPrep workflow: synthetic records pass through owner authorization, consent, exact-quote validation and evaluation before the person reviews and approves their agenda. Current evidence includes 28 PASS and one WARN, 230 Python tests and six UI state checks.](docs/assets/visitprep-week6-workflow.png)
+![Illustrated VisitPrep workflow: synthetic records pass through owner authorization, consent, exact-quote validation and evaluation before the person reviews and approves their agenda. The illustration records pre-NeMo evidence: 28 PASS and one WARN, 230 Python tests and six UI state checks.](docs/assets/visitprep-week6-workflow.png)
 
-**VisitPrep is the primary Week 6 project.** It turns selected plain-text visit notes, medication lists, laboratory entries and allergy records into a cited, extractive appointment brief. Optional Nebius Token Factory inference processes actual untrusted record text; server-side authorization and exact-quote validation constrain what can appear. Suggested questions use reviewed templates. Your private agenda adds up to three editable priorities and three questions, with versioned approval before printable HTML, Markdown or JSON export. Coverage explains what the selector included or omitted; heuristic comparisons show differing dated medication or allergy entries without deciding which is current. The brief does not diagnose, interpret results, recommend medication changes or establish complete medical reconciliation.
+**VisitPrep is the primary Week 6 project.** It turns selected plain-text visit notes, medication lists, laboratory entries and allergy records into a cited, extractive appointment brief. Optional Nebius Token Factory inference processes actual untrusted record text; server-side authorization and exact-quote validation constrain what can appear. [Local NeMo input/output rails](docs/NEMO-INTEGRATION.md) run custom CPU policy actions around cloud selection, with no additional model call or API key. Suggested questions use reviewed templates. Your private agenda adds up to three editable priorities and three questions, with versioned approval before printable HTML, Markdown or JSON export. Coverage explains what the selector included or omitted; heuristic comparisons show differing dated medication or allergy entries without deciding which is current. The brief does not diagnose, interpret results, recommend medication changes or establish complete medical reconciliation.
 
 The original **Watch check-in workflow** remains as a secondary module: eligible Apple Health signals prompt an optional human check-in, followed by reviewed wellness cards and trusted resources. Watch readings cannot establish whether someone is stressed.
 
@@ -15,7 +15,7 @@ Documentation examples describe a person preparing for an appointment and a seco
 ## Run it
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.lock
 python scripts/bootstrap.py
@@ -37,13 +37,17 @@ VisitPrep never inherits Watch consent. Its records remain on the owner's server
 
 | Check | Recorded evidence |
 |---|---|
-| Automated checks | **230 Python tests passed** plus [six Node state-boundary checks](tests/visitprep_ui_boundaries.cjs); both are included in CI |
-| Current offline suite | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/offline-siva/summary.json), 29 cases, 35 responses; zero remote model calls |
-| Current offline source fidelity | 127/127 facts; 34/34 authored evidence checks; not clinical recall |
-| Current local utility comparison | [Frozen local v1 vs revised local](visitprep_eval/reports/teaching-siva/summary.json): 13/24 vs 20/24 target spans; 16/16 safety checks in both. Revised displayed differences raise presented coverage to 21/24; UT-07/08 omissions remain |
+| Automated checks | **292 Python tests passed** plus [six Node state-boundary checks](tests/visitprep_ui_boundaries.cjs); both are included in CI |
+| New local NeMo comparison | [24 cases × two arms × three repetitions](visitprep_eval/reports/nemo-local/README.md): 23 PASS / 1 WARN per arm; 72/72 final contracts and 22/22 useful targets per arm, with 0/6 benign cases overblocked. No measured final-safety or utility improvement/regression |
+| Local policy overhead | [Final controlled run](visitprep_eval/reports/nemo-local/summary.json): warm request medians 4.6069 ms existing controls / 70.7157 ms with NeMo; 66.2905 ms median paired overhead. 54 non-fault successful observations per arm; zero provider network calls |
+| Fresh NeMo-enabled Nebius run | [29 cases / 35 responses, 28 PASS / 1 WARN](visitprep_eval/reports/nemo-live/README.md): 21 actual calls, 19 accepted selections, two empty outputs rejected, no timeouts; five input blocks use local excerpts. 123/123 citations, 34/34 targets, 0/4 benign overblocking |
+| Fresh hosted receipt | [29 evaluation rows / 21 provider LLM spans verified](visitprep_eval/reports/nemo-live/braintrust.json); $0.0024512 returned-usage estimate, separate from the local campaign and prior hosted runs |
+| Pre-NeMo offline suite | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/offline-siva/summary.json), 29 cases, 35 responses; zero remote model calls |
+| Pre-NeMo offline source fidelity | 127/127 facts; 34/34 authored evidence checks; not clinical recall |
+| Pre-NeMo local utility comparison | [Frozen local v1 vs revised local](visitprep_eval/reports/teaching-siva/summary.json): 13/24 vs 20/24 target spans; 16/16 safety checks in both. Revised displayed differences raise presented coverage to 21/24; UT-07/08 omissions remain |
 | Actual paired Nebius utility comparison | [16 cases × two systems, 32 completed calls](visitprep_eval/reports/utility-live-siva/summary.json): prompt-only vs full application target spans 21/24 vs 24/24; raw source/instruction safety 15/16 vs 16/16; strict validator acceptance 11/16 vs 15/16 |
-| Current live safety run | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/siva-live/summary.json), 29 cases, 35 responses; 26 actual calls: 24 accepted selections, 2 rejected empty outputs, 0 timeouts; 123/123 citation checks and 34/34 authored evidence checks |
-| Current hosted observability | [Safety run](visitprep_eval/reports/siva-live/braintrust.json): 29 rows / 26 provider spans verified; [paired comparison](visitprep_eval/reports/utility-live-siva/braintrust.json): 16 rows / 16 spans verified for each system |
+| Pre-NeMo live safety run | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/siva-live/summary.json), 29 cases, 35 responses; 26 actual calls: 24 accepted selections, 2 rejected empty outputs, 0 timeouts; 123/123 citation checks and 34/34 authored evidence checks |
+| Pre-NeMo hosted observability | [Safety run](visitprep_eval/reports/siva-live/braintrust.json): 29 rows / 26 provider spans verified; [paired comparison](visitprep_eval/reports/utility-live-siva/braintrust.json): 16 rows / 16 spans verified for each system |
 | Historical full live Nebius run | [28 PASS / 1 WARN](visitprep_eval/reports/live/summary.json) across 29 cases; 26 HTTP requests: 20 accepted selections, 2 rejected empty outputs, 4 timeout fallbacks |
 | Historical Braintrust readback | 29/29 evaluation rows and 26/26 provider traces verified |
 | Historical selected reliability retest | 4 cases / 6 requests after increasing the read timeout; all 6 selections accepted, reported separately |
@@ -59,7 +63,7 @@ The VisitPrep warning preserves the limit on complete lifetime reconciliation. T
 
 [Exemplar checklist](docs/week6-exemplar-checklist.md) · [Technical glossary](docs/TECHNICAL-GLOSSARY.md) · [Student and instructor kit](training/visitprep/README.md) · [Product roadmap](docs/ROADMAP.md)
 
-[Course handout and OWASP 2026 alignment](docs/WEEK6-COURSE-ALIGNMENT.md) maps the supplied materials to implemented controls and deployment gaps. The app uses custom evaluations and deterministic guards; Promptfoo, NeMo and Presidio remain unimplemented options. Cloud consent authorizes selected text transmission; it does not automatically de-identify the records.
+[Course handout and OWASP 2026 alignment](docs/WEEK6-COURSE-ALIGNMENT.md) maps the supplied materials to implemented controls and deployment gaps. The app uses custom evaluations, deterministic authorization and source validation, plus NeMo Guardrails for custom local input/output policy actions. NIM safety inference, LLM-as-judge screening, Promptfoo and Presidio are not configured. Cloud consent authorizes selected text transmission; it does not automatically de-identify the records.
 
 [Submission guide](docs/visitprep-submission.md) · [Submission Google Doc](https://docs.google.com/document/d/15oLmUl8M9oVwN6c-ch3qgOxmWwKZkUGYGA-Rd9s7YWk/edit) · [Secondary Watch investigation](week6/README.md)
 

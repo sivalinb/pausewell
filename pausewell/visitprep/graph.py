@@ -17,6 +17,7 @@ from .evidence import (
 )
 from .fixtures import display_patient
 from .models import BriefRequest
+from . import nemo
 from .provider import select_evidence
 from .store import VisitPrepStore
 
@@ -31,6 +32,9 @@ class State(TypedDict, total=False):
     facts: list[dict]
     usage: dict
     result: dict
+    guardrails_enabled: bool
+    rail_observer: object
+    rail_checks: list[dict]
 
 
 def authorize(state):
@@ -46,7 +50,18 @@ def retrieve(state):
 
 def select(state):
     req, records = state["request"], state["records"]
-    if not records:
+    observer = state.get("rail_observer")
+    if state["guardrails_enabled"]:
+        check = nemo.check_rail("input", {"question": req.question}, observer=observer)
+    else:
+        check = nemo.skipped_check("input", "disabled_by_server", observer)
+    if check["outcome"] in {"blocked", "error", "timeout"}:
+        selected = {
+            "payload": None,
+            "model": {"provider": "local", "status": "guardrail_" + check["outcome"],
+                      "tokens": 0, "latency_ms": 0},
+        }
+    elif not records:
         selected = {
             "payload": None,
             "model": {"provider": "local", "status": "no_records", "tokens": 0, "latency_ms": 0},
@@ -63,13 +78,25 @@ def select(state):
         }
     else:
         selected = select_evidence(records, req.question, req.provider, req.cloud_consent)
-    return {"selection": selected["payload"], "usage": selected["model"], "nodes": state["nodes"] + ["model"]}
+    return {"selection": selected["payload"], "usage": selected["model"],
+            "rail_checks": [check], "nodes": state["nodes"] + ["model"]}
 
 
 def validate(state):
     model = dict(state["usage"])
     facts = []
-    if state["selection"] is not None:
+    observer = state.get("rail_observer")
+    if not state["guardrails_enabled"]:
+        check = nemo.skipped_check("output", "disabled_by_server", observer)
+    elif state["selection"] is None:
+        check = nemo.skipped_check("output", "no_model_output", observer)
+    else:
+        check = nemo.check_rail("output", {"selection": state["selection"], "records": state["records"]},
+                               observer=observer)
+    candidate_allowed = check["outcome"] in {"passed", "skipped"}
+    if state["selection"] is not None and not candidate_allowed:
+        model["status"] = "rejected_output"
+    if state["selection"] is not None and candidate_allowed:
         try:
             facts = validate_selection(state["selection"], state["records"])
             model["status"] = "accepted"
@@ -79,7 +106,8 @@ def validate(state):
         fallback = local_evidence(state["records"])
         if fallback["facts"]:
             facts = validate_selection(fallback, state["records"])
-    return {"facts": facts, "usage": model, "nodes": state["nodes"] + ["validate"]}
+    return {"facts": facts, "usage": model, "rail_checks": state["rail_checks"] + [check],
+            "nodes": state["nodes"] + ["validate"]}
 
 
 def prepare(state):
@@ -117,6 +145,7 @@ def prepare(state):
         "facts": facts,
         "questions": questions,
         "model": state["usage"],
+        "guardrails": nemo.metadata(state["guardrails_enabled"], state["rail_checks"]),
         "coverage": {
             "selected_records": len(state["records"]),
             "selected_facts": len(facts),
@@ -156,7 +185,10 @@ builder.add_edge("brief", END)
 GRAPH = builder.compile()
 
 
-def make_brief(store, request):
+def make_brief(store, request, *, guardrails_enabled=None, rail_observer=None):
     # Graph state contains private record text/question. Disable inherited tracing.
     with tracing_context(enabled=False):
-        return GRAPH.invoke({"store": store, "request": request})["result"]
+        return GRAPH.invoke({"store": store, "request": request,
+                             "guardrails_enabled": (nemo.enabled_by_default() if guardrails_enabled is None
+                                                    else bool(guardrails_enabled)),
+                             "rail_observer": rail_observer})["result"]

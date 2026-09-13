@@ -2,8 +2,8 @@
 name = "pausewell"
 version = "0.1.0"
 description = "Source-linked appointment preparation, patient-controlled agendas and bounded Apple Health check-ins"
-requires-python = ">=3.11"
-dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.27,<1", "pydantic>=2.9,<3", "langgraph>=1,<2", "python-dotenv>=1,<2", "braintrust>=0.3,<1"]
+requires-python = ">=3.12,<3.14"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.27,<1", "pydantic>=2.9,<3", "langgraph>=1,<2", "python-dotenv>=1,<2", "braintrust>=0.3,<1", "nemoguardrails==0.24.0", "opentelemetry-api==1.44.0", "opentelemetry-sdk==1.44.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.12,<1"]
@@ -14,7 +14,7 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 110
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]

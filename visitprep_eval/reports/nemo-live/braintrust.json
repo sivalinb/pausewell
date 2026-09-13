@@ -1,0 +1,20 @@
+{
+  "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+  "experiment_id": "cff379bf-cd44-4f01-9845-df0cd5b037dc",
+  "experiment_name": "visitprep-live-nebius-1789334514",
+  "experiment_rows_written": 29,
+  "experiment_rows_verified": 29,
+  "provider_spans_written": 21,
+  "provider_spans_verified": 21,
+  "remote_verified": true,
+  "synthetic_only": true,
+  "span_timing": "Uploaded after execution with captured HTTP start/end timestamps and LLM span type; measured_provider_latency_ms is the same captured HTTP duration",
+  "cost": {
+    "cap_usd": 0.25,
+    "calls": 21,
+    "reserved_usd": 0.0235846,
+    "reported_cost_usd": 0.0024511999999999997,
+    "input_rate": 1e-07,
+    "output_rate": 3e-07
+  }
+}
