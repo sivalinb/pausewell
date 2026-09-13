@@ -1,0 +1,7 @@
+# Illustration provenance
+
+[VisitPrep workflow](visitprep-week6-workflow.png) is an AI-generated explanatory illustration, created with the built-in image-generation tool on 2026-09-13. The user supplied a purple, hand-drawn educational workflow as a visual reference. Siva is illustrated with glasses, a beard and a mustache. This artwork is not a product screenshot or clinical evidence.
+
+Production prompt: Create a wide, hand-drawn purple-and-ivory educational workflow titled “Pausewell VisitPrep: From Health Records to a Reviewed Agenda.” Show Siva importing dated text records, selection of record IDs, bounded Nebius extraction, exact source validation, measured synthetic evaluation, and a person reviewing and approving an agenda. Use the verified project results: 230 Python tests plus 6 UI state checks; 26 Nebius calls, 24 accepted and 2 rejected; 29 safety cases with 28 PASS and 1 WARN; paired evidence targets 21/24 versus 24/24, source safety 15/16 versus 16/16. Avoid claiming direct EHR integration, diagnosis, fine-tuning or clinical validation. Footer: “Appointment preparation only. Synthetic evaluation. No clinical validation or fine-tuning.”
+
+The final artwork was visually reviewed and corrected against the actual reports. The [original founder illustration](pausewell-story.png) is retained as a separate visual. Actual screenshots are in [the evaluation captures](../../visitprep_eval/screenshots/siva/).

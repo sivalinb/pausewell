@@ -1,9 +1,9 @@
 """Small, strict request contracts for a single-owner record workspace."""
 
 from datetime import date
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 KINDS = Literal["visit", "medication", "lab", "allergy", "other"]
 
@@ -44,3 +44,28 @@ class BriefRequest(Strict):
         ):
             raise ValueError("Select distinct record IDs")
         return value
+
+
+class AgendaInput(Strict):
+    expected_revision: int = Field(ge=0, strict=True)
+    priorities: list[Annotated[str, Field(min_length=1, max_length=300)]] = Field(
+        default_factory=list, max_length=3
+    )
+    questions: list[Annotated[str, Field(min_length=1, max_length=300)]] = Field(
+        default_factory=list, max_length=3
+    )
+    approved: bool = Field(default=False, strict=True)
+
+    @field_validator("priorities", "questions")
+    @classmethod
+    def clear_distinct_text(cls, values):
+        values = [value.strip() for value in values]
+        if any(not value for value in values) or len({value.casefold() for value in values}) != len(values):
+            raise ValueError("Use distinct, nonblank agenda items")
+        return values
+
+    @model_validator(mode="after")
+    def meaningful_approval(self):
+        if self.approved and not (self.priorities or self.questions):
+            raise ValueError("Add a priority or question before approval")
+        return self

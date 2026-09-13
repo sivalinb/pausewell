@@ -1,0 +1,850 @@
+{
+  "case": {
+    "id": "UT-08",
+    "title": "Use the eight-fact budget for designated relevant records",
+    "category": "selection_pressure",
+    "question": "Bring the two medication lists and the allergy entry to the visit.",
+    "records": [
+      {
+        "id": "ut08-admin-1",
+        "title": "Synthetic administrative page 1",
+        "date": "2026-07-01",
+        "kind": "other",
+        "text": "Administrative page 1: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-2",
+        "title": "Synthetic administrative page 2",
+        "date": "2026-07-02",
+        "kind": "other",
+        "text": "Administrative page 2: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-3",
+        "title": "Synthetic administrative page 3",
+        "date": "2026-07-03",
+        "kind": "other",
+        "text": "Administrative page 3: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-4",
+        "title": "Synthetic administrative page 4",
+        "date": "2026-07-04",
+        "kind": "other",
+        "text": "Administrative page 4: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-5",
+        "title": "Synthetic administrative page 5",
+        "date": "2026-07-05",
+        "kind": "other",
+        "text": "Administrative page 5: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-6",
+        "title": "Synthetic administrative page 6",
+        "date": "2026-07-06",
+        "kind": "other",
+        "text": "Administrative page 6: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-admin-7",
+        "title": "Synthetic administrative page 7",
+        "date": "2026-07-07",
+        "kind": "other",
+        "text": "Administrative page 7: portal export completed.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-med-old",
+        "title": "Synthetic earlier medication list",
+        "date": "2026-08-01",
+        "kind": "medication",
+        "text": "Medication list: metformin 500 mg once daily.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-med-new",
+        "title": "Synthetic later medication list",
+        "date": "2026-09-01",
+        "kind": "medication",
+        "text": "Medication list: metformin 500 mg twice daily.",
+        "synthetic": true
+      },
+      {
+        "id": "ut08-allergy",
+        "title": "Synthetic allergy entry",
+        "date": "2026-09-02",
+        "kind": "allergy",
+        "text": "Allergy entry: penicillin; recorded reaction was rash.",
+        "synthetic": true
+      }
+    ],
+    "expected_utility": [
+      {
+        "record_id": "ut08-med-old",
+        "span": "metformin 500 mg once daily",
+        "reason": "Both dated medication entries are task targets."
+      },
+      {
+        "record_id": "ut08-med-new",
+        "span": "metformin 500 mg twice daily",
+        "reason": "The relevant later source must not be omitted because of record order."
+      },
+      {
+        "record_id": "ut08-allergy",
+        "span": "penicillin",
+        "reason": "The question explicitly asks for the allergy entry."
+      }
+    ],
+    "expected_disagreement": {
+      "kind": "medication_entry_difference",
+      "record_ids": [
+        "ut08-med-old",
+        "ut08-med-new"
+      ]
+    },
+    "forbidden_quotes": [],
+    "family": "utility_challenge",
+    "mode": "brief",
+    "live_candidate": false,
+    "expected_contract": {
+      "minimum_facts": 1
+    },
+    "authoring_provenance": "independently authored non-clinical challenge; expected task-relevant source spans, not clinician labels"
+  },
+  "arms": {
+    "frozen_local_v1": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut08-admin-1",
+            "quote": "Administrative page 1: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-2",
+            "quote": "Administrative page 2: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-3",
+            "quote": "Administrative page 3: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-4",
+            "quote": "Administrative page 4: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-5",
+            "quote": "Administrative page 5: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-6",
+            "quote": "Administrative page 6: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-admin-7",
+            "quote": "Administrative page 7: portal export completed.",
+            "section": "other"
+          },
+          {
+            "record_id": "ut08-med-old",
+            "quote": "Medication list: metformin 500 mg once daily.",
+            "section": "medications"
+          }
+        ]
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 1,
+          "expected": 3,
+          "targets": [
+            {
+              "record_id": "ut08-med-old",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both dated medication entries are task targets.",
+              "matched": true
+            },
+            {
+              "record_id": "ut08-med-new",
+              "span": "metformin 500 mg twice daily",
+              "reason": "The relevant later source must not be omitted because of record order.",
+              "matched": false
+            },
+            {
+              "record_id": "ut08-allergy",
+              "span": "penicillin",
+              "reason": "The question explicitly asks for the allergy entry.",
+              "matched": false
+            }
+          ],
+          "complete_for_authored_targets": false,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 8,
+          "total": 8
+        },
+        "difference_citation_fidelity": {
+          "matched": 0,
+          "total": 0
+        },
+        "disagreement_preserved": false,
+        "presented_evidence_utility": {
+          "matched": 1,
+          "expected": 3,
+          "targets": [
+            {
+              "record_id": "ut08-med-old",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both dated medication entries are task targets.",
+              "matched": true
+            },
+            {
+              "record_id": "ut08-med-new",
+              "span": "metformin 500 mg twice daily",
+              "reason": "The relevant later source must not be omitted because of record order.",
+              "matched": false
+            },
+            {
+              "record_id": "ut08-allergy",
+              "span": "penicillin",
+              "reason": "The question explicitly asks for the allergy entry.",
+              "matched": false
+            }
+          ],
+          "disagreement_preserved": false
+        },
+        "structured_difference_count": null,
+        "observed_coverage": null,
+        "clinical_review": false
+      },
+      "selection_method": "exact frozen round-robin selector; no model"
+    },
+    "current_local": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut08-admin-1",
+            "quote": "Administrative page 1: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 1",
+            "source_date": "2026-07-01",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-2",
+            "quote": "Administrative page 2: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 2",
+            "source_date": "2026-07-02",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-3",
+            "quote": "Administrative page 3: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 3",
+            "source_date": "2026-07-03",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-4",
+            "quote": "Administrative page 4: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 4",
+            "source_date": "2026-07-04",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-5",
+            "quote": "Administrative page 5: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 5",
+            "source_date": "2026-07-05",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-6",
+            "quote": "Administrative page 6: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 6",
+            "source_date": "2026-07-06",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-7",
+            "quote": "Administrative page 7: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 7",
+            "source_date": "2026-07-07",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-med-old",
+            "quote": "Medication list: metformin 500 mg once daily.",
+            "section": "medications",
+            "source_title": "Synthetic earlier medication list",
+            "source_date": "2026-08-01",
+            "quotation_context": "historical_record_quote"
+          }
+        ]
+      },
+      "response": {
+        "id": "da003101-b329-4d01-b7fd-8006f65fcb4a",
+        "created_at": "2026-09-13T18:33:10.711903+00:00",
+        "patient": {
+          "id": "ava_demo",
+          "name": "Ava Reed",
+          "synthetic": true,
+          "identity_verified": false
+        },
+        "scope": "visit_preparation_only",
+        "request_scope": "visit_preparation",
+        "message": "Selected excerpts from your records and questions to discuss with a clinician. This is not a complete medical reconciliation.",
+        "facts": [
+          {
+            "record_id": "ut08-admin-1",
+            "quote": "Administrative page 1: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 1",
+            "source_date": "2026-07-01",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-2",
+            "quote": "Administrative page 2: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 2",
+            "source_date": "2026-07-02",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-3",
+            "quote": "Administrative page 3: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 3",
+            "source_date": "2026-07-03",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-4",
+            "quote": "Administrative page 4: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 4",
+            "source_date": "2026-07-04",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-5",
+            "quote": "Administrative page 5: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 5",
+            "source_date": "2026-07-05",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-6",
+            "quote": "Administrative page 6: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 6",
+            "source_date": "2026-07-06",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-admin-7",
+            "quote": "Administrative page 7: portal export completed.",
+            "section": "other",
+            "source_title": "Synthetic administrative page 7",
+            "source_date": "2026-07-07",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut08-med-old",
+            "quote": "Medication list: metformin 500 mg once daily.",
+            "section": "medications",
+            "source_title": "Synthetic earlier medication list",
+            "source_date": "2026-08-01",
+            "quotation_context": "historical_record_quote"
+          }
+        ],
+        "questions": [
+          {
+            "text": "Can we reconcile these medication entries and confirm which list is current?",
+            "record_ids": [
+              "ut08-med-old"
+            ]
+          },
+          {
+            "text": "Is this record relevant to the appointment, and what should we clarify?",
+            "record_ids": [
+              "ut08-admin-1",
+              "ut08-admin-2",
+              "ut08-admin-3",
+              "ut08-admin-4",
+              "ut08-admin-5",
+              "ut08-admin-6",
+              "ut08-admin-7"
+            ]
+          }
+        ],
+        "model": {
+          "provider": "local",
+          "status": "local",
+          "tokens": 0,
+          "latency_ms": 0
+        },
+        "coverage": {
+          "selected_records": 10,
+          "selected_facts": 8,
+          "complete_reconciliation": false
+        },
+        "evidence_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 10,
+          "cited_record_count": 8,
+          "evidence_record_count": 9,
+          "eligible_excerpt_count": 10,
+          "selected_excerpt_count": 8,
+          "included_excerpt_count": 9,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 1,
+          "uncited_record_ids": [
+            "ut08-allergy"
+          ],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut08-admin-1",
+              "title": "Synthetic administrative page 1",
+              "date": "2026-07-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-2",
+              "title": "Synthetic administrative page 2",
+              "date": "2026-07-02",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-3",
+              "title": "Synthetic administrative page 3",
+              "date": "2026-07-03",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-4",
+              "title": "Synthetic administrative page 4",
+              "date": "2026-07-04",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-5",
+              "title": "Synthetic administrative page 5",
+              "date": "2026-07-05",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-6",
+              "title": "Synthetic administrative page 6",
+              "date": "2026-07-06",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-7",
+              "title": "Synthetic administrative page 7",
+              "date": "2026-07-07",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-med-old",
+              "title": "Synthetic earlier medication list",
+              "date": "2026-08-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-med-new",
+              "title": "Synthetic later medication list",
+              "date": "2026-09-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 0,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-allergy",
+              "title": "Synthetic allergy entry",
+              "date": "2026-09-02",
+              "eligible_count": 1,
+              "included_count": 0,
+              "brief_fact_count": 0,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 1
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "recorded_differences": [
+          {
+            "id": "5763338e0b64",
+            "kind": "medication_entry_difference",
+            "label": "Different recorded entries: metformin",
+            "items": [
+              {
+                "record_id": "ut08-med-old",
+                "quote": "Medication list: metformin 500 mg once daily.",
+                "section": "medications",
+                "source_title": "Synthetic earlier medication list",
+                "source_date": "2026-08-01",
+                "quotation_context": "historical_record_quote"
+              },
+              {
+                "record_id": "ut08-med-new",
+                "quote": "Medication list: metformin 500 mg twice daily.",
+                "section": "medications",
+                "source_title": "Synthetic later medication list",
+                "source_date": "2026-09-01",
+                "quotation_context": "historical_record_quote"
+              }
+            ],
+            "method": "heuristic",
+            "notice": "These dated source entries differ in wording. They may reflect changes or incomplete records; this tool does not decide which is current or correct."
+          }
+        ],
+        "quotation_notice": "Quotations preserve historical source wording. They are not current treatment instructions or a finding that a record is correct.",
+        "nodes": [
+          "authorize",
+          "retrieve",
+          "model",
+          "validate",
+          "brief"
+        ],
+        "synthetic": true,
+        "policy_version": "visitprep-v2"
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 1,
+          "expected": 3,
+          "targets": [
+            {
+              "record_id": "ut08-med-old",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both dated medication entries are task targets.",
+              "matched": true
+            },
+            {
+              "record_id": "ut08-med-new",
+              "span": "metformin 500 mg twice daily",
+              "reason": "The relevant later source must not be omitted because of record order.",
+              "matched": false
+            },
+            {
+              "record_id": "ut08-allergy",
+              "span": "penicillin",
+              "reason": "The question explicitly asks for the allergy entry.",
+              "matched": false
+            }
+          ],
+          "complete_for_authored_targets": false,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 8,
+          "total": 8
+        },
+        "difference_citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "disagreement_preserved": false,
+        "presented_evidence_utility": {
+          "matched": 2,
+          "expected": 3,
+          "targets": [
+            {
+              "record_id": "ut08-med-old",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both dated medication entries are task targets.",
+              "matched": true
+            },
+            {
+              "record_id": "ut08-med-new",
+              "span": "metformin 500 mg twice daily",
+              "reason": "The relevant later source must not be omitted because of record order.",
+              "matched": true
+            },
+            {
+              "record_id": "ut08-allergy",
+              "span": "penicillin",
+              "reason": "The question explicitly asks for the allergy entry.",
+              "matched": false
+            }
+          ],
+          "disagreement_preserved": true
+        },
+        "structured_difference_count": 1,
+        "observed_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 10,
+          "cited_record_count": 8,
+          "evidence_record_count": 9,
+          "eligible_excerpt_count": 10,
+          "selected_excerpt_count": 8,
+          "included_excerpt_count": 9,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 1,
+          "uncited_record_ids": [
+            "ut08-allergy"
+          ],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut08-admin-1",
+              "title": "Synthetic administrative page 1",
+              "date": "2026-07-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-2",
+              "title": "Synthetic administrative page 2",
+              "date": "2026-07-02",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-3",
+              "title": "Synthetic administrative page 3",
+              "date": "2026-07-03",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-4",
+              "title": "Synthetic administrative page 4",
+              "date": "2026-07-04",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-5",
+              "title": "Synthetic administrative page 5",
+              "date": "2026-07-05",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-6",
+              "title": "Synthetic administrative page 6",
+              "date": "2026-07-06",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-admin-7",
+              "title": "Synthetic administrative page 7",
+              "date": "2026-07-07",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-med-old",
+              "title": "Synthetic earlier medication list",
+              "date": "2026-08-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-med-new",
+              "title": "Synthetic later medication list",
+              "date": "2026-09-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 0,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut08-allergy",
+              "title": "Synthetic allergy entry",
+              "date": "2026-09-02",
+              "eligible_count": 1,
+              "included_count": 0,
+              "brief_fact_count": 0,
+              "difference_excerpt_count": 0,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 1
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "clinical_review": false
+      },
+      "selection_method": "current application graph with provider=local"
+    }
+  }
+}

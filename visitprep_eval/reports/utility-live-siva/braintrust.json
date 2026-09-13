@@ -1,0 +1,42 @@
+{
+  "prompt_only": {
+    "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+    "experiment_id": "85f28533-c8ec-4182-b9d7-141ab957994c",
+    "experiment_name": "visitprep-siva-utility-prompt_only-1789325326",
+    "experiment_rows_written": 16,
+    "experiment_rows_verified": 16,
+    "provider_spans_written": 16,
+    "provider_spans_verified": 16,
+    "remote_verified": true,
+    "synthetic_only": true,
+    "span_timing": "Uploaded after execution with captured HTTP start/end timestamps and LLM span type; measured_provider_latency_ms is the same captured HTTP duration",
+    "cost": {
+      "cap_usd": 0.25,
+      "calls": 32,
+      "reserved_usd": 0.033250999999999996,
+      "reported_cost_usd": 0.0016277,
+      "input_rate": 1e-07,
+      "output_rate": 3e-07
+    }
+  },
+  "full_application": {
+    "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+    "experiment_id": "5ad3939b-219d-4f23-8676-647a77d245f3",
+    "experiment_name": "visitprep-siva-utility-full_application-1789325328",
+    "experiment_rows_written": 16,
+    "experiment_rows_verified": 16,
+    "provider_spans_written": 16,
+    "provider_spans_verified": 16,
+    "remote_verified": true,
+    "synthetic_only": true,
+    "span_timing": "Uploaded after execution with captured HTTP start/end timestamps and LLM span type; measured_provider_latency_ms is the same captured HTTP duration",
+    "cost": {
+      "cap_usd": 0.25,
+      "calls": 32,
+      "reserved_usd": 0.033250999999999996,
+      "reported_cost_usd": 0.0016277,
+      "input_rate": 1e-07,
+      "output_rate": 3e-07
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "label": "Exact pre-utility-revision local selector source",
+  "source_commit": "679396381e05c8523ce1ff6beb2a37b0e76bcacb",
+  "comparison_scope": "deterministic local evidence selection only; no model or clinical baseline",
+  "files": {
+    "pausewell/visitprep/evidence.py": {
+      "captured_file": "visitprep_eval/teaching/baselines/v1_evidence.py",
+      "sha256": "7a4437dedd52a6da9e33fcbd706801875cc83d869cfc0f5a1b15441d07807313"
+    },
+    "pausewell/visitprep/graph.py": {
+      "captured_file": "visitprep_eval/teaching/baselines/v1_graph.py",
+      "sha256": "cfa2dead00ab0dafd69c5ba4ace93ece02415e1b0a86cf22dd53ffbddb38f960"
+    },
+    "pausewell/visitprep/provider.py": {
+      "captured_file": "visitprep_eval/teaching/baselines/v1_provider.py",
+      "sha256": "a4805bcc45acc3e14349db7eb72ce5c79976d6c3d24428efff303a6ac2823183"
+    },
+    "pausewell/visitprep/fixtures.py": {
+      "captured_file": "visitprep_eval/teaching/baselines/v1_fixtures.py",
+      "sha256": "68581c9afd958601a3f1ca7c8d42038a9d5273138496cb08862ee14f5c7d3ae0"
+    }
+  }
+}

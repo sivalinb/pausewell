@@ -14,6 +14,14 @@ jobs:
       - run: pip install -r requirements.lock
       - run: ruff check .
       - run: pytest -q
+      - name: Browser script syntax
+        run: |
+          node --check web/app.js
+          node --check web/visitprep.js
+      - name: Synthetic UI state boundaries
+        run: node tests/visitprep_ui_boundaries.cjs .
+      - name: Captured-output replay and utility comparison
+        run: python -m visitprep_eval.teaching --output "${{ runner.temp }}/visitprep-teaching"
       - name: VisitPrep offline adversarial evaluation
         run: python visitprep_eval/run_eval.py --app-root . --output "${{ runner.temp }}/visitprep-ci" --fail-on-fail
       - run: python scripts/evaluate.py
@@ -25,3 +33,4 @@ jobs:
             reports/evaluation.json
             work/week6-ci.*
             ${{ runner.temp }}/visitprep-ci/
+            ${{ runner.temp }}/visitprep-teaching/

@@ -12,9 +12,11 @@ Normal VisitPrep requests do not send traces or content to Braintrust. The expli
 
 For a hosted run, distinguish raw model validity, application rejection/fallback and final output safety. A timeout followed by a safe local brief measures availability and fallback behavior. It does not establish model jailbreak resistance. Braintrust publishing is verified only after actual readback, not from a flush acknowledgment.
 
-The [full live VisitPrep report](../visitprep_eval/reports/live/README.md) records 26 Nebius HTTP requests: 20 accepted selections, two rejected empty outputs and four read-timeout fallbacks. Its Braintrust readback verifies 29 evaluation rows and 26 provider traces. The separate four-case reliability retest verifies four rows and six traces, with all six model selections accepted under a 45-second read timeout. Retain both runs: the selected retest does not erase the original 15-second timeout failures.
+The current [Siva/Sid live safety report](../visitprep_eval/reports/siva-live/README.md) records 26 actual Nebius calls: 24 accepted selections, two empty outputs rejected, no timeouts; 29 cases finish with 28 PASS / 1 WARN. Its [Braintrust receipt](../visitprep_eval/reports/siva-live/braintrust.json) verifies 29 evaluation rows and 26 provider spans. The separate [paired utility receipt](../visitprep_eval/reports/utility-live-siva/braintrust.json) verifies 16 rows and 16 spans for each system. These are authored synthetic experiments, not normal private-record tracing or clinical accuracy scores.
 
-These live-provider spans were uploaded after execution. Use their `measured_provider_latency_ms` field for actual HTTP duration; their upload-span wall time does not measure model inference. Cost reports distinguish conservative pre-dispatch reservations from returned token usage, which can be incomplete on failures.
+The [historical full live report](../visitprep_eval/reports/live/README.md) retains 26 requests: 20 accepted selections, two rejected empty outputs and four read-timeout fallbacks, with 29 rows and 26 traces read back. Its separate four-case reliability retest verifies four rows and six traces, with all six selections accepted under a 45-second read timeout. Retain both historical runs: subsequent results do not erase the original 15-second timeout failures.
+
+The historical full-run and reliability-retest live-provider spans were uploaded after execution. Use their `measured_provider_latency_ms` field for actual HTTP duration; their upload-span wall time does not measure model inference. Cost reports distinguish conservative pre-dispatch reservations from returned token usage, which can be incomplete on failures.
 
 ## Watch check-ins
 
@@ -37,3 +39,9 @@ Watch Braintrust exports are opt-in and synthetic-only. One span describes an ac
 Counters reset on restart/delete. VisitPrep records persist until deletion and briefs are capped at 20; Watch records are pruned after seven days during ingest/history access. Already downloaded exports, backups, Apple Health data and provider-retained data are separate from local deletion.
 
 There is no measured first-token latency, GPU utilization, KV-cache pressure or clinical stress score. Failed requests can incur usage even when token counts are unavailable. The repository contains synthetic evidence, not an operating public health-data service.
+
+## Current captured-span timing
+
+New runs made with the updated synthetic integration runner set the Braintrust span type to `llm` and supply the captured HTTP start time plus the measured duration as its end time. Tokens are separated into prompt and completion counts. Upload still happens after execution; it is not streaming production telemetry. Historical experiments remain unchanged. `measured_provider_latency_ms` permits a direct comparison with the saved request capture, and provider usage estimates remain distinct from an invoice.
+
+Agenda save/approval operations expose only allowlisted operation metadata. Priorities, patient-authored questions, source text and approval content never appear in normal telemetry or provider prompts. Version conflicts and revoked exports are enforced by the backend, independently of any model.

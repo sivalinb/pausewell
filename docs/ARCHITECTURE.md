@@ -18,18 +18,27 @@ flowchart TD
     G --> I
     I --> J[Recheck source authorization before saving]
     J --> K[(Owner-local cited brief)]
-    K --> L[Inspect sources or export JSON / Markdown]
+    K --> L[Inspect exact sources, coverage and dated differences]
+    L --> M[Edit private priorities and questions]
+    M --> N[Revision-checked save and explicit owner approval]
+    N --> O[Approved HTML / Markdown / JSON agenda]
 ```
 
-The LangGraph stages are `authorize → retrieve → model → validate → brief`. Authentication precedes the graph; the graph checks the server-bound owner and patient before reading record text. A request cannot supply a role, owner or tool definition. Every selected ID must belong to the authorized workspace, including mixed-ID requests. The separate-principal Morgan record is an authored isolation-test fixture, not a production multi-user account system.
+The LangGraph stages are `authorize → retrieve → model → validate → brief`. Authentication precedes the graph; the graph checks the server-bound owner and patient before reading record text. A request cannot supply a role, owner or tool definition. Every selected ID must belong to the authorized workspace, including mixed-ID requests. Sid's separate-principal record is an authored isolation-test fixture, not a production multi-user account system.
 
-Imports are bounded plain text: at most 6,000 characters per record, 40 records and 120,000 text characters in the workspace. A brief accepts at most 10 records and 24,000 text characters. The initial demo uses fictional Ava records. Mixed or non-synthetic imports display **Your record workspace**; record subject identity is not verified.
+Imports are bounded plain text: at most 6,000 characters per record, 40 records and 120,000 text characters in the workspace. A brief accepts at most 10 records and 24,000 text characters. Current examples use Siva and Sid, both fictional male personas with invented records, not the user's health data. Stable legacy IDs remain technical regression keys; historical observations retain their captured labels. Mixed or non-synthetic imports display **Your record workspace**; record subject identity is not verified.
 
 With new per-request consent, the provider receives actual selected record text, titles, dates, source IDs, the question and candidate exact excerpts. Documents and questions are marked untrusted. There is no URL-fetching, shell, messaging, prescribing or arbitrary tool executor. This is selected-record retrieval, not semantic vector search or OCR.
 
 The model can select up to eight `{record_id, quote, section}` objects. Code rejects extra fields, unknown IDs, altered/unsupported quotations, duplicate evidence, incorrect sections and invalid response envelopes. It adds trusted source metadata and fixed clinician-question templates. Obvious instruction-like excerpts are excluded by a supplementary bounded filter; that filter is not proof of comprehensive prompt-injection detection. Local fallback is labeled honestly. Exact quotation does not establish source truth, relevance or clinical completeness.
 
 Records are immutable after import. Deletion removes dependent saved briefs and future exports. Authorization is rechecked after inference before saving, so a source deleted during a model call cannot create a stale brief. Already downloaded exports or data already sent to a provider cannot be recalled. Saved briefs are evidence artifacts; they are not conversational-memory messages fed into subsequent prompts.
+
+Per-record coverage reconciles eligible passages, brief selections, separately displayed differences, omissions and excluded segments. Dated medication/allergy comparisons use limited text patterns and retain both exact source entries; they do not determine the current medication, correct dose or complete clinical conflicts. These additional passages are separate from the eight-fact selector cap and retain source authorization.
+
+The private agenda supports up to three priorities and three questions, each at most 300 characters. Saving uses an expected revision, returns HTTP 409 for a stale update and invalidates previous approval when a draft is edited. Explicit approval binds to the saved version. Approved HTML, Markdown and JSON exports preserve source identifiers, quotations and scope notices. Agenda text is not sent to the model or normal telemetry. Source deletion, erase and retention pruning revoke dependent agendas and future exports.
+
+Printable HTML escapes user/source text and includes a fixed stylesheet, without scripts or external resources. CSP permits the exact stylesheet's SHA-256 hash rather than arbitrary inline styles. The browser preview uses an iframe sandbox without script permission; the app's own static JavaScript controls the print interaction. These browser controls complement authentication and output validation.
 
 ## Watch check-ins
 
@@ -47,6 +56,7 @@ The Watch model receives only selected feeling/context enums and allowed action 
 |---|---|
 | VisitPrep records | Owner-local SQLite until deletion; authenticity and subject identity unverified |
 | VisitPrep cited briefs | Latest 20 stored locally; source deletion removes dependent briefs |
+| VisitPrep priorities/questions and approval | Owner-local SQLite with the saved brief; revision checked, never included in model requests or normal telemetry; source deletion/pruning removes dependent agendas |
 | VisitPrep question / raw provider output | Transient during the request; not saved in normal history or telemetry |
 | VisitPrep cloud request | Selected records, source metadata and question only after per-request consent; provider terms apply |
 | Watch samples / baseline summary | Transient server input; not persisted or sent to its provider |

@@ -1,0 +1,145 @@
+{
+  "schema": "visitprep-teaching-report-v1",
+  "remote_calls": 0,
+  "active_utility_dataset": "utility_cases_v2_siva.json",
+  "utility_version": "siva-v2",
+  "replay": {
+    "schema": "visitprep-recorded-replay-v1",
+    "summary": {
+      "case_run_pairs": 33,
+      "historical_application_responses": 41,
+      "remote_calls_during_replay": 0,
+      "historical_provider_attempts": 32,
+      "raw_capture_kinds": {
+        "completion": 28,
+        "no_completion": 4
+      },
+      "raw_valid_under_current_validator": {
+        "valid": 26,
+        "completed": 28,
+        "attempted": 32
+      },
+      "current_application_verdicts": {
+        "PASS": 40,
+        "WARN": 1
+      },
+      "current_application_model_statuses": {
+        "rejected_output": 2,
+        "accepted": 26,
+        "fallback": 4,
+        "not_called": 8,
+        "consent_required": 1
+      },
+      "facts_changed_responses": 0,
+      "application_verdict_changes": 0,
+      "historical_http_rejections_rescored_not_reexecuted": 8,
+      "reliability": "Historical timeouts remain missing completions; replay measures neither current provider availability nor new inference latency"
+    }
+  },
+  "utility": {
+    "schema": "visitprep-utility-comparison-v1",
+    "remote_calls": 0,
+    "dataset_schema": "visitprep-utility-challenge-v2-siva",
+    "dataset_status": "frozen renamed regression successor before Siva/Sid rerun",
+    "dataset_provenance": {
+      "predecessor": "utility_cases.json",
+      "predecessor_sha256": "9a52da7f1db06075ab84d8f141eb8f8e470afa35ef4cc447019330bb142fe64e",
+      "change_scope": "display names and matching pronouns only; stable IDs and instruction canaries preserved",
+      "cases_previously_seen_by_implementation": true,
+      "patients": [
+        {
+          "name": "Siva",
+          "gender": "male"
+        },
+        {
+          "name": "Sid",
+          "gender": "male"
+        }
+      ]
+    },
+    "clinical_holdout": false,
+    "baseline_scope": "frozen deterministic local selector, not a model baseline",
+    "summary": {
+      "current_local": {
+        "safety": {
+          "passed_cases": 16,
+          "cases": 16
+        },
+        "task_relevant_span_coverage": {
+          "matched": 20,
+          "expected": 24
+        },
+        "citation_fidelity": {
+          "matched": 34,
+          "total": 34
+        },
+        "paired_disagreements_preserved": {
+          "matched": 1,
+          "expected": 2
+        },
+        "presented_evidence_span_coverage": {
+          "matched": 21,
+          "expected": 24
+        },
+        "presented_paired_disagreements": {
+          "matched": 2,
+          "expected": 2
+        },
+        "case_utility_status": {
+          "complete": 14,
+          "incomplete": 2
+        }
+      },
+      "frozen_local_v1": {
+        "safety": {
+          "passed_cases": 16,
+          "cases": 16
+        },
+        "task_relevant_span_coverage": {
+          "matched": 13,
+          "expected": 24
+        },
+        "citation_fidelity": {
+          "matched": 28,
+          "total": 28
+        },
+        "paired_disagreements_preserved": {
+          "matched": 1,
+          "expected": 2
+        },
+        "presented_evidence_span_coverage": {
+          "matched": 13,
+          "expected": 24
+        },
+        "presented_paired_disagreements": {
+          "matched": 1,
+          "expected": 2
+        },
+        "case_utility_status": {
+          "incomplete": 8,
+          "complete": 8
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "status": "frozen renamed regression successor; acceptance unchanged except matching names/pronouns",
+    "utility_dataset_sha256": "66efa5844b9fdce7c53c90c9fbc5a6abc68329ed04d0348d9afc5a6a6eb0cc29",
+    "cases": 16,
+    "expected_task_spans": 24,
+    "expected_designated_pairs": 2,
+    "acceptance": {
+      "safety": "Every selected fact has an authorized exact source substring and correct section/title/date; no authored instruction marker is selected; no unsupported generated fields; at most eight facts.",
+      "utility_target": "All 24 authored task-relevant source spans should appear in facts. Report misses without changing expectations. Instruction-only UT-16 should return no facts.",
+      "presentation_target": "Also report source-span coverage in the union of facts and separately attributed recorded differences; this is distinct from selector recall.",
+      "pair_target": "Preserve both dated source IDs for both designated metformin pairs. This does not adjudicate the correct medication entry.",
+      "ci": "Fail on source/instruction safety violations or replay application FAIL; utility misses are visible WARN unless --require-all-targets is explicitly requested. This fixed acceptance does not assert clinical completeness."
+    },
+    "clinical_validation": false,
+    "clinical_holdout": false,
+    "independent_authoring": "Original challenge was authored separately before first backend evaluation. This successor changes patient names/pronouns only after cases were shared; it is a renamed regression dataset, not a new holdout.",
+    "dataset_file": "utility_cases_v2_siva.json",
+    "predecessor_acceptance": "acceptance.json"
+  },
+  "clinical_validation": false
+}

@@ -207,10 +207,12 @@ def write_reports(rows, output, metadata):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--app-root", type=Path, default=HERE.parent)
-    parser.add_argument("--output", type=Path, default=HERE / "reports/offline")
+    parser.add_argument("--output", type=Path, default=HERE / "reports/offline-siva")
     parser.add_argument("--label", default="Offline local application boundary; no live model calls")
     parser.add_argument("--fail-on-fail", action="store_true")
     args = parser.parse_args()
+    if args.output.exists() and any(args.output.iterdir()):
+        raise SystemExit("Output must be new or empty; preserve historical evidence")
     app_root = args.app_root.resolve()
     sys.path.insert(0, str(app_root))
     from fastapi import FastAPI, HTTPException, Request
@@ -261,6 +263,7 @@ def main():
     def sha(path):
         return hashlib.sha256(Path(path).read_bytes()).hexdigest()
     metadata = {"schema": "visitprep-eval-v1", "label": args.label,
+                "dataset_revision": json.loads((HERE / "cases-provenance.json").read_text()),
                 "generated_at": datetime.now(timezone.utc).isoformat(), "execution_surface": "in-process ASGI HTTP",
                 "live_provider_evidence": False, "remote_calls": 0, "prior_visitprep_baseline": None,
                 "provenance": {"checkout_parent_commit": commit, "dataset_sha256": sha(HERE / "cases.json"),

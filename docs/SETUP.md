@@ -14,7 +14,9 @@ python scripts/serve.py
 
 Open [the local dashboard](http://127.0.0.1:8765). Read `PAUSEWELL_TOKEN` from your local `.env` and enter it in the dashboard. The token stays in browser memory until refresh. The server refuses to start without a token, binds to loopback by default and disables access logs.
 
-Start with **Prepare for a visit**. The first database initialization supplies authored fictional visit, medication, laboratory and allergy records. Select records, keep **Local extractive brief**, and prepare a brief without calling a provider. Open its cited sources, compare the medication-list disagreement, and download JSON or Markdown.
+Start with **Prepare for a visit**. The first database initialization supplies authored fictional visit, medication, laboratory and allergy records. Select records, keep **Local extractive brief**, and prepare a brief without calling a provider. Open its cited sources, inspect recorded differences and coverage, and edit your three priorities and questions. Save a draft or explicitly approve the current agenda, then open the printable agenda or download it. The printable preview uses the browser’s Print command to print or save as PDF. A source deletion revokes future agenda exports too; already downloaded copies remain under your control.
+
+Current examples use Siva and Sid, both fictional male personas with invented records, not the user's health data. Legacy technical IDs are retained for regression continuity and are not display names. Historical reports and screenshots keep the labels originally captured.
 
 **Add a record** accepts pasted text or a `.txt` file, a title, date and record type. It does not process PDFs, images, OCR, FHIR, EHR accounts or an Apple Health export. Preserve original wording and units. Imports are saved on your private server, are not independently verified and are not automatically attributed to the fictional demo patient.
 
@@ -36,14 +38,22 @@ The alternative Fireworks adapter uses `FIREWORKS_API_KEY` and `FIREWORKS_MODEL`
 ruff check .
 pytest -q
 python visitprep_eval/run_eval.py --app-root . --output work/visitprep-reproduction --fail-on-fail
+python -m visitprep_eval.teaching --output work/visitprep-teaching-reproduction
 python scripts/evaluate.py
 python week6/run_redteam.py --app-root . --output work/watch-redteam-reproduction --fail-on-fail
 node --check web/app.js
 node --check web/visitprep.js
+node tests/visitprep_ui_boundaries.cjs .
 swiftc -frontend -parse ios/Pausewell/*.swift
 ```
 
 The tests and VisitPrep offline evaluator require no provider credentials and make no live inference calls. Use a new output path when reproducing evaluations so the checked-in evidence remains frozen. See [VisitPrep evaluation](../visitprep_eval/README.md). `requirements.lock` records the tested Python 3.12 dependency set.
+
+The recorded final suite has 230 passing Python tests and six passing Node state-boundary checks. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
+
+Current named evidence is in [offline-siva](../visitprep_eval/reports/offline-siva/summary.json) and [teaching-siva](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed Siva/Sid utility cases were already visible to developers and are not a new holdout.
+
+The completed [paired live utility report](../visitprep_eval/reports/utility-live-siva/summary.json) records 32 actual Nebius calls across prompt-only and full-application systems. It is distinct from the completed [current live safety run](../visitprep_eval/reports/siva-live/README.md): 29 cases, 28 PASS / 1 WARN, 26 calls, 24 accepted outputs, two rejected empty outputs and no timeouts. Reading either report makes no inference call. A new paid comparison requires its own budget and execution opt-in; adding a model is not necessary to reproduce the local teaching exercises.
 
 A separate paid, authored-synthetic Nebius runner requires explicit opt-in. For example, after configuring credentials:
 
@@ -82,3 +92,7 @@ The signal comparison needs seven eligible days and at least twenty samples. Exe
 `docker compose up --build` supplies a single-owner, single-process service on host loopback with persistent storage. Docker deployment has not been validated here. Phone access requires a private HTTPS reverse proxy or trusted private mesh/VPN. The iPhone rejects HTTP and redirects.
 
 Use encrypted owner-controlled storage, protected backups, token rotation and body-free proxy logs for private data. Production multi-user identity, family consent and public hosting are outside this prototype. Publishing the [GitHub source](https://github.com/sivalinb/pausewell) does not publish an application service, credentials, databases or personal records.
+
+## Week 6 teaching kit
+
+Start with the [student laboratory](../training/visitprep/README.md), [exemplar checklist](week6-exemplar-checklist.md), and [technical glossary](TECHNICAL-GLOSSARY.md). Offline replay uses captured synthetic provider responses and requires no API keys; fresh cloud comparisons are separate opt-in paid runs. Evidence packs retain previous results instead of replacing them with newer scores.

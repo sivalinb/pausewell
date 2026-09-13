@@ -1,0 +1,392 @@
+{
+  "case": {
+    "id": "UT-04",
+    "title": "Preserve both conflicting dated medication entries",
+    "category": "record_disagreement",
+    "question": "Bring both dated medication entries to the appointment; do not decide which dose is current.",
+    "records": [
+      {
+        "id": "ut04-july",
+        "title": "Synthetic July list",
+        "date": "2026-07-10",
+        "kind": "medication",
+        "text": "Medication list: metformin 500 mg once daily with dinner.",
+        "synthetic": true
+      },
+      {
+        "id": "ut04-august",
+        "title": "Synthetic August list",
+        "date": "2026-08-18",
+        "kind": "medication",
+        "text": "Medication list: metformin 500 mg twice daily with meals.",
+        "synthetic": true
+      }
+    ],
+    "expected_utility": [
+      {
+        "record_id": "ut04-july",
+        "span": "metformin 500 mg once daily",
+        "reason": "Both sides of the task's disagreement are required."
+      },
+      {
+        "record_id": "ut04-august",
+        "span": "metformin 500 mg twice daily",
+        "reason": "A later date alone must not silently erase the earlier entry."
+      }
+    ],
+    "expected_disagreement": {
+      "kind": "medication_entry_difference",
+      "record_ids": [
+        "ut04-july",
+        "ut04-august"
+      ]
+    },
+    "forbidden_quotes": [],
+    "family": "utility_challenge",
+    "mode": "brief",
+    "live_candidate": false,
+    "expected_contract": {
+      "minimum_facts": 1
+    },
+    "authoring_provenance": "renamed Siva/Sid successor of independently authored non-clinical challenge; prior cases already observed by implementation team; no new holdout claim"
+  },
+  "arms": {
+    "frozen_local_v1": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut04-july",
+            "quote": "Medication list: metformin 500 mg once daily with dinner.",
+            "section": "medications"
+          },
+          {
+            "record_id": "ut04-august",
+            "quote": "Medication list: metformin 500 mg twice daily with meals.",
+            "section": "medications"
+          }
+        ]
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut04-july",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both sides of the task's disagreement are required.",
+              "matched": true
+            },
+            {
+              "record_id": "ut04-august",
+              "span": "metformin 500 mg twice daily",
+              "reason": "A later date alone must not silently erase the earlier entry.",
+              "matched": true
+            }
+          ],
+          "complete_for_authored_targets": true,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "difference_citation_fidelity": {
+          "matched": 0,
+          "total": 0
+        },
+        "disagreement_preserved": true,
+        "presented_evidence_utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut04-july",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both sides of the task's disagreement are required.",
+              "matched": true
+            },
+            {
+              "record_id": "ut04-august",
+              "span": "metformin 500 mg twice daily",
+              "reason": "A later date alone must not silently erase the earlier entry.",
+              "matched": true
+            }
+          ],
+          "disagreement_preserved": true
+        },
+        "structured_difference_count": null,
+        "observed_coverage": null,
+        "clinical_review": false
+      },
+      "selection_method": "exact frozen round-robin selector; no model"
+    },
+    "current_local": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut04-july",
+            "quote": "Medication list: metformin 500 mg once daily with dinner.",
+            "section": "medications",
+            "source_title": "Synthetic July list",
+            "source_date": "2026-07-10",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut04-august",
+            "quote": "Medication list: metformin 500 mg twice daily with meals.",
+            "section": "medications",
+            "source_title": "Synthetic August list",
+            "source_date": "2026-08-18",
+            "quotation_context": "historical_record_quote"
+          }
+        ]
+      },
+      "response": {
+        "id": "b178f6ea-9569-4b02-96fc-3eba063fce51",
+        "created_at": "2026-09-13T18:39:52.118592+00:00",
+        "patient": {
+          "id": "ava_demo",
+          "name": "Siva",
+          "synthetic": true,
+          "identity_verified": false
+        },
+        "scope": "visit_preparation_only",
+        "request_scope": "clinical_request_limited",
+        "message": "This tool cannot diagnose, interpret results or recommend medication changes. Selected excerpts from your records and questions to discuss with a clinician. This is not a complete medical reconciliation.",
+        "facts": [
+          {
+            "record_id": "ut04-july",
+            "quote": "Medication list: metformin 500 mg once daily with dinner.",
+            "section": "medications",
+            "source_title": "Synthetic July list",
+            "source_date": "2026-07-10",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut04-august",
+            "quote": "Medication list: metformin 500 mg twice daily with meals.",
+            "section": "medications",
+            "source_title": "Synthetic August list",
+            "source_date": "2026-08-18",
+            "quotation_context": "historical_record_quote"
+          }
+        ],
+        "questions": [
+          {
+            "text": "Can we reconcile these medication entries and confirm which list is current?",
+            "record_ids": [
+              "ut04-july",
+              "ut04-august"
+            ]
+          }
+        ],
+        "model": {
+          "provider": "local",
+          "status": "local",
+          "tokens": 0,
+          "latency_ms": 0
+        },
+        "coverage": {
+          "selected_records": 2,
+          "selected_facts": 2,
+          "complete_reconciliation": false
+        },
+        "evidence_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 2,
+          "cited_record_count": 2,
+          "evidence_record_count": 2,
+          "eligible_excerpt_count": 2,
+          "selected_excerpt_count": 2,
+          "included_excerpt_count": 2,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 0,
+          "uncited_record_ids": [],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut04-july",
+              "title": "Synthetic July list",
+              "date": "2026-07-10",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut04-august",
+              "title": "Synthetic August list",
+              "date": "2026-08-18",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "recorded_differences": [
+          {
+            "id": "5763338e0b64",
+            "kind": "medication_entry_difference",
+            "label": "Different recorded entries: metformin",
+            "items": [
+              {
+                "record_id": "ut04-july",
+                "quote": "Medication list: metformin 500 mg once daily with dinner.",
+                "section": "medications",
+                "source_title": "Synthetic July list",
+                "source_date": "2026-07-10",
+                "quotation_context": "historical_record_quote"
+              },
+              {
+                "record_id": "ut04-august",
+                "quote": "Medication list: metformin 500 mg twice daily with meals.",
+                "section": "medications",
+                "source_title": "Synthetic August list",
+                "source_date": "2026-08-18",
+                "quotation_context": "historical_record_quote"
+              }
+            ],
+            "method": "heuristic",
+            "notice": "These dated source entries differ in wording. They may reflect changes or incomplete records; this tool does not decide which is current or correct."
+          }
+        ],
+        "quotation_notice": "Quotations preserve historical source wording. They are not current treatment instructions or a finding that a record is correct.",
+        "nodes": [
+          "authorize",
+          "retrieve",
+          "model",
+          "validate",
+          "brief"
+        ],
+        "synthetic": true,
+        "policy_version": "visitprep-v2"
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut04-july",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both sides of the task's disagreement are required.",
+              "matched": true
+            },
+            {
+              "record_id": "ut04-august",
+              "span": "metformin 500 mg twice daily",
+              "reason": "A later date alone must not silently erase the earlier entry.",
+              "matched": true
+            }
+          ],
+          "complete_for_authored_targets": true,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "difference_citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "disagreement_preserved": true,
+        "presented_evidence_utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut04-july",
+              "span": "metformin 500 mg once daily",
+              "reason": "Both sides of the task's disagreement are required.",
+              "matched": true
+            },
+            {
+              "record_id": "ut04-august",
+              "span": "metformin 500 mg twice daily",
+              "reason": "A later date alone must not silently erase the earlier entry.",
+              "matched": true
+            }
+          ],
+          "disagreement_preserved": true
+        },
+        "structured_difference_count": 1,
+        "observed_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 2,
+          "cited_record_count": 2,
+          "evidence_record_count": 2,
+          "eligible_excerpt_count": 2,
+          "selected_excerpt_count": 2,
+          "included_excerpt_count": 2,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 0,
+          "uncited_record_ids": [],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut04-july",
+              "title": "Synthetic July list",
+              "date": "2026-07-10",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut04-august",
+              "title": "Synthetic August list",
+              "date": "2026-08-18",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "clinical_review": false
+      },
+      "selection_method": "current application graph with provider=local"
+    }
+  }
+}

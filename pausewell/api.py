@@ -1,4 +1,6 @@
 import json
+import base64
+import hashlib
 import os
 import secrets
 import time
@@ -16,8 +18,10 @@ from .resources import RESOURCES
 from .demo import fixture, SCENARIOS
 from .telemetry import Telemetry
 from .safety import support_result
+from .visitprep.agenda import PRINT_CSS
 
 ROOT = Path(__file__).resolve().parent.parent
+PRINT_STYLE_HASH = base64.b64encode(hashlib.sha256(PRINT_CSS.encode()).digest()).decode()
 
 
 def create_app(db_path=None, token=None, clock=utcnow):
@@ -53,7 +57,7 @@ def create_app(db_path=None, token=None, clock=utcnow):
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"
+            f"default-src 'self'; script-src 'self'; style-src 'self' 'sha256-{PRINT_STYLE_HASH}'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"
         )
         return response
 

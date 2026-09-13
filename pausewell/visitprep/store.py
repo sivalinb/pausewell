@@ -19,6 +19,12 @@ class CapacityExceeded(Exception):
     pass
 
 
+class AgendaConflict(Exception):
+    def __init__(self, message, outcome="revision_conflict"):
+        super().__init__(message)
+        self.outcome = outcome
+
+
 class VisitPrepStore:
     def __init__(self, path):
         self.path = str(path)
@@ -36,6 +42,10 @@ class VisitPrepStore:
                     record_ids TEXT NOT NULL, result TEXT NOT NULL
                 );
                 CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS agendas (
+                    brief_id TEXT PRIMARY KEY, owner TEXT NOT NULL,
+                    revision INTEGER NOT NULL, result TEXT NOT NULL
+                );
             """)
             if not db.execute("SELECT 1 FROM metadata WHERE key='initialized'").fetchone():
                 self._seed(db)
@@ -152,6 +162,7 @@ class VisitPrepStore:
                 # Cited text is also removed from every derived brief, including exports.
                 for row in db.execute("SELECT id,record_ids FROM briefs WHERE owner=?", (OWNER,)).fetchall():
                     if record_id in json.loads(row["record_ids"]):
+                        db.execute("DELETE FROM agendas WHERE brief_id=? AND owner=?", (row["id"], OWNER))
                         db.execute("DELETE FROM briefs WHERE id=?", (row["id"],))
 
     def save_brief(self, result, record_ids):
@@ -174,6 +185,10 @@ class VisitPrepStore:
                     "DELETE FROM briefs WHERE owner=? AND id NOT IN (SELECT id FROM briefs WHERE owner=? ORDER BY at DESC LIMIT 20)",
                     (OWNER, OWNER),
                 )
+                db.execute(
+                    "DELETE FROM agendas WHERE owner=? AND brief_id NOT IN (SELECT id FROM briefs WHERE owner=?)",
+                    (OWNER, OWNER),
+                )
 
     def briefs(self):
         with self.connect() as db:
@@ -191,9 +206,78 @@ class VisitPrepStore:
             raise AccessDenied("Brief unavailable")
         return json.loads(row[0])
 
+    @staticmethod
+    def _draft_agenda(brief):
+        return {
+            "brief_id": brief["id"],
+            "revision": 0,
+            "priorities": [],
+            "questions": [question["text"] for question in brief["questions"][:3]],
+            "approved": False,
+            "approved_at": None,
+            "updated_at": None,
+            "approval_notice": "Your words and priorities are saved locally. Approval means you reviewed this agenda, not that its medical content has been verified.",
+        }
+
+    def get_agenda(self, brief_id):
+        with self.lock:
+            # Ownership and existence precede reading editable agenda content.
+            brief = self.get_brief(brief_id)
+            with self.connect() as db:
+                row = db.execute(
+                    "SELECT result FROM agendas WHERE brief_id=? AND owner=?", (brief_id, OWNER)
+                ).fetchone()
+            return json.loads(row[0]) if row else self._draft_agenda(brief)
+
+    def save_agenda(self, brief_id, value):
+        with self.lock, self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            # Read only this principal's brief, then recheck all its source IDs.
+            brief_row = db.execute(
+                "SELECT record_ids,result FROM briefs WHERE id=? AND owner=?", (brief_id, OWNER)
+            ).fetchone()
+            if not brief_row:
+                raise AccessDenied("Brief unavailable")
+            record_ids = json.loads(brief_row["record_ids"])
+            if record_ids:
+                self.authorized_ids(PATIENT_ID, record_ids)
+            row = db.execute(
+                "SELECT revision FROM agendas WHERE brief_id=? AND owner=?", (brief_id, OWNER)
+            ).fetchone()
+            revision = row[0] if row else 0
+            if value.expected_revision != revision:
+                raise AgendaConflict("This agenda changed. Reload it before saving or approving.")
+            now = datetime.now(timezone.utc).isoformat()
+            agenda = {
+                **self._draft_agenda(json.loads(brief_row["result"])),
+                "revision": revision + 1,
+                "priorities": value.priorities,
+                "questions": value.questions,
+                "approved": value.approved,
+                "approved_at": now if value.approved else None,
+                "updated_at": now,
+            }
+            db.execute(
+                "INSERT OR REPLACE INTO agendas VALUES (?,?,?,?)",
+                (brief_id, OWNER, agenda["revision"], json.dumps(agenda)),
+            )
+            return agenda
+
+    def agenda_export(self, brief_id):
+        with self.lock:
+            brief = self.get_brief(brief_id)
+            agenda = self.get_agenda(brief_id)
+            if not agenda["approved"]:
+                raise AgendaConflict("Approve the current agenda before exporting it.", "not_approved")
+            return {
+                "brief": brief,
+                "agenda": agenda,
+                "notice": "Patient-reviewed visit agenda. Record quotations are historical source text, not current treatment instructions. Confirm decisions with your clinician.",
+            }
+
     def erase(self):
         with self.lock, self.connect() as db:
-            db.executescript("DELETE FROM records; DELETE FROM briefs;")
+            db.executescript("DELETE FROM records; DELETE FROM briefs; DELETE FROM agendas;")
             # Keep initialized: erased demo records must not reappear on restart.
             db.execute("VACUUM")
 

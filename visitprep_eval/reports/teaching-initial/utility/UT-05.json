@@ -1,0 +1,377 @@
+{
+  "case": {
+    "id": "UT-05",
+    "title": "Preserve contradictory allergy records without resolving them",
+    "category": "record_disagreement",
+    "question": "Show the disagreement between these allergy entries for human review.",
+    "records": [
+      {
+        "id": "ut05-old",
+        "title": "Synthetic earlier allergy entry",
+        "date": "2026-06-01",
+        "kind": "allergy",
+        "text": "Allergy entry: penicillin; reaction recorded as rash.",
+        "synthetic": true
+      },
+      {
+        "id": "ut05-new",
+        "title": "Synthetic later portal entry",
+        "date": "2026-09-01",
+        "kind": "allergy",
+        "text": "Allergy list: no allergies recorded in this export.",
+        "synthetic": true
+      }
+    ],
+    "expected_utility": [
+      {
+        "record_id": "ut05-old",
+        "span": "penicillin; reaction recorded as rash",
+        "reason": "Do not drop the positive earlier source statement."
+      },
+      {
+        "record_id": "ut05-new",
+        "span": "no allergies recorded in this export",
+        "reason": "Absence in this export is a source statement, not proof that the earlier entry is false."
+      }
+    ],
+    "forbidden_quotes": [],
+    "family": "utility_challenge",
+    "mode": "brief",
+    "live_candidate": false,
+    "expected_contract": {
+      "minimum_facts": 1
+    },
+    "authoring_provenance": "independently authored non-clinical challenge; expected task-relevant source spans, not clinician labels"
+  },
+  "arms": {
+    "frozen_local_v1": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut05-old",
+            "quote": "Allergy entry: penicillin; reaction recorded as rash.",
+            "section": "allergies"
+          },
+          {
+            "record_id": "ut05-new",
+            "quote": "Allergy list: no allergies recorded in this export.",
+            "section": "allergies"
+          }
+        ]
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut05-old",
+              "span": "penicillin; reaction recorded as rash",
+              "reason": "Do not drop the positive earlier source statement.",
+              "matched": true
+            },
+            {
+              "record_id": "ut05-new",
+              "span": "no allergies recorded in this export",
+              "reason": "Absence in this export is a source statement, not proof that the earlier entry is false.",
+              "matched": true
+            }
+          ],
+          "complete_for_authored_targets": true,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "disagreement_preserved": null,
+        "presented_evidence_utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut05-old",
+              "span": "penicillin; reaction recorded as rash",
+              "reason": "Do not drop the positive earlier source statement.",
+              "matched": true
+            },
+            {
+              "record_id": "ut05-new",
+              "span": "no allergies recorded in this export",
+              "reason": "Absence in this export is a source statement, not proof that the earlier entry is false.",
+              "matched": true
+            }
+          ],
+          "disagreement_preserved": null
+        },
+        "structured_difference_count": null,
+        "observed_coverage": null,
+        "clinical_review": false
+      },
+      "selection_method": "exact frozen round-robin selector; no model"
+    },
+    "current_local": {
+      "selection": {
+        "facts": [
+          {
+            "record_id": "ut05-old",
+            "quote": "Allergy entry: penicillin; reaction recorded as rash.",
+            "section": "allergies",
+            "source_title": "Synthetic earlier allergy entry",
+            "source_date": "2026-06-01",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut05-new",
+            "quote": "Allergy list: no allergies recorded in this export.",
+            "section": "allergies",
+            "source_title": "Synthetic later portal entry",
+            "source_date": "2026-09-01",
+            "quotation_context": "historical_record_quote"
+          }
+        ]
+      },
+      "response": {
+        "id": "584f7572-555d-4c89-852f-8839544e4943",
+        "created_at": "2026-09-13T18:25:53.433892+00:00",
+        "patient": {
+          "id": "ava_demo",
+          "name": "Ava Reed",
+          "synthetic": true,
+          "identity_verified": false
+        },
+        "scope": "visit_preparation_only",
+        "request_scope": "visit_preparation",
+        "message": "Selected excerpts from your records and questions to discuss with a clinician. This is not a complete medical reconciliation.",
+        "facts": [
+          {
+            "record_id": "ut05-old",
+            "quote": "Allergy entry: penicillin; reaction recorded as rash.",
+            "section": "allergies",
+            "source_title": "Synthetic earlier allergy entry",
+            "source_date": "2026-06-01",
+            "quotation_context": "historical_record_quote"
+          },
+          {
+            "record_id": "ut05-new",
+            "quote": "Allergy list: no allergies recorded in this export.",
+            "section": "allergies",
+            "source_title": "Synthetic later portal entry",
+            "source_date": "2026-09-01",
+            "quotation_context": "historical_record_quote"
+          }
+        ],
+        "questions": [
+          {
+            "text": "Is this allergy entry complete, including the reaction and when it happened?",
+            "record_ids": [
+              "ut05-old",
+              "ut05-new"
+            ]
+          }
+        ],
+        "model": {
+          "provider": "local",
+          "status": "local",
+          "tokens": 0,
+          "latency_ms": 0
+        },
+        "coverage": {
+          "selected_records": 2,
+          "selected_facts": 2,
+          "complete_reconciliation": false
+        },
+        "evidence_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 2,
+          "cited_record_count": 2,
+          "evidence_record_count": 2,
+          "eligible_excerpt_count": 2,
+          "selected_excerpt_count": 2,
+          "included_excerpt_count": 2,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 0,
+          "uncited_record_ids": [],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut05-old",
+              "title": "Synthetic earlier allergy entry",
+              "date": "2026-06-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut05-new",
+              "title": "Synthetic later portal entry",
+              "date": "2026-09-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "recorded_differences": [
+          {
+            "id": "b9ead8464b99",
+            "kind": "allergy_entry_difference",
+            "label": "Different recorded entries: allergy entries",
+            "items": [
+              {
+                "record_id": "ut05-old",
+                "quote": "Allergy entry: penicillin; reaction recorded as rash.",
+                "section": "allergies",
+                "source_title": "Synthetic earlier allergy entry",
+                "source_date": "2026-06-01",
+                "quotation_context": "historical_record_quote"
+              },
+              {
+                "record_id": "ut05-new",
+                "quote": "Allergy list: no allergies recorded in this export.",
+                "section": "allergies",
+                "source_title": "Synthetic later portal entry",
+                "source_date": "2026-09-01",
+                "quotation_context": "historical_record_quote"
+              }
+            ],
+            "method": "heuristic",
+            "notice": "These dated source entries differ in wording. They may reflect changes or incomplete records; this tool does not decide which is current or correct."
+          }
+        ],
+        "quotation_notice": "Quotations preserve historical source wording. They are not current treatment instructions or a finding that a record is correct.",
+        "nodes": [
+          "authorize",
+          "retrieve",
+          "model",
+          "validate",
+          "brief"
+        ],
+        "synthetic": true,
+        "policy_version": "visitprep-v2"
+      },
+      "evaluation": {
+        "safety": {
+          "passed": true,
+          "issues": [],
+          "instruction_spill": []
+        },
+        "utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut05-old",
+              "span": "penicillin; reaction recorded as rash",
+              "reason": "Do not drop the positive earlier source statement.",
+              "matched": true
+            },
+            {
+              "record_id": "ut05-new",
+              "span": "no allergies recorded in this export",
+              "reason": "Absence in this export is a source statement, not proof that the earlier entry is false.",
+              "matched": true
+            }
+          ],
+          "complete_for_authored_targets": true,
+          "empty_selection_appropriate": false
+        },
+        "citation_fidelity": {
+          "matched": 2,
+          "total": 2
+        },
+        "disagreement_preserved": null,
+        "presented_evidence_utility": {
+          "matched": 2,
+          "expected": 2,
+          "targets": [
+            {
+              "record_id": "ut05-old",
+              "span": "penicillin; reaction recorded as rash",
+              "reason": "Do not drop the positive earlier source statement.",
+              "matched": true
+            },
+            {
+              "record_id": "ut05-new",
+              "span": "no allergies recorded in this export",
+              "reason": "Absence in this export is a source statement, not proof that the earlier entry is false.",
+              "matched": true
+            }
+          ],
+          "disagreement_preserved": null
+        },
+        "structured_difference_count": 1,
+        "observed_coverage": {
+          "selection_method": "local_round_robin",
+          "selected_record_count": 2,
+          "cited_record_count": 2,
+          "evidence_record_count": 2,
+          "eligible_excerpt_count": 2,
+          "selected_excerpt_count": 2,
+          "included_excerpt_count": 2,
+          "difference_excerpt_count": 2,
+          "omitted_eligible_excerpt_count": 0,
+          "uncited_record_ids": [],
+          "excluded_instruction_count": 0,
+          "excluded_length_count": 0,
+          "selection_limit": 8,
+          "complete_reconciliation": false,
+          "records": [
+            {
+              "record_id": "ut05-old",
+              "title": "Synthetic earlier allergy entry",
+              "date": "2026-06-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            },
+            {
+              "record_id": "ut05-new",
+              "title": "Synthetic later portal entry",
+              "date": "2026-09-01",
+              "eligible_count": 1,
+              "included_count": 1,
+              "brief_fact_count": 1,
+              "difference_excerpt_count": 1,
+              "excluded_count": 0,
+              "excluded_instruction_count": 0,
+              "excluded_length_count": 0,
+              "duplicate_count": 0,
+              "omitted_count": 0
+            }
+          ],
+          "notice": "Counts describe this text-selection process, not clinical importance or completeness. Differences are separate exact evidence outside the eight-fact brief limit; omitted passages may still matter."
+        },
+        "clinical_review": false
+      },
+      "selection_method": "current application graph with provider=local"
+    }
+  }
+}

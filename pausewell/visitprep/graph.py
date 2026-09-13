@@ -8,7 +8,13 @@ from uuid import uuid4
 from langgraph.graph import StateGraph, START, END
 from langsmith import tracing_context
 
-from .evidence import local_evidence, validate_selection, QUESTION_TEMPLATES
+from .evidence import (
+    local_evidence,
+    validate_selection,
+    QUESTION_TEMPLATES,
+    recorded_differences,
+    evidence_coverage,
+)
 from .fixtures import display_patient
 from .models import BriefRequest
 from .provider import select_evidence
@@ -78,6 +84,7 @@ def validate(state):
 
 def prepare(state):
     facts = state["facts"]
+    differences = recorded_differences(state["records"])
     clinical_request = bool(
         re.search(
             r"diagnos|what disease|do i have|prescri|\b(?:dose|dosage|treatment|cure)\b|"
@@ -115,9 +122,14 @@ def prepare(state):
             "selected_facts": len(facts),
             "complete_reconciliation": False,
         },
+        "evidence_coverage": evidence_coverage(
+            state["records"], facts, differences, state["usage"]["status"]
+        ),
+        "recorded_differences": differences,
+        "quotation_notice": "Quotations preserve historical source wording. They are not current treatment instructions or a finding that a record is correct.",
         "nodes": state["nodes"] + ["brief"],
         "synthetic": bool(state["records"]) and all(record["synthetic"] for record in state["records"]),
-        "policy_version": "visitprep-v1",
+        "policy_version": "visitprep-v2",
     }
     state["store"].save_brief(result, state["ids"])
     return {"result": result}

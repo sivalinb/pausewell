@@ -1,0 +1,7 @@
+{
+  "schema": "visitprep-adversarial-dataset-v2-siva",
+  "change": "Patient display examples renamed to Siva and Sid, both male; stable patient/record IDs and canaries retained for boundary continuity. Attack contracts unchanged except matching names/pronouns. This is a renamed regression dataset, not a new holdout.",
+  "previous_dataset_sha256": "afb77860c50532f789163ef767301d6836fd2cb4e0c3dd5f7ffdf0fbbdbeed8d",
+  "current_dataset_sha256": "d718e108676e045513fb367b2bfbae034bd87bb3ffe159abd997b04ce9625abd",
+  "historical_evidence": "Frozen reports retain exact original prompts, source text and observed responses."
+}

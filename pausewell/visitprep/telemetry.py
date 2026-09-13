@@ -3,7 +3,18 @@
 from collections import Counter, deque
 from threading import Lock
 
-OPERATIONS = {"brief", "import", "delete", "erase", "reset", "read"}
+OPERATIONS = {
+    "brief",
+    "import",
+    "delete",
+    "erase",
+    "reset",
+    "read",
+    "agenda_read",
+    "agenda_save",
+    "agenda_approve",
+    "agenda_export",
+}
 STATUSES = {
     "accepted",
     "local",
@@ -17,6 +28,11 @@ STATUSES = {
     "saved",
     "deleted",
     "reset",
+    "read",
+    "approved",
+    "exported",
+    "revision_conflict",
+    "not_approved",
 }
 
 

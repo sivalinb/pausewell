@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 import hashlib
 import importlib
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -84,18 +85,38 @@ class CaptureTransport(httpx.BaseTransport):
             raise
         finally:
             event["latency_ms"] = round((time.perf_counter() - start) * 1000, 3)
+            event["finished_at"] = datetime.now(timezone.utc).isoformat()
 
     def close(self):
         self.inner.close()
 
 
-def publish_braintrust(rows, budget):
+def captured_span_times(observation):
+    """Preserve measured HTTP time when uploading captured synthetic traces."""
+    start = datetime.fromisoformat(observation["started_at"]).timestamp()
+    end = start + observation["latency_ms"] / 1000
+    return start, end
+
+
+def source_manifest():
+    paths = [
+        *(ROOT / "pausewell").rglob("*.py"),
+        ROOT / "visitprep_eval/run_eval.py", ROOT / "visitprep_eval/scoring.py",
+        ROOT / "scripts/visitprep_integrations.py", ROOT / "requirements.lock",
+        ROOT / "web/index.html", ROOT / "web/app.js", ROOT / "web/visitprep.js",
+        ROOT / "web/style.css",
+    ]
+    return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths)}
+
+
+def publish_braintrust(rows, budget, experiment_prefix="visitprep-live-nebius"):
     import braintrust
 
     project = os.getenv("BRAINTRUST_PROJECT", "pausewell")
+    experiment_name = experiment_prefix + "-" + str(int(time.time()))
     experiment = braintrust.init(
         project=project,
-        experiment="visitprep-live-nebius-" + str(int(time.time())),
+        experiment=experiment_name,
         is_public=False,
         metadata={
             "synthetic_only": True,
@@ -126,11 +147,20 @@ def publish_braintrust(rows, budget):
                 continue
             span_id = str(uuid4())
             spans.append(span_id)
+            started, ended = captured_span_times(observation)
             span = logger.start_span(
                 name="visitprep.nebius.selection",
+                type="llm",
+                start_time=started,
                 span_id=span_id,
                 root_span_id=span_id,
-                metadata={"case_id": case["id"], "synthetic_only": True, "captured_http_operation": True},
+                metadata={
+                    "case_id": case["id"], "synthetic_only": True,
+                    "captured_http_operation": True, "uploaded_after_execution": True,
+                    "model": observation["request"].get("model"),
+                    "http_status": observation.get("http_status"),
+                    "transport_error_type": observation.get("transport_error_type"),
+                },
             )
             usage = observation.get("response", {}).get("usage", {})
             span.log(
@@ -139,11 +169,13 @@ def publish_braintrust(rows, budget):
                 metrics={
                     "measured_provider_latency_ms": observation["latency_ms"],
                     "tokens": usage.get("total_tokens", 0),
+                    "prompt_tokens": usage.get("prompt_tokens", 0),
+                    "completion_tokens": usage.get("completion_tokens", 0),
                     "estimated_token_cost_usd": observation.get("reported_cost_usd", 0),
                 },
                 scores={"application_case_contract": row["score"]},
             )
-            span.end()
+            span.end(end_time=ended)
     experiment.flush()
     logger.flush()
     saved_ids = {row["id"] for row in experiment.fetch()}
@@ -158,13 +190,14 @@ def publish_braintrust(rows, budget):
     return {
         "project_id": logger.project.id,
         "experiment_id": experiment.id,
+        "experiment_name": experiment_name,
         "experiment_rows_written": len(ids),
         "experiment_rows_verified": len(set(ids) & saved_ids),
         "provider_spans_written": len(spans),
         "provider_spans_verified": len(set(spans) & saved_spans),
         "remote_verified": set(ids).issubset(saved_ids) and set(spans).issubset(saved_spans),
         "synthetic_only": True,
-        "span_timing": "Uploaded after execution; measured_provider_latency_ms is the actual HTTP duration, not upload span wall time",
+        "span_timing": "Uploaded after execution with captured HTTP start/end timestamps and LLM span type; measured_provider_latency_ms is the same captured HTTP duration",
         "cost": budget,
     }
 
@@ -181,6 +214,10 @@ def main():
     args = parser.parse_args()
     if not 0 < args.max_cost_usd <= 5:
         raise SystemExit("Budget must be greater than zero and no more than $5")
+    if args.output.exists():
+        raise SystemExit("Choose a new output folder; captured evidence is never overwritten")
+    sources_before = source_manifest()
+    dataset_before = hashlib.sha256((ROOT / "visitprep_eval/cases.json").read_bytes()).hexdigest()
     load_dotenv(ROOT / ".env")
     with httpx.Client(timeout=30) as client:
         response = client.get(
@@ -198,8 +235,12 @@ def main():
         "input_rate": float(model["pricing"]["prompt"]),
         "output_rate": float(model["pricing"]["completion"]),
     }
+    if not all(math.isfinite(budget[key]) and budget[key] >= 0 for key in ("input_rate", "output_rate")):
+        raise SystemExit("Provider pricing must be finite and nonnegative before any paid dispatch")
     cases = json.loads((ROOT / "visitprep_eval/cases.json").read_text())
     if args.case:
+        if set(args.case) - {case["id"] for case in cases}:
+            raise SystemExit("Unknown case ID; no paid requests dispatched")
         cases = [case for case in cases if case["id"] in args.case]
     if not cases:
         raise SystemExit("No matching cases")
@@ -237,12 +278,12 @@ def main():
         "model_pricing": model["pricing"],
         "budget": budget,
         "independent_human_review": False,
-        "source_sha256": {
-            str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
-            for p in sorted((ROOT / "pausewell/visitprep").glob("*.py"))
-        },
-        "dataset_sha256": hashlib.sha256((ROOT / "visitprep_eval/cases.json").read_bytes()).hexdigest(),
+        "source_sha256": sources_before,
+        "source_sha256_after": source_manifest(),
+        "dataset_sha256": dataset_before,
+        "dataset_sha256_after": hashlib.sha256((ROOT / "visitprep_eval/cases.json").read_bytes()).hexdigest(),
     }
+    metadata["source_stable_during_run"] = metadata["source_sha256"] == metadata["source_sha256_after"] and metadata["dataset_sha256"] == metadata["dataset_sha256_after"]
     report = write_reports(rows, args.output, metadata)
     if args.braintrust:
         result = publish_braintrust(rows, budget)
@@ -251,7 +292,7 @@ def main():
         if not result["remote_verified"]:
             raise SystemExit("Braintrust readback incomplete")
     print(json.dumps(report["summary"], indent=2))
-    if report["summary"]["verdicts"].get("FAIL", 0):
+    if report["summary"]["verdicts"].get("FAIL", 0) or not metadata["source_stable_during_run"]:
         raise SystemExit(1)
 
 

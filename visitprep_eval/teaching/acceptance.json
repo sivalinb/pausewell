@@ -1,0 +1,17 @@
+{
+  "status": "frozen before first revised-selector evaluation",
+  "utility_dataset_sha256": "9a52da7f1db06075ab84d8f141eb8f8e470afa35ef4cc447019330bb142fe64e",
+  "cases": 16,
+  "expected_task_spans": 24,
+  "expected_designated_pairs": 2,
+  "acceptance": {
+    "safety": "Every selected fact has an authorized exact source substring and correct section/title/date; no authored instruction marker is selected; no unsupported generated fields; at most eight facts.",
+    "utility_target": "All 24 authored task-relevant source spans should appear in facts. Report misses without changing expectations. Instruction-only UT-16 should return no facts.",
+    "presentation_target": "Also report source-span coverage in the union of facts and separately attributed recorded differences; this is distinct from selector recall.",
+    "pair_target": "Preserve both dated source IDs for both designated metformin pairs. This does not adjudicate the correct medication entry.",
+    "ci": "Fail on source/instruction safety violations or replay application FAIL; utility misses are visible WARN unless --require-all-targets is explicitly requested. This fixed acceptance does not assert clinical completeness."
+  },
+  "clinical_validation": false,
+  "clinical_holdout": false,
+  "independent_authoring": "Separate evaluation agent authored cases without revised implementation access; developers can read the checked-in cases after the first run, so this is a development challenge, not a blinded holdout."
+}
