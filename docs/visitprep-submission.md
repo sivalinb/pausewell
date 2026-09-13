@@ -149,9 +149,11 @@ The supplementary instruction-like-text filter can miss paraphrases or suppress 
 
 From the repository root, install the development requirements, then run the test suite and the offline evaluation. Credentials are unnecessary for offline reproduction. The live evidence has its own provider label, model status, usage and score report; local and live counts must remain separate. Fireworks is an optional adapter and is not a live-evaluated provider in this submission.
 
+```bash
 pip install -r requirements.lock
 python -m pytest -q
-python visitprep_eval/run_eval.py --fail-on-fail
+python visitprep_eval/run_eval.py --app-root . --output work/visitprep-reproduction --fail-on-fail
+```
 
 Validation: 155 tests passed. Full-run plus retest returned-usage cost estimate: $0.0037628; unreturned timeout usage is unknown. The conservative call reservation was $0.037128, not a billing total. No Fireworks calls were made.
 
