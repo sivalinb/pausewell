@@ -6,7 +6,7 @@ Appointment preparation with source-linked evidence
 
 ### Path B: evaluating an agent we built
 
-![Illustrated portrait](assets/pausewell-story.png)
+![Illustrated Pausewell portrait](assets/pausewell-story.png)
 
 VisitPrep turns selected health records into an extractive appointment brief: recorded facts, source links, and neutral questions to discuss with a clinician. It does not diagnose, interpret test results, recommend treatment, or claim a complete medication reconciliation.
 
@@ -40,7 +40,7 @@ Imported records and derived briefs are stored in server-side SQLite. Source del
 
 [Implementation: workflow, validation, storage and telemetry](https://github.com/sivalinb/pausewell/tree/main/pausewell/visitprep)
 
-![Illustrated portrait](../visitprep_eval/screenshots/app-source-citation.png)
+![Actual app quotation and linked source](../visitprep_eval/screenshots/app-source-citation.png)
 
 Actual app capture: a recorded quotation links back to its selected source. Fictional medication entries remain evidence for discussion, not new dosing instructions.
 
@@ -117,11 +117,11 @@ Braintrust readback verified 29/29 full-run score rows and 26/26 provider-operat
 
 [Separate timeout-reliability retest](https://github.com/sivalinb/pausewell/blob/main/visitprep_eval/reports/reliability-retest/README.md)
 
-![Illustrated portrait](../visitprep_eval/screenshots/nebius-usage.png)
+![Historical aggregate Nebius Usage dashboard](../visitprep_eval/screenshots/nebius-usage.png)
 
 Nebius Usage: historical aggregate, refreshed before this evaluation. Per-run usage is recorded in the linked JSON.
 
-![Illustrated portrait](../visitprep_eval/screenshots/braintrust-evaluation.png)
+![Braintrust full-run evaluation rows](../visitprep_eval/screenshots/braintrust-evaluation.png)
 
 Braintrust result rows: 98.28% is the mean application-contract score with one WARN scored 0.5. It does not measure clinical accuracy.
 
