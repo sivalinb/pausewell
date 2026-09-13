@@ -56,7 +56,7 @@ swiftc -frontend -parse ios/Pausewell/*.swift
 
 The tests and VisitPrep offline evaluator require no provider credentials and make no live inference calls. Use a new output path when reproducing evaluations so the checked-in evidence remains frozen. See [VisitPrep evaluation](../visitprep_eval/README.md). `requirements.lock` records the tested Python 3.12 dependency set.
 
-The current suite has 290 passing Python tests and six passing Node state-boundary checks. The earlier pre-NeMo release recorded 230 Python tests. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
+The current suite has 292 passing Python tests and six passing Node state-boundary checks. The earlier pre-NeMo release recorded 230 Python tests. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
 
 Pre-NeMo evidence is in [the offline report](../visitprep_eval/reports/offline-siva/summary.json) and [the teaching report](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed synthetic utility cases were already visible to developers and are not a new holdout.
 

@@ -2,7 +2,9 @@
 
 **Prepare for a better conversation with your clinician.** Choose records → inspect dated evidence → edit your priorities → approve an appointment agenda.
 
-![Illustrated VisitPrep workflow: synthetic records pass through owner authorization, consent, exact-quote validation and evaluation before the person reviews and approves their agenda. The illustration records pre-NeMo evidence: 28 PASS and one WARN, 230 Python tests and six UI state checks.](docs/assets/visitprep-week6-workflow.png)
+![Illustrated appointment preparation: select records, inspect evidence, and review an agenda.](docs/assets/visitprep-product-story.png)
+
+**Week 6 result: 28 PASS / 1 WARN / 0 FAIL across 29 cases and 35 responses, with 21 actual Nebius calls and NeMo enabled.** Start with the [concise findings](docs/visitprep-submission.md), [evidence index](docs/EVIDENCE-INDEX.md) and [completed review](docs/REVIEW-READINESS.md). These are measured synthetic application results, not clinical validation.
 
 **VisitPrep is the primary Week 6 project.** It turns selected plain-text visit notes, medication lists, laboratory entries and allergy records into a cited, extractive appointment brief. Optional Nebius Token Factory inference processes actual untrusted record text; server-side authorization and exact-quote validation constrain what can appear. [Local NeMo input/output rails](docs/NEMO-INTEGRATION.md) run custom CPU policy actions around cloud selection, with no additional model call or API key. Suggested questions use reviewed templates. Your private agenda adds up to three editable priorities and three questions, with versioned approval before printable HTML, Markdown or JSON export. Coverage explains what the selector included or omitted; heuristic comparisons show differing dated medication or allergy entries without deciding which is current. The brief does not diagnose, interpret results, recommend medication changes or establish complete medical reconciliation.
 
@@ -61,7 +63,7 @@ The VisitPrep warning preserves the limit on complete lifetime reconciliation. T
 
 ## Week 6 submission
 
-[Exemplar checklist](docs/week6-exemplar-checklist.md) · [Technical glossary](docs/TECHNICAL-GLOSSARY.md) · [Student and instructor kit](training/visitprep/README.md) · [Product roadmap](docs/ROADMAP.md)
+[Evidence index](docs/EVIDENCE-INDEX.md) · [Exemplar checklist](docs/week6-exemplar-checklist.md) · [Technical glossary](docs/TECHNICAL-GLOSSARY.md) · [Student and instructor kit](training/visitprep/README.md) · [Product roadmap](docs/ROADMAP.md)
 
 [Course handout and OWASP 2026 alignment](docs/WEEK6-COURSE-ALIGNMENT.md) maps the supplied materials to implemented controls and deployment gaps. The app uses custom evaluations, deterministic authorization and source validation, plus NeMo Guardrails for custom local input/output policy actions. NIM safety inference, LLM-as-judge screening, Promptfoo and Presidio are not configured. Cloud consent authorizes selected text transmission; it does not automatically de-identify the records.
 
