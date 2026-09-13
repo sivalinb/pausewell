@@ -1,6 +1,6 @@
 # VisitPrep product roadmap
 
-Current examples use **Siva** and **Sid**, both fictional male personas. Their authored record entries are invented and do not represent the user's health. Archived reports and screenshots retain their originally captured labels; they are historical evidence, not current persona examples.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions.
 
 **Walk into your next appointment with the facts you want to discuss, the records they came from, and questions you want answered.**
 
@@ -36,7 +36,7 @@ Implemented acceptance evidence includes [agenda tests](../tests/test_visitprep_
 - Source deletion revokes dependent agendas and future exports; downloaded copies remain outside that revocation.
 - A separately authored synthetic utility set measures historical-note preservation, coverage and difference flags. Publish actual results and limitations before promoting them as improvements.
 
-The [current named local comparison](../visitprep_eval/reports/teaching-siva/summary.json) retains 20/24 target spans versus 13/24 for frozen local v1, with 16/16 safety checks passing in both. Separately displayed differences raise revised presented coverage to 21/24 and preserve both designated source pairs. UT-07 and UT-08 still have omissions, so this evidence shows a bounded improvement rather than complete preparation utility. This local comparison uses no new model inference or human study; its renamed successor cases were already seen by developers.
+The [current local comparison](../visitprep_eval/reports/teaching-siva/summary.json) retains 20/24 target spans versus 13/24 for frozen local v1, with 16/16 safety checks passing in both. Separately displayed differences raise revised presented coverage to 21/24 and preserve both designated source pairs. UT-07 and UT-08 still have omissions, so this evidence shows a bounded improvement rather than complete preparation utility. This local comparison uses no new model inference or human study; its renamed successor cases were already seen by developers.
 
 Do not hold this gate open to add a conversational doctor, more models or broad medical interpretation. Those features do not answer the current preparation job.
 

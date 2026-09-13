@@ -2,7 +2,7 @@
 
 **Prepare for a better conversation with your clinician.** Choose records → inspect dated evidence → edit your priorities → approve an appointment agenda.
 
-![Illustrated VisitPrep workflow: fictional Siva and Sid records pass through owner authorization, consent, exact-quote validation, evaluation and Siva's agenda approval. Current evidence includes 28 PASS and one WARN, 230 Python tests and six UI state checks.](docs/assets/visitprep-week6-workflow.png)
+![Illustrated VisitPrep workflow: synthetic records pass through owner authorization, consent, exact-quote validation and evaluation before the person reviews and approves their agenda. Current evidence includes 28 PASS and one WARN, 230 Python tests and six UI state checks.](docs/assets/visitprep-week6-workflow.png)
 
 **VisitPrep is the primary Week 6 project.** It turns selected plain-text visit notes, medication lists, laboratory entries and allergy records into a cited, extractive appointment brief. Optional Nebius Token Factory inference processes actual untrusted record text; server-side authorization and exact-quote validation constrain what can appear. Suggested questions use reviewed templates. Your private agenda adds up to three editable priorities and three questions, with versioned approval before printable HTML, Markdown or JSON export. Coverage explains what the selector included or omitted; heuristic comparisons show differing dated medication or allergy entries without deciding which is current. The brief does not diagnose, interpret results, recommend medication changes or establish complete medical reconciliation.
 
@@ -10,7 +10,7 @@ The original **Watch check-in workflow** remains as a secondary module: eligible
 
 **Status: working private local web/API prototype.** The [public repository](https://github.com/sivalinb/pausewell) publishes code, authored fictional fixtures and evaluation evidence. It does not host a public health-data application. The iPhone bridge has not passed an SDK build or real-device validation.
 
-Current examples use **Siva** and **Sid**, both fictional male personas with invented records. These are not the user's health data. Stable legacy IDs are technical regression keys, not person labels. Historical reports and captures retain the names originally observed.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions. Stable legacy IDs are technical regression keys, not person labels.
 
 ## Run it
 
@@ -38,11 +38,11 @@ VisitPrep never inherits Watch consent. Its records remain on the owner's server
 | Check | Recorded evidence |
 |---|---|
 | Automated checks | **230 Python tests passed** plus [six Node state-boundary checks](tests/visitprep_ui_boundaries.cjs); both are included in CI |
-| Current Siva/Sid offline suite | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/offline-siva/summary.json), 29 cases, 35 responses; zero remote model calls |
+| Current offline suite | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/offline-siva/summary.json), 29 cases, 35 responses; zero remote model calls |
 | Current offline source fidelity | 127/127 facts; 34/34 authored evidence checks; not clinical recall |
 | Current local utility comparison | [Frozen local v1 vs revised local](visitprep_eval/reports/teaching-siva/summary.json): 13/24 vs 20/24 target spans; 16/16 safety checks in both. Revised displayed differences raise presented coverage to 21/24; UT-07/08 omissions remain |
 | Actual paired Nebius utility comparison | [16 cases × two systems, 32 completed calls](visitprep_eval/reports/utility-live-siva/summary.json): prompt-only vs full application target spans 21/24 vs 24/24; raw source/instruction safety 15/16 vs 16/16; strict validator acceptance 11/16 vs 15/16 |
-| Current Siva/Sid live safety run | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/siva-live/summary.json), 29 cases, 35 responses; 26 actual calls: 24 accepted selections, 2 rejected empty outputs, 0 timeouts; 123/123 citation checks and 34/34 authored evidence checks |
+| Current live safety run | [28 PASS / 1 WARN / 0 FAIL](visitprep_eval/reports/siva-live/summary.json), 29 cases, 35 responses; 26 actual calls: 24 accepted selections, 2 rejected empty outputs, 0 timeouts; 123/123 citation checks and 34/34 authored evidence checks |
 | Current hosted observability | [Safety run](visitprep_eval/reports/siva-live/braintrust.json): 29 rows / 26 provider spans verified; [paired comparison](visitprep_eval/reports/utility-live-siva/braintrust.json): 16 rows / 16 spans verified for each system |
 | Historical full live Nebius run | [28 PASS / 1 WARN](visitprep_eval/reports/live/summary.json) across 29 cases; 26 HTTP requests: 20 accepted selections, 2 rejected empty outputs, 4 timeout fallbacks |
 | Historical Braintrust readback | 29/29 evaluation rows and 26/26 provider traces verified |

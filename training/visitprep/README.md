@@ -1,6 +1,6 @@
 # VisitPrep teaching kit
 
-Current examples use **Siva** and **Sid**, both fictional male personas. Their authored record entries are invented and do not represent the user's health. Archived reports and screenshots retain their originally captured labels; they are historical evidence, not current persona examples.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions.
 
 Use VisitPrep to learn how to make a bounded agent useful while treating retrieved documents as untrusted input. The fictional records create a concrete appointment-preparation task; the recorded model and application outcomes make security claims inspectable.
 
@@ -10,7 +10,7 @@ This kit is separate from the optional, unexecuted model-training recipe in [tra
 
 1. Read the [product job and roadmap](../../docs/ROADMAP.md), then the [architecture](../../docs/ARCHITECTURE.md).
    Use the [course alignment](../../docs/WEEK6-COURSE-ALIGNMENT.md) to connect the supplied handouts and healthcare-agent example to concrete controls and unfinished work.
-2. Open the [current Siva/Sid offline report](../../visitprep_eval/reports/offline-siva/README.md) and one exact case file.
+2. Open the [current offline report](../../visitprep_eval/reports/offline-siva/README.md) and one exact case file.
 3. Compare the [current actual Nebius safety run](../../visitprep_eval/reports/siva-live/README.md) with the [paired utility systems](../../visitprep_eval/reports/utility-live-siva/summary.json). They answer different questions.
 4. Inspect the [historical full run](../../visitprep_eval/reports/live/README.md) and [selected reliability retest](../../visitprep_eval/reports/reliability-retest/README.md). Explain why new results cannot erase old timeouts.
 5. Use the [learner worksheet](learner-worksheet.md) to record a claim, evidence and limitation.
@@ -27,7 +27,7 @@ python -m visitprep_eval.teaching --output work/visitprep-teaching-run
 
 Keep the official reports unchanged. These commands run the current checkout; newly added behavior may differ from the frozen historical run. A zero-exit command does not replace reviewing the produced verdicts and reasons.
 
-The teaching command requires a new empty output directory. It replays recorded responses without provider inference and compares the frozen local v1 selector with current local selection. The active [Siva/Sid utility dataset](../../visitprep_eval/teaching/utility_cases_v2_siva.json) is a renamed successor of 16 separately authored fictional cases, already visible to developers. In the [current named run](../../visitprep_eval/reports/teaching-siva/summary.json), target-span selection is 13/24 vs 20/24; both versions pass the 16 safety checks. Two revised cases still omit target evidence. The comparison is a visible regression challenge, not a blinded clinical holdout or a live-model baseline.
+The teaching command requires a new empty output directory. It replays recorded responses without provider inference and compares the frozen local v1 selector with current local selection. The active [synthetic utility dataset](../../visitprep_eval/teaching/utility_cases_v2_siva.json) is a renamed successor of 16 separately authored fictional cases, already visible to developers. In the [current run](../../visitprep_eval/reports/teaching-siva/summary.json), target-span selection is 13/24 vs 20/24; both versions pass the 16 safety checks. Two revised cases still omit target evidence. The comparison is a visible regression challenge, not a blinded clinical holdout or a live-model baseline.
 
 The separately executed [paired live comparison](../../visitprep_eval/reports/utility-live-siva/summary.json) made 32 actual Nebius calls. Prompt-only/full systems retain 21/24 vs 24/24 target spans, with raw source-and-instruction safety 15/16 vs 16/16. Read the raw outputs and strict-validator results too: application components differ, so this is not a one-factor causal ablation or proof of a general model advantage. Reading the evidence and running the local commands above do not repeat those paid calls.
 

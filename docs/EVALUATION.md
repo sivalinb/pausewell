@@ -2,13 +2,13 @@
 
 **VisitPrep is the primary Week 6 investigation.** The original Watch tests remain additional evidence for a different, narrower application boundary.
 
-Current examples use Siva and Sid, both fictional male personas with authored invented records, not the user's health data. Stable legacy IDs preserve regression continuity; historical observations retain their original labels. The named successor datasets were already visible to developers and are not new blinded holdouts.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions. Stable legacy IDs preserve regression continuity. The successor datasets were already visible to developers and are not new blinded holdouts.
 
 ## Current automated evidence
 
 The final suite passed **230 Python tests plus six Node state-boundary checks**. These are separate test types. The Python run emitted one third-party deprecation warning. VisitPrep tests cover authorization before retrieval, mixed foreign IDs, request-specific consent, strict schemas, exact source quotes, malicious provider output, timeout/redirect/tool-call handling, import bounds, identity labeling, deletion during inference, derived-export revocation, approved agenda exports and evaluator/replay behavior. [The Node harness](../tests/visitprep_ui_boundaries.cjs) uses a minimal DOM adapter to test state transitions; it does not replace the [actual browser captures](../visitprep_eval/screenshots/siva/).
 
-The current [Siva/Sid offline suite](../visitprep_eval/reports/offline-siva/README.md) records **28 PASS, 1 WARN, 0 FAIL** across **29 cases and 35 responses**, with zero remote model calls. It covers seven attack families, actual sequential crescendo requests and benign controls. The assignment asks for multiple families; all-seven coverage is this project's additional breadth. Observed checks include 127/127 exact cited facts, 34/34 authored evidence checks, eight explicit HTTP refusals, no observed instruction/canary spill in the tested output surfaces and 0/4 supported benign cases overblocked.
+The current [offline suite](../visitprep_eval/reports/offline-siva/README.md) records **28 PASS, 1 WARN, 0 FAIL** across **29 cases and 35 responses**, with zero remote model calls. It covers seven attack families, actual sequential crescendo requests and benign controls. The assignment asks for multiple families; all-seven coverage is this project's additional breadth. Observed checks include 127/127 exact cited facts, 34/34 authored evidence checks, eight explicit HTTP refusals, no observed instruction/canary spill in the tested output surfaces and 0/4 supported benign cases overblocked.
 
 The retained warning is CT-06: selected excerpts cannot establish complete lifetime reconciliation, complete interaction review or absence of missing records. These synthetic counts are not clinical accuracy, general model jailbreak resistance or production multi-user security results.
 
@@ -16,7 +16,7 @@ The preserved initial offline smoke run contains an evaluator grading defect in 
 
 ## Current actual Nebius and Braintrust evidence
 
-The current [Siva/Sid live safety run](../visitprep_eval/reports/siva-live/README.md) used `Qwen/Qwen3-30B-A3B-Instruct-2507` through the authenticated VisitPrep API. It recorded **29 cases, 35 responses, 28 PASS / 1 WARN / 0 FAIL**. Of **26 actual provider calls**, 24 produced accepted selections, two returned empty selections rejected by the application, and none timed out. The final briefs preserve 123/123 exact cited facts and 34/34 authored evidence targets, with eight separate HTTP denials, zero tested instruction/canary spill and 0/4 benign cases overblocked. The captured source fingerprints remained stable during the run.
+The current [live safety run](../visitprep_eval/reports/siva-live/README.md) used `Qwen/Qwen3-30B-A3B-Instruct-2507` through the authenticated VisitPrep API. It recorded **29 cases, 35 responses, 28 PASS / 1 WARN / 0 FAIL**. Of **26 actual provider calls**, 24 produced accepted selections, two returned empty selections rejected by the application, and none timed out. The final briefs preserve 123/123 exact cited facts and 34/34 authored evidence targets, with eight separate HTTP denials, zero tested instruction/canary spill and 0/4 benign cases overblocked. The captured source fingerprints remained stable during the run.
 
 [Braintrust readback](../visitprep_eval/reports/siva-live/braintrust.json) verified 29/29 evaluation rows and 26/26 provider spans. The run reserved $0.0296321 and estimated $0.0033771 from returned token usage. These are engineering estimates, not a provider invoice.
 
@@ -26,7 +26,7 @@ The paired [Braintrust receipt](../visitprep_eval/reports/utility-live-siva/brai
 
 ## Current local utility and recorded replay
 
-The [Siva/Sid teaching run](../visitprep_eval/reports/teaching-siva/summary.json) compares frozen local v1 with revised local selection without credentials or inference: target spans are **13/24 vs 20/24**, with 16/16 safety checks passing in both. Revised local citations are 34/34 exact; adding separately displayed differences gives 21/24 presented target spans and both designated source pairs. UT-07 and UT-08 retain local omissions. A better result from the paired model-assisted system does not erase those local-mode limitations.
+The [teaching run](../visitprep_eval/reports/teaching-siva/summary.json) compares frozen local v1 with revised local selection without credentials or inference: target spans are **13/24 vs 20/24**, with 16/16 safety checks passing in both. Revised local citations are 34/34 exact; adding separately displayed differences gives 21/24 presented target spans and both designated source pairs. UT-07 and UT-08 retain local omissions. A better result from the paired model-assisted system does not erase those local-mode limitations.
 
 The same teaching run replays 33 historical case/run pairs and 41 captured responses: no selected-fact or application-verdict changes, 40 PASS / 1 WARN. Eight historical HTTP denials are rescored artifacts, not newly executed authorization tests. Four historical timeouts remain missing completions. Replay makes zero provider calls and does not measure current provider availability.
 

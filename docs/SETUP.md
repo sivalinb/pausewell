@@ -16,7 +16,7 @@ Open [the local dashboard](http://127.0.0.1:8765). Read `PAUSEWELL_TOKEN` from y
 
 Start with **Prepare for a visit**. The first database initialization supplies authored fictional visit, medication, laboratory and allergy records. Select records, keep **Local extractive brief**, and prepare a brief without calling a provider. Open its cited sources, inspect recorded differences and coverage, and edit your three priorities and questions. Save a draft or explicitly approve the current agenda, then open the printable agenda or download it. The printable preview uses the browser’s Print command to print or save as PDF. A source deletion revokes future agenda exports too; already downloaded copies remain under your control.
 
-Current examples use Siva and Sid, both fictional male personas with invented records, not the user's health data. Legacy technical IDs are retained for regression continuity and are not display names. Historical reports and screenshots keep the labels originally captured.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions. Legacy technical IDs are retained for regression continuity and are not display names.
 
 **Add a record** accepts pasted text or a `.txt` file, a title, date and record type. It does not process PDFs, images, OCR, FHIR, EHR accounts or an Apple Health export. Preserve original wording and units. Imports are saved on your private server, are not independently verified and are not automatically attributed to the fictional demo patient.
 
@@ -51,7 +51,7 @@ The tests and VisitPrep offline evaluator require no provider credentials and ma
 
 The recorded final suite has 230 passing Python tests and six passing Node state-boundary checks. The Node harness uses a minimal DOM adapter to test state transitions; it is distinct from the actual browser screenshots and print-preview verification.
 
-Current named evidence is in [offline-siva](../visitprep_eval/reports/offline-siva/summary.json) and [teaching-siva](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed Siva/Sid utility cases were already visible to developers and are not a new holdout.
+Current evidence is in [the offline report](../visitprep_eval/reports/offline-siva/summary.json) and [the teaching report](../visitprep_eval/reports/teaching-siva/summary.json). The teaching harness compares local selectors and replays recorded provider outputs; replay makes no new provider call. Its renamed synthetic utility cases were already visible to developers and are not a new holdout.
 
 The completed [paired live utility report](../visitprep_eval/reports/utility-live-siva/summary.json) records 32 actual Nebius calls across prompt-only and full-application systems. It is distinct from the completed [current live safety run](../visitprep_eval/reports/siva-live/README.md): 29 cases, 28 PASS / 1 WARN, 26 calls, 24 accepted outputs, two rejected empty outputs and no timeouts. Reading either report makes no inference call. A new paid comparison requires its own budget and execution opt-in; adding a model is not necessary to reproduce the local teaching exercises.
 

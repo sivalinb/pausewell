@@ -1,6 +1,6 @@
 # VisitPrep learner worksheet
 
-Current examples use **Siva** and **Sid**, both fictional male personas. Their authored record entries are invented and do not represent the user's health. Archived reports and screenshots retain their originally captured labels; they are historical evidence, not current persona examples.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions.
 
 Copy this worksheet into your own working folder. Use authored fictional records. Link evidence rather than pasting credentials, private health records or unrelated conversations.
 

@@ -4,11 +4,11 @@ VisitPrep processes **actual untrusted record text** with an optional model. It 
 
 The dataset is [29 fixed authored cases](cases.json): 23 attacks across seven families and six controls. The assignment asks for multiple families; all-seven coverage is an additional project extension. Three crescendo cases execute actual successive brief requests or record imports. The application stores briefs, but has no general conversational memory; the test does not claim to measure a model's resistance to a long memory conversation.
 
-Current examples use Siva and Sid, both fictional male personas with invented records, not the user's health data. The [case provenance](cases-provenance.json) and [utility successor](teaching/utility_cases_v2_siva.json) identify the name/pronoun changes. Stable legacy IDs preserve regression continuity. Historical raw observations remain unchanged; renamed cases are previously seen regression data, not a new blinded holdout.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions. The [case provenance](cases-provenance.json) and [utility successor](teaching/utility_cases_v2_siva.json) identify historical name/pronoun changes. Stable legacy IDs preserve regression continuity. Renamed cases are previously seen regression data, not a new blinded holdout.
 
 ## Current observed offline evidence
 
-The [current Siva/Sid offline run](reports/offline-siva/README.md) contains **28 PASS, 1 WARN, and 0 FAIL** over 29 cases and 35 evaluated responses. It makes zero remote model calls. The evidence includes actual FastAPI HTTP inputs and responses, retrieved-source selections, provider-boundary observations, source hashes, and per-case scoring reasons. A [separate current local rerun](reports/siva-offline/README.md) is preserved rather than overwriting the first named regression run.
+The [current offline run](reports/offline-siva/README.md) contains **28 PASS, 1 WARN, and 0 FAIL** over 29 cases and 35 evaluated responses. It makes zero remote model calls. The evidence includes actual FastAPI HTTP inputs and responses, retrieved-source selections, provider-boundary observations, source hashes, and per-case scoring reasons. A [separate current local rerun](reports/siva-offline/README.md) is preserved rather than overwriting the earlier regression run.
 
 | Metric | Observed | What it measures |
 |---|---:|---|
@@ -24,7 +24,7 @@ The [current Siva/Sid offline run](reports/offline-siva/README.md) contains **28
 
 | Run | Actual execution and outcome | Limits |
 |---|---|---|
-| [Siva/Sid live safety](reports/siva-live/README.md) | 29 cases, 35 responses, 28 PASS / 1 WARN; 26 Nebius calls, 24 accepted selections, two empty outputs rejected, zero timeouts. Exact citations 123/123 and authored evidence checks 34/34. | Tests the declared application contracts, not every adaptive attack or clinical correctness. |
+| [Live safety](reports/siva-live/README.md) | 29 cases, 35 responses, 28 PASS / 1 WARN; 26 Nebius calls, 24 accepted selections, two empty outputs rejected, zero timeouts. Exact citations 123/123 and authored evidence checks 34/34. | Tests the declared application contracts, not every adaptive attack or clinical correctness. |
 | [Paired live utility](reports/utility-live-siva/summary.json) | 16 cases per system, 32 completed calls. Prompt-only/full target spans 21/24 vs 24/24; raw source-and-instruction safety 15/16 vs 16/16; strict-validator acceptance 11/16 vs 15/16. Full output citations 23/23. | Several controls differ together; previously seen synthetic regression cases, no isolated causal effect or broad model advantage. |
 | [Local utility and historical replay](reports/teaching-siva/summary.json) | No new provider calls. Local v1/revised target spans 13/24 vs 20/24; 16/16 safety checks in both. Replay preserves selected facts and verdicts across 41 captured responses. | UT-07/08 local omissions remain. Historical HTTP denials are rescored, not freshly executed; historical timeouts remain missing completions. |
 

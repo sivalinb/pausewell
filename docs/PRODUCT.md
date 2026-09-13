@@ -1,10 +1,10 @@
 # Pausewell: prepare for a better conversation
 
-![Illustrated VisitPrep journey: fictional Siva selects records, the app authorizes and validates exact evidence, and he reviews and approves an appointment agenda. The diagram distinguishes measured synthetic results from clinical validation.](assets/visitprep-week6-workflow.png)
+![Illustrated VisitPrep journey: a person selects records, the app authorizes and validates exact evidence, and they review and approve an appointment agenda. The diagram distinguishes measured synthetic results from clinical validation.](assets/visitprep-week6-workflow.png)
 
 **VisitPrep is the primary experience.** It helps a person choose records for an appointment, inspect selected source passages and bring questions to a clinician. Its output is an extractive brief with citations. It does not interpret results, diagnose a condition, recommend treatment or establish complete medical reconciliation.
 
-The authored fictional demo includes medication lists that record different metformin schedules, laboratory entries with original units, an allergy entry and a prior visit. A useful brief keeps the source wording and dates visible, then asks the clinician to reconcile medication entries. It does not decide which dose is correct. These are invented examples, not Siva's medical history and not Synthea-generated records.
+The authored fictional demo includes medication lists that record different metformin schedules, laboratory entries with original units, an allergy entry and a prior visit. A useful brief keeps the source wording and dates visible, then asks the clinician to reconcile medication entries. It does not decide which dose is correct. These records are authored inventions, not the user's medical history or Synthea-generated records.
 
 ## The primary journey
 
@@ -38,8 +38,8 @@ The [public GitHub repository](https://github.com/sivalinb/pausewell) contains c
 
 VisitPrep by Pausewell focuses on preparing a follow-up conversation from scattered records. Historical source instructions remain attributed quotations; they are never presented as new treatment advice. The [roadmap](ROADMAP.md) defines evidence required before broader imports, user studies, caregiver access or Watch integration. The [exemplar checklist](week6-exemplar-checklist.md) distinguishes the official Week 6 requirements from implemented extensions and unfinished validation. The [technical glossary](TECHNICAL-GLOSSARY.md) explains the terms used throughout the repository.
 
-The [course alignment](WEEK6-COURSE-ALIGNMENT.md) connects this preparation task to the supplied healthcare-agent example and security handouts, while distinguishing implemented controls from future deployment work. The [current product overview](../visitprep_eval/screenshots/siva/product-overview.jpg), [source inspection](../visitprep_eval/screenshots/siva/source-inspection.jpg) and [approved agenda](../visitprep_eval/screenshots/siva/approved-agenda.jpg) are actual app captures; the diagram above is an explanatory illustration.
+The [course alignment](WEEK6-COURSE-ALIGNMENT.md) connects this preparation task to the supplied healthcare-agent example and security handouts, while distinguishing implemented controls from future deployment work. The [current product overview](../visitprep_eval/screenshots/generic/product-overview.jpg), [source inspection](../visitprep_eval/screenshots/generic/source-inspection.jpg) and [approved agenda](../visitprep_eval/screenshots/generic/approved-agenda.jpg) are actual app captures; the diagram above is an explanatory illustration.
 
-The original illustrated Pausewell story retains the founder's glasses, beard and mustache:
+The product story illustrates the appointment-preparation journey; it does not depict real patient records or measured outcomes.
 
-![Siva's illustrated Pausewell concept with glasses, a beard and mustache, showing the secondary Watch and wellness story](assets/pausewell-story.png)
+![Illustrated VisitPrep product story: a person prepares for an appointment using selected records, source evidence and an agenda they review and approve.](assets/visitprep-product-story.png)

@@ -1,6 +1,6 @@
 # Pausewell technical glossary
 
-Current examples use **Siva** and **Sid**, both fictional male personas. Their authored record entries are invented and do not represent the user's health. Archived reports and screenshots retain their originally captured labels; they are historical evidence, not current persona examples.
+Documentation examples describe a person preparing for an appointment and a second synthetic user for isolation tests. Their records are authored inventions, not the user's health data. Frozen reports and screenshots retain their originally captured labels; documentation uses generic descriptions.
 
 This is a guide to the terms used in Pausewell, VisitPrep and the teaching kit. It distinguishes software that is present from ideas that remain future work. Read it alongside the [architecture](ARCHITECTURE.md), [technology decisions](TECHNOLOGY.md), [evaluation evidence](EVALUATION.md) and [course-material alignment](WEEK6-COURSE-ALIGNMENT.md).
 
@@ -18,7 +18,7 @@ This is a guide to the terms used in Pausewell, VisitPrep and the teaching kit. 
 | Exact-quote fidelity | The output quote matches an allowed excerpt from an authorized selected record. This checks copying and attribution, not clinical correctness. |
 | Provenance | Information about where data or an observation came from: source IDs, titles, dates, synthetic labels, run mode and version. Provenance supports inspection; it does not automatically establish authenticity. |
 | Source authenticity | Whether a document really came from the claimed origin and has not been misrepresented. This is not verified by the prototype. |
-| Subject identity | Whose information a record describes. The fixed demo uses fictional Siva; imported subject identity is not independently verified. |
+| Subject identity | Whose information a record describes. The fixed demo uses an authored fictional person; imported subject identity is not independently verified. |
 | Coverage | What selected records and passages contributed to a brief. Implemented counts distinguish brief passages, separately displayed differences, eligible omissions and excluded segments; they do not measure complete clinical coverage. |
 | Omission versus exclusion | An omission is material not included; an exclusion is material deliberately withheld from candidate evidence. Neither term proves what absent records might contain. |
 | Complete reconciliation | Establishing an accurate, comprehensive current account across relevant records. VisitPrep explicitly does not establish complete lifetime medication reconciliation or interaction review. |
@@ -63,7 +63,7 @@ This is a guide to the terms used in Pausewell, VisitPrep and the teaching kit. 
 | Authentication | Establishing who is making a request. The app uses an owner bearer token; this is not independent verification of a patient's identity. |
 | Bearer token | A secret whose possession authorizes the configured owner session. Do not put it in screenshots, public reports or model prompts. |
 | Authorization | Deciding what that authenticated principal may access or do. VisitPrep checks every selected record ID before reading its text. |
-| Principal | The server-side identity to which permissions belong. The Sid test record belongs to a separate fictional principal. |
+| Principal | The server-side identity to which permissions belong. The second synthetic user's test record belongs to a separate principal. |
 | Owner scope | The set of records and actions permitted for the configured owner. The prototype is a single-owner workspace, not a production multi-tenant service. |
 | Trust boundary | A point where data or authority crosses between components with different permissions. Imported text may supply evidence but cannot grant access or define tools. |
 | Request-level cloud consent | A fresh `cloud_consent` decision for one VisitPrep request. It permits selected record text and the question to reach the selected provider. Watch consent is separate. |
@@ -132,13 +132,13 @@ The [authored dataset](../visitprep_eval/cases.json) assigns a primary family to
 | Ruff | A static code checker. Passing it catches certain code-quality problems, not product usefulness or clinical safety. |
 | CI / GitHub Actions | Continuous integration runs automated checks on repository changes. This workflow runs tests and offline evals without proving real-device or real-user behavior. |
 | Unit, integration and end-to-end test | A unit checks a small component; integration checks collaborating components; end-to-end checks a user flow across its actual surfaces. An ASGI test is not a browser or Watch field test. |
-| Fixture | Controlled test input or state. VisitPrep's current Siva/Sid fixtures are authored fictional examples. Technical legacy identifiers do not establish a person's identity. |
+| Fixture | Controlled test input or state. VisitPrep's fixtures are authored fictional examples. Technical legacy identifiers do not establish a person's identity. |
 | Contract test | A check of promised behavior, such as authorized retrieval or exact quotation. Passing a narrow contract does not establish every desirable property. |
 | Evaluator / scorer | Code or a reviewer comparing observations with expected behavior. The evaluator can itself contain bugs and needs review. |
 | Oracle | The expected answer or criterion used to judge a test. Authored fact fragments are limited oracles, not complete clinical ground truth. |
 | PASS, WARN and FAIL | This evaluator's case verdicts: contract held; a relevant limitation remains; or expected behavior was violated. Their numeric scores are 1, 0.5 and 0. They are not course grades. |
 | Safety, utility and reliability | Safety concerns prohibited behavior; utility concerns useful task completion; reliability concerns consistent availability and valid completion. A timeout fallback can be safe yet less useful. |
-| Raw model validity | Whether the provider returned evidence that passed the model-output contract. The current Siva/Sid safety run accepted 24 selections from 26 attempts; its two empty outputs were rejected. The historical full run accepted 20/26. An appropriate empty selection can still fail this strict non-empty application contract. |
+| Raw model validity | Whether the provider returned evidence that passed the model-output contract. The current safety run accepted 24 selections from 26 attempts; its two empty outputs were rejected. The historical full run accepted 20/26. An appropriate empty selection can still fail this strict non-empty application contract. |
 | Application outcome | What the whole system returned after permission checks, validation and fallback. It must be reported separately from raw model validity. |
 | Benign overblocking | Rejecting or degrading a supported ordinary request unnecessarily. The historical four-control denominator is small. |
 | False escalation | The Watch workflow routing a benign disclosure to urgent support unnecessarily. This is distinct from VisitPrep overblocking or source fidelity. |
@@ -148,7 +148,7 @@ The [authored dataset](../visitprep_eval/cases.json) assigns a primary family to
 | Baseline | An observed comparison condition. VisitPrep has no historical weak-model security baseline; the original Watch before/after study is separate. |
 | Ablation | Removing one control to study its contribution. A synthetic local ablation is not an observed live prompt-only baseline. Ablation teaching exercises require their own execution evidence. |
 | Paired system comparison / study arm | Two systems run against the same cases; an arm is one of those systems. [The actual utility comparison](../visitprep_eval/reports/utility-live-siva/summary.json) uses the same model, settings and authorized record scope, alternating call order across 16 cases. The full arm changes candidate evidence, validation, templates, coverage/differences and fallback together. It therefore cannot isolate one control's causal effect. |
-| Previously seen regression successor | A revised dataset derived from cases developers have already inspected. The Siva/Sid utility successor changes display names and pronouns while retaining tasks and targets. Renaming cases does not make them an unseen holdout. |
+| Previously seen regression successor | A revised dataset derived from cases developers have already inspected. The renamed utility successor changes display names and pronouns while retaining tasks and targets. Renaming cases does not make them an unseen holdout. |
 | Raw safety versus validator acceptance | Raw safety checks selected source content and forbidden instruction markers; strict validator acceptance additionally enforces the application's exact candidate/output contract. Prompt-only results are 15/16 raw-safe but 11/16 validator-accepted in the paired run. Neither measure alone proves usefulness or clinical safety. |
 | Replay | Reusing a recorded input or model response to test deterministic downstream behavior. It isolates code behavior without claiming another live model call. |
 | Regression test | A case retained to catch the return of a known bug or loss of supported behavior. |

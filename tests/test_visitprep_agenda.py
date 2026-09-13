@@ -501,15 +501,15 @@ def test_export_exposes_the_exact_approved_revision_for_stale_response_checks(cl
     assert "First version" in first.text and "Revised version" in second.text
 
 
-def test_current_fictional_display_names_keep_legacy_ids_compatible(client):
+def test_current_generic_demo_labels_keep_legacy_ids_compatible(client):
     from pausewell.visitprep.fixtures import FOREIGN_RECORD, PATIENT_ID
 
     bootstrap = client.get("/api/visitprep/bootstrap").json()
-    assert bootstrap["patient"]["name"] == "Siva"
+    assert bootstrap["patient"]["name"] == "Demo user"
     assert bootstrap["patient"]["id"] == PATIENT_ID == "ava_demo"
-    assert FOREIGN_RECORD["title"] == "Sid isolation-test record"
+    assert FOREIGN_RECORD["title"] == "Other user isolation-test record"
     brief = make_brief(client)
-    assert brief["patient"]["name"] == "Siva"
+    assert brief["patient"]["name"] == "Demo user"
 
 
 @pytest.mark.parametrize("name", ["Siva", "Sid"])
