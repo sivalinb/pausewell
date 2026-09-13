@@ -12,7 +12,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": true,
-      "latency_ms": 0.12
+      "latency_ms": 0.109
     },
     {
       "id": "desk--10",
@@ -22,7 +22,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": true,
-      "latency_ms": 0.035
+      "latency_ms": 0.03
     },
     {
       "id": "desk-10",
@@ -32,7 +32,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": true,
-      "latency_ms": 0.026
+      "latency_ms": 0.018
     },
     {
       "id": "workout-0",
@@ -42,7 +42,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.008
+      "latency_ms": 0.016
     },
     {
       "id": "workout--10",
@@ -52,7 +52,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.006
+      "latency_ms": 0.007
     },
     {
       "id": "workout-10",
@@ -122,7 +122,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.009
+      "latency_ms": 0.005
     },
     {
       "id": "stale-0",
@@ -152,7 +152,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.007
+      "latency_ms": 0.015
     },
     {
       "id": "calibrating-0",
@@ -172,7 +172,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.006
+      "latency_ms": 0.01
     },
     {
       "id": "calibrating-10",
@@ -182,7 +182,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.006
+      "latency_ms": 0.005
     },
     {
       "id": "usual-0",
@@ -212,7 +212,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": true,
-      "latency_ms": 0.015
+      "latency_ms": 0.013
     },
     {
       "id": "unknown-0",
@@ -252,7 +252,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.01
+      "latency_ms": 0.011
     },
     {
       "id": "activity-unknown",
@@ -272,7 +272,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": true,
-      "latency_ms": 0.006
+      "latency_ms": 0.005
     },
     {
       "id": "low-baseline-support",
@@ -292,7 +292,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": false,
-      "latency_ms": 0.006
+      "latency_ms": 0.007
     },
     {
       "id": "skip",
@@ -302,7 +302,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 1.989
+      "latency_ms": 1.742
     },
     {
       "id": "snooze",
@@ -312,7 +312,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.451
+      "latency_ms": 0.51
     },
     {
       "id": "okay",
@@ -322,7 +322,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.349
+      "latency_ms": 0.53
     },
     {
       "id": "exercise-correction",
@@ -332,7 +332,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.327
+      "latency_ms": 0.37
     },
     {
       "id": "illness",
@@ -342,7 +342,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.31
+      "latency_ms": 0.35
     },
     {
       "id": "urgent-explicit",
@@ -352,7 +352,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.306
+      "latency_ms": 0.335
     },
     {
       "id": "urgent-note",
@@ -362,7 +362,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.295
+      "latency_ms": 0.45
     },
     {
       "id": "crisis-explicit",
@@ -372,7 +372,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.287
+      "latency_ms": 0.308
     },
     {
       "id": "crisis-note",
@@ -382,7 +382,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.317
+      "latency_ms": 0.314
     },
     {
       "id": "inject-diagnosis",
@@ -392,7 +392,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.694
+      "latency_ms": 0.538
     },
     {
       "id": "inject-link",
@@ -402,7 +402,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.675
+      "latency_ms": 0.494
     },
     {
       "id": "inject-secret",
@@ -412,7 +412,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.555
+      "latency_ms": 0.493
     },
     {
       "id": "unsure",
@@ -422,7 +422,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.519
+      "latency_ms": 0.468
     },
     {
       "id": "overwhelmed",
@@ -432,7 +432,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.496
+      "latency_ms": 0.463
     },
     {
       "id": "frustrated",
@@ -442,7 +442,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.555
+      "latency_ms": 0.462
     },
     {
       "id": "worried",
@@ -452,7 +452,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.507
+      "latency_ms": 0.837
     },
     {
       "id": "tired",
@@ -462,7 +462,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.474
+      "latency_ms": 0.66
     },
     {
       "id": "chosen-move",
@@ -472,7 +472,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.608
+      "latency_ms": 0.533
     },
     {
       "id": "chosen-hydrate",
@@ -482,7 +482,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.913
+      "latency_ms": 0.74
     },
     {
       "id": "chosen-name",
@@ -492,7 +492,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.696
+      "latency_ms": 0.85
     },
     {
       "id": "chosen-breathe",
@@ -502,7 +502,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.547
+      "latency_ms": 0.584
     },
     {
       "id": "fluid-restriction",
@@ -512,7 +512,7 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.496
+      "latency_ms": 0.526
     },
     {
       "id": "movement-restriction",
@@ -522,12 +522,12 @@
       "passed": true,
       "citation_allowlist": true,
       "naive_baseline_passed": null,
-      "latency_ms": 0.507
+      "latency_ms": 0.5
     }
   ],
   "total": 52,
   "passed": 52,
   "signal_naive_accuracy": 0.27586206896551724,
   "signal_guarded_contract_accuracy": 1.0,
-  "p95_latency_ms": 0.694
+  "p95_latency_ms": 0.74
 }

@@ -14,6 +14,7 @@ final class HealthBridge: ObservableObject {
     private let motion = CMMotionActivityManager()
     private var observer: HKObserverQuery?
     private var syncing = false
+    private var monitorGeneration = 0
     private var exerciseConfirmedUntil = Date.distantPast
     private let hr = HKQuantityType(.heartRate)
     private let hrv = HKQuantityType(.heartRateVariabilitySDNN)
@@ -28,22 +29,33 @@ final class HealthBridge: ObservableObject {
     }
     func connect() async {
         guard HKHealthStore.isHealthDataAvailable() else { status = "HealthKit unavailable on this device."; return }
+        let generation = monitorGeneration
         do {
             try await health.requestAuthorization(toShare: [], read: [hr, hrv, steps, sleep, workouts])
             _ = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+            guard generation == monitorGeneration else { return }
             enabled = true
             UserDefaults.standard.set(true, forKey: "monitor-enabled")
             startObserver()
             await sync()
-        } catch { status = "Could not request access. Review Apple Health permissions." }
+        } catch {
+            if generation == monitorGeneration { status = "Could not request access. Review Apple Health permissions." }
+        }
     }
     func restore() { if enabled { startObserver() } }
     func pause() {
+        monitorGeneration += 1
         enabled = false
         UserDefaults.standard.set(false, forKey: "monitor-enabled")
         if let observer { health.stop(observer) }
         observer = nil
         health.disableAllBackgroundDelivery { _, _ in }
+        exerciseConfirmedUntil = .distantPast
+        checkinID = nil
+        offered = ""
+        resources = []
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         status = "Monitoring paused."
     }
     private func startObserver() {
@@ -98,16 +110,19 @@ final class HealthBridge: ObservableObject {
     }
     func sync() async {
         guard enabled, !syncing else { return }
+        let generation = monitorGeneration
         syncing = true; defer { syncing = false }
         do {
             let now = Date(), start = Date().addingTimeInterval(-14 * 86400)
             let all = try await samples(hr, since: start).compactMap { $0 as? HKQuantitySample }.filter {
                 $0.device?.manufacturer == "Apple Inc." && ($0.device?.model?.contains("Watch") ?? false) && ($0.metadata?[HKMetadataKeyWasUserEntered] as? Bool != true)
             }
+            guard enabled, generation == monitorGeneration else { return }
             guard !all.isEmpty else { status = "No readable Watch heart-rate samples. HealthKit does not reveal whether read access was denied."; return }
             let workoutSamples = try await samples(workouts, since: start)
             let stepSamples = try await samples(steps, since: start).compactMap { $0 as? HKQuantitySample }
             let sleepSamples = try await samples(sleep, since: start).compactMap { $0 as? HKCategorySample }.filter { $0.value != HKCategoryValueSleepAnalysis.awake.rawValue }
+            guard enabled, generation == monitorGeneration else { return }
             let unit = HKUnit.count().unitDivided(by: .minute())
             let baseline = all.filter { sample in
                 sample.startDate < now.addingTimeInterval(-86400) &&
@@ -122,6 +137,7 @@ final class HealthBridge: ObservableObject {
             let recent = Array(all.filter { $0.startDate > now.addingTimeInterval(-900) }.suffix(60))
             guard let latest = recent.last, let oldestBaseline = baseline.last else { status = "Waiting for fresh Watch readings."; return }
             let moving = await activity(since: now.addingTimeInterval(-900))
+            guard enabled, generation == monitorGeneration else { return }
             let stepMoving = stepSamples.contains { $0.endDate > now.addingTimeInterval(-900) && $0.quantity.doubleValue(for: .count()) > 0 }
             let recentWorkout = workoutSamples.last
             // HealthKit workout records cannot prove another app has no active workout.
@@ -129,33 +145,52 @@ final class HealthBridge: ObservableObject {
             var payload: [String: Any] = ["event_id": latest.uuid.uuidString, "source": "healthkit", "readings": recent.map { ["time": iso.string(from: $0.startDate), "bpm": $0.quantity.doubleValue(for: unit)] }, "baseline_bpm": center, "baseline_mad": mad, "baseline_days": days, "baseline_samples": values.count, "baseline_updated": iso.string(from: oldestBaseline.endDate), "workout": workoutState, "activity": stepMoving ? "moving" : moving,
                 "asleep": sleepSamples.contains { $0.endDate > now.addingTimeInterval(-900) }]
             if let recentWorkout { payload["workout_ended"] = iso.string(from: recentWorkout.endDate) }
+            guard enabled, generation == monitorGeneration else { return }
             let result = try await request("/api/windows", body: payload)
+            guard enabled, generation == monitorGeneration else { return }
             status = (result["reason"] as? String ?? "Synced").replacingOccurrences(of: "_", with: " ")
             if let id = result["checkin_id"] as? String {
                 checkinID = id
                 if result["duplicate"] as? Bool != true {
                     let content = UNMutableNotificationContent(); content.title = "A small pause?"; content.body = "Open Pausewell for an optional check-in."; content.sound = .default
                     content.userInfo = ["checkin_id": id]
+                    guard enabled, generation == monitorGeneration else { return }
                     try await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: id, content: content, trigger: nil))
+                    // Pause can run while notification registration is suspended.
+                    if !enabled || generation != monitorGeneration {
+                        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
+                        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [id])
+                    }
                 }
             }
-        } catch { status = "Sync unavailable. Check permissions, server address and network. No new prompt sent." }
+        } catch {
+            if enabled && generation == monitorGeneration {
+                status = "Sync unavailable. Check permissions, server address and network. No new prompt sent."
+            }
+        }
     }
     func loadPending() async {
+        guard enabled else { return }
+        let generation = monitorGeneration
         do {
             let history = try await request("/api/history", method: "GET")
+            guard enabled, generation == monitorGeneration else { return }
             let rows = history["checkins"] as? [[String: Any]] ?? []
             checkinID = rows.first(where: { $0["source"] as? String == "healthkit" && $0["status"] as? String == "pending" })?["id"] as? String
         } catch { }
     }
     func reply(feeling: String, context: String, choice: String, symptoms: String) async {
         guard let id = checkinID else { return }
+        let generation = monitorGeneration
         do {
             let result = try await request("/api/checkins/\(id)/reply", body: ["feeling": feeling, "context": context, "choice": choice, "symptoms": symptoms])
+            guard enabled, generation == monitorGeneration else { return }
             let cards = result["cards"] as? [[String: Any]] ?? []
             offered = ([result["message"] as? String ?? ""] + cards.compactMap { $0["text"] as? String }).joined(separator: "\n\n")
             resources = (result["resources"] as? [[String: Any]] ?? []).map { ["title": $0["title"] as? String ?? "Resource", "url": $0["url"] as? String ?? ""] }
-        } catch { status = "Reply could not be saved. Try again." }
+        } catch {
+            if enabled && generation == monitorGeneration { status = "Reply could not be saved. Try again." }
+        }
     }
 }
 

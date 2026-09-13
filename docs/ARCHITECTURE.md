@@ -1,53 +1,61 @@
 # Architecture and data boundaries
 
+Pausewell contains two workflows behind one authenticated, single-owner FastAPI service. **VisitPrep is the primary Week 6 application; Watch check-ins are secondary.** Their cloud consent and persistence rules differ.
+
+## VisitPrep
+
 ```mermaid
 flowchart TD
-    A[Apple Watch measurements] --> B[Apple Health on iPhone]
-    B --> C[HealthKit read permission and queries]
-    C --> D[On-device historical comparison]
-    M[CoreMotion and short exercise confirmation] --> D
-    D -->|HTTPS + owner token| E[FastAPI bounded input]
-    X[Synthetic replay] --> E
-    E --> F[Exercise / movement / sleep / freshness gates]
-    F --> G[Sustained personal change heuristic]
-    G --> H[Quiet hours / cooldown / daily limit]
-    H --> I[(SQLite pending check-in)]
-    I --> J[Phone notification or dashboard]
-    J --> K[Person names feeling and context]
-    K --> L[LangGraph guard]
-    L --> N[Optional Nebius or Fireworks action selection]
-    N --> O[Allowed action validation]
-    L --> O
-    O --> P[Reviewed cards + NIMH / NHS resources]
-    P --> Q[Optional feedback]
-    Q --> I
-    N -. synthetic engineering spans only .-> R[Braintrust]
+    A[Owner selects plain-text records and a question] --> B[Bearer authentication and strict schema]
+    B --> C[Authorize patient and every record ID using metadata]
+    C --> D[Retrieve only authorized selected text]
+    D --> E{New record-text cloud consent?}
+    E -->|Yes, configured provider selected| F[Nebius or Fireworks: untrusted text and allowed excerpts]
+    E -->|No or local selected| G[Deterministic excerpt selection]
+    F --> H[Validate schema, known ID, exact quote and section]
+    H -->|Invalid or provider unavailable| G
+    H -->|Valid| I[Source excerpts and reviewed questions]
+    G --> I
+    I --> J[Recheck source authorization before saving]
+    J --> K[(Owner-local cited brief)]
+    K --> L[Inspect sources or export JSON / Markdown]
 ```
 
-## Signal contract
+The LangGraph stages are `authorize → retrieve → model → validate → brief`. Authentication precedes the graph; the graph checks the server-bound owner and patient before reading record text. A request cannot supply a role, owner or tool definition. Every selected ID must belong to the authorized workspace, including mixed-ID requests. The separate-principal Morgan record is an authored isolation-test fixture, not a production multi-user account system.
 
-The experimental `signal-v1` policy needs an inactive exercise context, stationary movement, no sleep, no workout within 45 minutes, at least seven historical days and twenty eligible baseline samples, a baseline updated within seven days, and fresh unique heart-rate samples. The latest three samples must span at least five minutes in the last fifteen minutes, all at or above `baseline median + max(15 bpm, 3 × MAD)`. The newest must be no older than ten minutes. These thresholds are design assumptions, not validated medical thresholds.
+Imports are bounded plain text: at most 6,000 characters per record, 40 records and 120,000 text characters in the workspace. A brief accepts at most 10 records and 24,000 text characters. The initial demo uses fictional Ava records. Mixed or non-synthetic imports display **Your record workspace**; record subject identity is not verified.
 
-Optional recent HRV can corroborate a qualifying change; it cannot independently trigger a prompt. The API supports it, but the initial iPhone bridge does not yet populate HRV features. The bridge requests HRV read access for a subsequent extension; omit that permission when shipping a HR-only pilot. HRV sampling context and breathing sessions can confound comparisons. HRV is never a dehydration or stress diagnosis.
+With new per-request consent, the provider receives actual selected record text, titles, dates, source IDs, the question and candidate exact excerpts. Documents and questions are marked untrusted. There is no URL-fetching, shell, messaging, prescribing or arbitrary tool executor. This is selected-record retrieval, not semantic vector search or OCR.
 
-The iPhone baseline excludes sampled movement neighborhoods, sleep/in-bed periods and workout/recovery neighborhoods. HealthKit read denial is indistinguishable from empty data. Missing steps/workouts/sleep can therefore affect the baseline; the signal must remain experimental until permissions, source attribution, time-of-day normalization, medications, illness and real-world contexts are tested.
+The model can select up to eight `{record_id, quote, section}` objects. Code rejects extra fields, unknown IDs, altered/unsupported quotations, duplicate evidence, incorrect sections and invalid response envelopes. It adds trusted source metadata and fixed clinician-question templates. Obvious instruction-like excerpts are excluded by a supplementary bounded filter; that filter is not proof of comprehensive prompt-injection detection. Local fallback is labeled honestly. Exact quotation does not establish source truth, relevance or clinical completeness.
 
-## Persistence and concurrency
+Records are immutable after import. Deletion removes dependent saved briefs and future exports. Authorization is rechecked after inference before saving, so a source deleted during a model call cannot create a stale brief. Already downloaded exports or data already sent to a provider cannot be recalled. Saved briefs are evidence artifacts; they are not conversational-memory messages fed into subsequent prompts.
 
-Raw samples exist transiently in requests; they are not persisted. Events retain only decision reason, provenance and an optional check-in ID. Check-ins retain the displayed outcome and voluntary feedback, but not the selected feeling/context or free-text note. SQLite transactions serialize ingest, deduplicate source-qualified event IDs, and reserve a prompt before notification. Server-side notifications are not used: the iPhone receives the response and schedules a local notification with generic copy.
+## Watch check-ins
 
-One server process is supported. The reply lock prevents duplicate provider calls within it. Multi-process reply claiming, multi-user identity, high availability, offline resend queues and APNs are not implemented. If the process dies after a provider call but before saving, a retry may make another bounded call. Phone notification retries suppress duplicate IDs; network loss may mean a missed notification. Check-ins expire after two hours and can be resumed through history after app restart.
+The iPhone queries read-only HealthKit and CoreMotion, computes a personal comparison and sends a bounded recent window over HTTPS. The experimental `signal-v1` policy requires inactive exercise context, stationary movement, no sleep, no workout within 45 minutes, seven baseline days, twenty eligible samples, a baseline updated within seven days and fresh unique readings. Three recent elevated samples must span five minutes; the newest must be no older than ten minutes. The threshold is `baseline median + max(15 bpm, 3 × MAD)`. These are unvalidated design assumptions, not medical thresholds.
 
-## Privacy boundaries
+Optional HRV can corroborate a qualifying window but cannot independently trigger a prompt. The initial iPhone bridge does not populate HRV features. HealthKit read denial may appear as empty data; incomplete movement/sleep/workout records can affect baseline quality. Exercise context defaults to unknown until a short explicit confirmation, limiting automatic coverage.
 
-| Data | Location | Retention / recipient |
-|---|---|---|
-| Historical HealthKit samples | iPhone Health store and query memory | Apple's store; controlled by the person |
-| Recent window and baseline summary | iPhone → owner's HTTPS server memory | Not stored by Pausewell |
-| Free-text note | Browser → owner's server → local safety route | Ephemeral; not persisted, not sent to LLM/tracing |
-| Selected feeling/context | Server → selected provider only with consent | Provider terms apply; enum-only request |
-| Events, check-ins and feedback | Owner's SQLite file | Seven-day pruning on ingest/history access; explicit delete |
-| Engineering traces | Local bounded memory | Maximum 100; reset on restart/delete |
-| Synthetic traces/evals | Braintrust when explicitly enabled/run | Separate provider retention and deletion |
+Quiet hours, cooldown and daily limits gate invitations. SQLite reserves a pending check-in before the phone schedules a generic local notification. Updated suppressing context can close an invitation even when the latest sample ID is unchanged. Urgent/crisis support is evaluated before cached, expired or missing check-in state. Native pause invalidates in-flight callbacks and clears notifications; device validation remains pending.
 
-No analytics, advertising, embeddings of health records, passive voice recording or automatic sharing. The SQLite file is mode 0600 and parent directory starts 0700. This is filesystem access control, not database encryption: use an encrypted device/volume and private deployment. Local deletion cannot erase external backups, Apple Health, exports or already sent provider data. The project makes no HIPAA/GDPR compliance certification claim.
+The Watch model receives only selected feeling/context enums and allowed action IDs after separate consent. It cannot create arbitrary advice, infer emotions, change signal policy or invent resources. Its displayed cards are reviewed app text linked to NIMH/NHS sources.
+
+## Persistence and observability
+
+| Data | Boundary and retention |
+|---|---|
+| VisitPrep records | Owner-local SQLite until deletion; authenticity and subject identity unverified |
+| VisitPrep cited briefs | Latest 20 stored locally; source deletion removes dependent briefs |
+| VisitPrep question / raw provider output | Transient during the request; not saved in normal history or telemetry |
+| VisitPrep cloud request | Selected records, source metadata and question only after per-request consent; provider terms apply |
+| Watch samples / baseline summary | Transient server input; not persisted or sent to its provider |
+| Watch private note | Ephemeral local safety route; not persisted or sent to provider/tracing |
+| Watch feeling/context enums | Sent only with separate Watch cloud consent |
+| Watch decisions, check-ins and feedback | Seven-day pruning on ingest/history requests; explicit deletion |
+| Local decision/operation telemetry | Maximum 100 traces per module; cleared on restart/delete |
+| Explicit synthetic evaluation exports | Separate Braintrust retention; no automatic VisitPrep content export |
+
+Inherited LangSmith tracing is disabled around both graphs because their state contains sensitive input. SQLite files use mode 0600; newly created parent directories use 0700. Filesystem permissions are not database encryption. Use owner-controlled encrypted storage and private HTTPS for private data. The project makes no compliance certification claim.
+
+One server process and one owner are supported. Durable storage is SQLite, not a claimed LangGraph checkpoint service. Multi-user identities, family-consent management, high availability, APNs, general chat memory and complete medical-record reconciliation are outside scope.

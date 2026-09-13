@@ -15,6 +15,7 @@ from .coach import coach
 from .resources import RESOURCES
 from .demo import fixture, SCENARIOS
 from .telemetry import Telemetry
+from .safety import support_result
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -105,6 +106,19 @@ def create_app(db_path=None, token=None, clock=utcnow):
 
     @app.post("/api/checkins/{checkin_id}/reply", dependencies=[Depends(auth)])
     def respond(checkin_id: str, reply: Reply):
+        # Fresh safety needs must not be hidden by a completed/expired/missing ID.
+        # No persistence or cloud call; this branch also works after a user skips.
+        support_start = time.perf_counter()
+        immediate = support_result(reply)
+        if immediate:
+            telemetry.record(
+                "support",
+                immediate,
+                (time.perf_counter() - support_start) * 1000,
+                synthetic=False,
+                enabled=False,
+            )
+            return immediate
         # Serialize reply completion: retries never duplicate a paid model call.
         with store.lock:
             row = store.get(checkin_id)
@@ -129,6 +143,22 @@ def create_app(db_path=None, token=None, clock=utcnow):
             )
             return result
 
+    @app.post("/api/support", dependencies=[Depends(auth)])
+    def support(reply: Reply):
+        start = time.perf_counter()
+        result = support_result(reply)
+        if result is None:
+            return {
+                "status": "support_options",
+                "message": "Choose urgent medical help or crisis support. You can also open the public resources without signing in.",
+                "cards": [],
+                "resources": [RESOURCES["nimh-help"]],
+            }
+        telemetry.record(
+            "support", result, (time.perf_counter() - start) * 1000, synthetic=False, enabled=False
+        )
+        return result
+
     @app.post("/api/checkins/{checkin_id}/feedback", dependencies=[Depends(auth)])
     def feedback(checkin_id: str, value: Feedback):
         if not store.get(checkin_id):
@@ -144,6 +174,8 @@ def create_app(db_path=None, token=None, clock=utcnow):
     def erase():
         store.erase()
         telemetry.clear()
+        app.state.visitprep_store.erase()
+        app.state.visitprep_telemetry.clear()
         return {
             "deleted": True,
             "scope": "Local app records and settings. Apple Health and remote synthetic traces are separate.",
@@ -161,6 +193,11 @@ def create_app(db_path=None, token=None, clock=utcnow):
     @app.get("/")
     def home():
         return FileResponse(ROOT / "web/index.html")
+
+    from .visitprep import register_visitprep
+
+    record_db = Path(store.path).with_name(Path(store.path).stem + "-visitprep.sqlite")
+    register_visitprep(app, auth, record_db)
 
     app.mount("/static", StaticFiles(directory=ROOT / "web"), name="static")
     app.mount("/art", StaticFiles(directory=ROOT / "docs/assets"), name="art")

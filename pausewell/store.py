@@ -46,23 +46,29 @@ class Store:
             event_id = window.source + ":" + window.event_id
             previous = db.execute("SELECT result FROM events WHERE id=?", (event_id,)).fetchone()
             if previous:
-                return {**json.loads(previous[0]), "duplicate": True}
+                prior = json.loads(previous[0])
+                # HealthKit can revise motion/workout context before another heart-rate
+                # sample arrives, so its latest sample ID can legitimately be unchanged.
+                # New suppression must win over a cached invitation. An identical
+                # suppressed replay remains inert and cannot close a later check-in.
+                if not assessment["candidate"] and (
+                    prior["candidate"] or assessment["reason"] != prior["reason"]
+                ):
+                    self.close_pending(db, window.source)
+                    db.execute(
+                        "UPDATE events SET result=? WHERE id=?",
+                        (json.dumps(assessment), event_id),
+                    )
+                    return {**assessment, "duplicate": True}
+                # Replaying an earlier candidate cannot reopen a suppressed event.
+                return {**prior, "duplicate": True}
             cutoff = (now - timedelta(days=7)).isoformat()
             db.execute("DELETE FROM events WHERE at < ?", (cutoff,))
             db.execute("DELETE FROM checkins WHERE at < ?", (cutoff,))
             result = dict(assessment)
             if not result["candidate"]:
                 # A changed context invalidates an unanswered prompt from an earlier window.
-                closed = {
-                    "status": "context_changed",
-                    "message": "The context changed. This earlier check-in is closed; no action is needed.",
-                    "cards": [],
-                    "resources": [],
-                }
-                db.execute(
-                    "UPDATE checkins SET status='context_changed',result=? WHERE source=? AND status='pending'",
-                    (json.dumps(closed), window.source),
-                )
+                self.close_pending(db, window.source)
             local = now.astimezone(ZoneInfo(p.timezone))
             h = local.hour
             quiet = (
@@ -114,6 +120,19 @@ class Store:
                 (event_id, now.isoformat(), window.source, json.dumps(result)),
             )
             return result
+
+    @staticmethod
+    def close_pending(db, source):
+        closed = {
+            "status": "context_changed",
+            "message": "The context changed. This earlier check-in is closed; no action is needed.",
+            "cards": [],
+            "resources": [],
+        }
+        db.execute(
+            "UPDATE checkins SET status='context_changed',result=? WHERE source=? AND status='pending'",
+            (json.dumps(closed), source),
+        )
 
     def get(self, checkin_id):
         with self.connect() as db:

@@ -1,0 +1,19 @@
+{
+  "project_id": "57464b16-bf5e-4f8b-a4fc-8c0b655e9156",
+  "experiment_id": "4da65b97-3adb-48cb-85e0-dc506df025fc",
+  "experiment_rows_written": 29,
+  "experiment_rows_verified": 29,
+  "provider_spans_written": 26,
+  "provider_spans_verified": 26,
+  "remote_verified": true,
+  "synthetic_only": true,
+  "span_timing": "Uploaded after execution; measured_provider_latency_ms is the actual HTTP duration, not upload span wall time",
+  "cost": {
+    "cap_usd": 1.0,
+    "calls": 26,
+    "reserved_usd": 0.029628899999999996,
+    "reported_cost_usd": 0.0025075999999999996,
+    "input_rate": 1e-07,
+    "output_rate": 3e-07
+  }
+}

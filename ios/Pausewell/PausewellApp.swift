@@ -28,6 +28,11 @@ struct ContentView: View {
                     Button("Save token in Keychain") { Keychain.save(token); token = "" }
                     Text("Your server receives a small recent window and a personal comparison summary. Cloud AI is off by default. No notes or raw biometrics go to AI providers.").font(.caption)
                 }
+                Section("Immediate support") {
+                    Text("In the US, call 911 for immediate danger or a medical emergency. Call or text 988 for crisis support. Elsewhere, use your local emergency or crisis service.").font(.caption)
+                    Link("988 Lifeline", destination: URL(string: "https://988lifeline.org/")!)
+                    Link("NIMH: find help", destination: URL(string: "https://www.nimh.nih.gov/health/find-help")!)
+                }
                 Section("Apple Health") {
                     Text(bridge.status)
                     Button("Connect read-only Apple Health") { Task { await bridge.connect() } }

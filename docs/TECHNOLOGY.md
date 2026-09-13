@@ -14,29 +14,44 @@ All nine pinned tasks were inspected, along with the most recent RaceTime Replay
 | Design agentic AI capstone use case | End-to-end agent workflow, synthetic test provenance, Braintrust and Nebius integration |
 | Summarize Week 6 AI safety topics | Prompt injection, constrained output, privacy, red-team cases, governance and go-live limits |
 
-## Implemented stack
+## Primary VisitPrep implementation
+
+VisitPrep is the primary Week 6 document-injection target; Watch check-ins remain a secondary workflow. The fixed single-owner workspace retrieves selected authorized records, then produces source excerpts and reviewed clinician-question templates. It is not a production family-record or multi-user patient-access system.
+
+- **FastAPI and Pydantic:** owner-token authentication, strict import/brief schemas, bounded input and redacted validation errors.
+- **LangGraph:** actual `authorize → retrieve → model → validate → brief` stages, with authorization before record text is read and another check before a brief is saved.
+- **SQLite:** immutable record imports, server-bound ownership, latest-20 brief retention, deletion of dependent briefs/exports and explicit demo restoration after erasure.
+- **Nebius Token Factory:** selected untrusted record text, source metadata and the question are sent only with new per-request record-text consent. This does not inherit Watch consent. [Live evidence](EVALUATION.md) separates accepted selections, empty output rejection and timeouts.
+- **Exact evidence validation:** known record ID, unchanged candidate quote, matching source section and strict output shape. A supplementary instruction-text filter does not replace authorization or establish complete injection detection.
+- **Braintrust:** explicitly operated synthetic evaluation publishing and readback. The full VisitPrep live run verified 29 evaluation rows and 26 provider traces; normal private record requests do not export their content.
+- **HTML/CSS/JavaScript:** selected sources, pasted/plain-text import, source inspection, cited briefs, JSON/Markdown exports and local operation visibility.
+- **pytest, Ruff and GitHub Actions:** automated behavior/security checks and fixed adversarial suites. CI writes new VisitPrep results to a temporary directory, preserving frozen evidence.
+
+## Secondary Watch implementation and shared tools
 
 - **SwiftUI, HealthKit, CoreMotion, UserNotifications, Keychain:** native iPhone ingestion and check-in source. Real device build and test remain blocked by the local Xcode installation.
 - **Python, FastAPI, Pydantic:** authenticated API, input bounds, strict enum schemas and redacted validation failures.
-- **LangGraph:** bounded guard → action selection → resource/validation workflow. These are graph stages, not autonomous clinician agents. SQLite supplies durable check-in state across requests; a LangGraph checkpoint database is not claimed.
+- **LangGraph:** the secondary Watch guard → action selection → resource/validation workflow. These are bounded stages, not autonomous clinician agents. SQLite supplies durable application state; a LangGraph checkpoint database is not claimed.
 - **SQLite:** owner-local persistence, deduplication, prompt budget and user feedback.
-- **Nebius Token Factory:** primary optional action selector. Two of three live synthetic smoke requests were accepted; one exceeded the request timeout and used the safe local fallback.
+- **Nebius Token Factory:** the Watch module's optional action selector. Its historical smoke test accepted two choices and timed out once with safe fallback; these are separate from VisitPrep results.
 - **Fireworks AI:** alternative OpenAI-compatible provider adapter, enabled only if configured and selected. No credentialed Fireworks execution is claimed.
 - **Braintrust:** synthetic operation tracing and scored experiment import with server readback. All three smoke traces and all 52 imported scores were verified remotely.
-- **Prometheus text metrics:** authenticated engineering counters for ingest, coach and provider fallback. Braintrust span duration measures the whole operation; provider latency is separately reported. No invented TTFT, KV-cache or GPU-utilization metrics.
+- **Prometheus text metrics:** authenticated counters for Watch ingest, coaching and provider fallback. Measured operation/provider durations are explicit metrics; span/upload wall time must not be substituted for inference latency. No invented TTFT, KV-cache or GPU-utilization metrics.
 - **HTML/CSS/JavaScript:** responsive dashboard served by the same private API. No separate third-party client analytics.
 - **pytest, Ruff, GitHub Actions, Docker:** tests, repeatable checks and portable local deployment.
 
 ## Intentional alternatives
 
-**RAG:** The app retrieves reviewed source records by approved action ID. This is bounded knowledge lookup, not semantic vector RAG. Pinecone, pgvector, dense embeddings, BM25 and Neo4j were useful in larger pinned-project corpora; they are unnecessary for four curated resources. Add hybrid retrieval only after source expansion and a measured retrieval benchmark.
+**Retrieval:** VisitPrep retrieves selected owner-authorized records and lets the model select exact excerpts from the untrusted text. It does not use embeddings, vector search, OCR, PDF extraction or FHIR. The secondary Watch resource library is deterministic action-to-source lookup. Pinecone, pgvector, BM25 and Neo4j remain future alternatives if a larger corpus and a measured retrieval need justify them.
 
-**Safety frameworks:** Pydantic and finite action IDs enforce the actual boundary. NeMo Guardrails and Guardrails AI could add policy layers, but are not installed or claimed as tested. A general-purpose text-generation rail is weaker here than preventing arbitrary generated health advice from reaching the interface.
+**Safety frameworks:** Pydantic, application authorization, exact-evidence validation and finite Watch action IDs enforce the implemented boundaries. NeMo Guardrails and Guardrails AI are not installed or claimed as tested. Neither system prompts nor citation fidelity alone establish secure or clinically appropriate behavior.
 
-**Observability:** Braintrust is the chosen hosted alternative to LangSmith/Phoenix. Automatic LangSmith tracing is explicitly disabled around graph execution because graph state includes an ephemeral private note. Raw HealthKit input is never exported to an observability service. OCI, OpenSearch, Jaeger and full OpenTelemetry collector deployment are deferred until a pilot needs them.
+**Observability:** Braintrust is the chosen hosted experiment system. Inherited LangSmith tracing is disabled around both graphs because their state contains sensitive inputs. Raw Watch input is never exported to tracing. The separately opted-in VisitPrep synthetic runner can retain raw synthetic transport evidence; ordinary record requests cannot. OCI, OpenSearch, Jaeger and a full OpenTelemetry collector are not deployed.
 
 **Fine-tuning:** No model is trained to infer emotion or health status from the person's Watch. An optional offline preference-router LoRA experiment is described under [training](../training/README.md), but no training or improvement claim is made. Hosted base-model routing must first demonstrate added user value over local rules.
 
 **Voice, live web and hardware serving:** Deepgram, You.com, Turnstile, vLLM, GPU tuning and disaggregated prefill/decode are not needed for the private single-user MVP. Voice would increase sensitive data collection; unrestricted web retrieval would weaken source control. Serverless provider internals cannot truthfully be measured from the chat API.
 
 This is a proposal derived from all the pinned projects, not an assertion that every named product improves this use case or that all course-specific tooling has been used.
+
+The public GitHub repository publishes code and fictional evidence, not a hosted health-data application. Docker configuration is supplied but deployment has not been validated here. Source truth, patient identity, clinical completeness, production family consent and regulatory certification are outside the demonstrated scope.

@@ -1,0 +1,19 @@
+{
+  "kind": "imported_local_redteam",
+  "synthetic_only": true,
+  "live_model_test": false,
+  "experiment_id": "0b399cb6-6bd0-4c24-b793-918e6c1e0fe0",
+  "report_sha256": {
+    "baseline": "cfbde18a6ee6f549c7951485619cd8265104c514a7a8021b83b13b5c32983c92",
+    "retest": "666d759310ec3c434f5e21ac6644a946d7acd686b758cfbfd0ac67dc6109907d"
+  },
+  "rows_written": 70,
+  "rows_verified": 70,
+  "remote_verified": true,
+  "score_mapping": {
+    "PASS": 1.0,
+    "WARN": 0.5,
+    "FAIL": 0.0
+  },
+  "note_payloads_exported": false
+}

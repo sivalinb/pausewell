@@ -1,9 +1,41 @@
-"""Opt-in synthetic-only Braintrust traces. Local metrics contain engineering data."""
+"""Opt-in synthetic-only Braintrust traces. Local metrics contain bounded decisions and engineering data."""
 
 import os
 from collections import Counter, deque
 from threading import Lock
 from uuid import uuid4
+
+OUTCOMES = {
+    "urgent_support",
+    "crisis_support",
+    "offered",
+    "skip",
+    "snooze",
+    "exercise",
+    "support",
+    "okay",
+    "context_changed",
+    "workout_active",
+    "workout_unknown",
+    "workout_recovery",
+    "movement",
+    "activity_unknown",
+    "sleep",
+    "calibrating",
+    "baseline_stale",
+    "no_data",
+    "duplicate_samples",
+    "future_data",
+    "stale_data",
+    "insufficient_samples",
+    "within_usual_range",
+    "sustained_change",
+    "paused",
+    "quiet_hours",
+    "snoozed",
+    "daily_limit",
+    "cooldown",
+}
 
 
 class Telemetry:
@@ -25,6 +57,8 @@ class Telemetry:
             "synthetic": synthetic,
         }
         record["braintrust"] = "disabled"
+        outcome = result.get("status", result.get("reason", "unknown"))
+        record["outcome"] = outcome if outcome in OUTCOMES else "unknown"
         if enabled and synthetic and os.getenv("BRAINTRUST_API_KEY"):
             try:
                 import braintrust
@@ -43,7 +77,7 @@ class Telemetry:
                 )
                 root.log(
                     metrics={"latency_ms": record["latency_ms"], "tokens": record["tokens"]},
-                    output={"model_status": record["model_status"]},
+                    output={"model_status": record["model_status"], "outcome": record["outcome"]},
                 )
                 # This is one span for the actual operation; no invented per-node timings.
                 root.end()
@@ -54,6 +88,7 @@ class Telemetry:
         with self.lock:
             self.counts[operation] += 1
             self.counts["model_fallbacks"] += record["model_status"] == "fallback"
+            self.counts["outcome_" + record["outcome"]] += 1
             self.traces.appendleft(record)
         return record
 

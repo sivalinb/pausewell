@@ -1,10 +1,10 @@
-import re
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
 from langsmith import tracing_context
 from .models import Preferences, Reply
 from .provider import choose_action
 from .resources import CARDS, retrieve, RESOURCES
+from .safety import support_result
 
 
 class State(TypedDict, total=False):
@@ -19,27 +19,10 @@ class State(TypedDict, total=False):
 
 def guard(state: State):
     r = state["reply"]
-    # Notes remain local and ephemeral. Matching is conservative, never a clinical triage claim.
-    note = r.note.casefold()
-    urgent = re.search(
-        r"chest (pain|pressure)|can.t breathe|cannot breathe|faint(ed|ing)?|severe.*breath|stroke", note
-    )
-    crisis = re.search(r"suicid|kill myself|end my life|hurt myself|self.harm", note)
-    if r.symptoms == "urgent" or urgent:
-        result = {
-            "status": "urgent_support",
-            "message": "These symptoms need prompt medical attention. Contact local emergency services now if symptoms are severe, sudden, or ongoing. In the US, call 911. Do not rely on this app to assess an emergency.",
-            "cards": [],
-            "resources": [RESOURCES["nimh-help"]],
-        }
-    elif r.symptoms == "crisis" or crisis:
-        result = {
-            "status": "crisis_support",
-            "message": "You deserve immediate support. In the US, call or text 988 to reach a crisis counselor. If you may act now or are in immediate danger, call 911 or your local emergency number. Reach out to someone you trust who can stay with you.",
-            "cards": [],
-            "resources": [RESOURCES["nimh-help"]],
-        }
-    elif r.choice in {"skip", "snooze"}:
+    result = support_result(r)
+    if result:
+        return {"result": result, "route": "finish", "nodes": ["guard"]}
+    if r.choice in {"skip", "snooze"}:
         result = {
             "status": r.choice,
             "message": "Of course. You decide when to check in.",

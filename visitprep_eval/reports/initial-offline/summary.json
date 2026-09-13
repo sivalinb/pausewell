@@ -1,0 +1,116 @@
+{
+  "schema": "visitprep-eval-v1",
+  "label": "Offline local application boundary; no live model calls",
+  "generated_at": "2026-09-13T05:55:45.634882+00:00",
+  "execution_surface": "in-process ASGI HTTP",
+  "live_provider_evidence": false,
+  "remote_calls": 0,
+  "prior_visitprep_baseline": null,
+  "provenance": {
+    "checkout_parent_commit": "dbbdb15fc3996eb8c16d65fb3c71153c621ba3fe",
+    "dataset_sha256": "afb77860c50532f789163ef767301d6836fd2cb4e0c3dd5f7ffdf0fbbdbeed8d",
+    "runner_sha256": "da883a11efb1774c4402bb32f72104a552a90e14c80dbf060a562d02d25c46a8",
+    "scorer_sha256": "840e0bdd37e04857b4bf06af3b80403b056c2bd3d698603c085c5c4f05e65459",
+    "application_sha256": {
+      "pausewell/visitprep/__init__.py": "9984dd2030648b551f9002faa206e405c2f59d5b825502e10c9ffccc7b7451d4",
+      "pausewell/visitprep/evidence.py": "08f6efe8df5018d93d5c33146778ed06c556dfefb373ed0c9e4430fcab80a73e",
+      "pausewell/visitprep/fixtures.py": "0bcbbdef8348ef1caeef27898edb40c1026dd5cadaae1e4be6a6b6a0578b7ad7",
+      "pausewell/visitprep/graph.py": "bd702b5e0834c7205d6761cdd4cfed9f0b722f77c688cd23613e6d26b6c70620",
+      "pausewell/visitprep/models.py": "63dd8cad3bc948a248fd433f3b3724cabaa825db71bd9c8d42c8c823028e13b5",
+      "pausewell/visitprep/provider.py": "2e472207b5176d1a13b6d79aa4cffc9b0e3c5ec3f348aab7c1aa30105c5902f9",
+      "pausewell/visitprep/store.py": "1963c05f81e70f8bdb2b6ed9a7841a5f77f4f89739f9299950ad4aa57c4170bd",
+      "pausewell/visitprep/telemetry.py": "e184b965ab30a065492b94cd37142a08311a901ccf29effb3501e1ef41f3f449"
+    }
+  },
+  "summary": {
+    "total_cases": 29,
+    "evaluated_responses": 35,
+    "verdicts": {
+      "PASS": 26,
+      "WARN": 3
+    },
+    "families": {
+      "control": {
+        "PASS": 5,
+        "WARN": 1
+      },
+      "crescendo": {
+        "WARN": 1,
+        "PASS": 2
+      },
+      "jailbreaking": {
+        "PASS": 3
+      },
+      "obfuscation": {
+        "PASS": 3
+      },
+      "pii_extraction": {
+        "PASS": 3
+      },
+      "prompt_injection": {
+        "PASS": 3
+      },
+      "social_engineering": {
+        "WARN": 1,
+        "PASS": 2
+      },
+      "tool_policy_probing": {
+        "PASS": 5
+      }
+    },
+    "attack_contract_pass": {
+      "numerator": 21,
+      "denominator": 23
+    },
+    "explicit_http_refusals": 8,
+    "citation_fidelity": {
+      "numerator": 127,
+      "denominator": 127
+    },
+    "authored_evidence_completeness": {
+      "numerator": 34,
+      "denominator": 34
+    },
+    "canary_or_instruction_spill": 0,
+    "benign_overblocking": {
+      "numerator": 0,
+      "denominator": 4
+    },
+    "provider_statuses": {
+      "local": 26,
+      "not_called": 8,
+      "consent_required": 1
+    }
+  },
+  "case_files": [
+    "cases/VP-JB-01.json",
+    "cases/VP-JB-02.json",
+    "cases/VP-JB-03.json",
+    "cases/VP-OB-01.json",
+    "cases/VP-OB-02.json",
+    "cases/VP-OB-03.json",
+    "cases/VP-PI-01.json",
+    "cases/VP-PI-02.json",
+    "cases/VP-PI-03.json",
+    "cases/VP-TP-01.json",
+    "cases/VP-TP-02.json",
+    "cases/VP-TP-03.json",
+    "cases/VP-TP-04.json",
+    "cases/VP-TP-05.json",
+    "cases/VP-CR-01.json",
+    "cases/VP-CR-02.json",
+    "cases/VP-CR-03.json",
+    "cases/VP-PX-01.json",
+    "cases/VP-PX-02.json",
+    "cases/VP-PX-03.json",
+    "cases/VP-SE-01.json",
+    "cases/VP-SE-02.json",
+    "cases/VP-SE-03.json",
+    "cases/VP-CT-01.json",
+    "cases/VP-CT-02.json",
+    "cases/VP-CT-03.json",
+    "cases/VP-CT-04.json",
+    "cases/VP-CT-05.json",
+    "cases/VP-CT-06.json"
+  ]
+}

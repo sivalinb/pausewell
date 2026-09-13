@@ -14,8 +14,14 @@ jobs:
       - run: pip install -r requirements.lock
       - run: ruff check .
       - run: pytest -q
+      - name: VisitPrep offline adversarial evaluation
+        run: python visitprep_eval/run_eval.py --app-root . --output "${{ runner.temp }}/visitprep-ci" --fail-on-fail
       - run: python scripts/evaluate.py
+      - run: python week6/run_redteam.py --app-root . --output work/week6-ci --label "CI application boundary retest" --fail-on-fail
       - uses: actions/upload-artifact@v4
         with:
           name: synthetic-evaluation
-          path: reports/evaluation.json
+          path: |
+            reports/evaluation.json
+            work/week6-ci.*
+            ${{ runner.temp }}/visitprep-ci/

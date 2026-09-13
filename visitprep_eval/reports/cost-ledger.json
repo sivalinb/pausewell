@@ -1,0 +1,41 @@
+{
+  "authorized_existing_credit_limit_usd": 5,
+  "provider": "nebius",
+  "new_payment_or_subscription": false,
+  "runs": [
+    {
+      "run": "two-case smoke",
+      "calls": 2,
+      "reserved_usd": 0.0020641,
+      "reported_usage_estimate_usd": 5.48e-05
+    },
+    {
+      "run": "full 29-case evaluation",
+      "cap_usd": 1.0,
+      "calls": 26,
+      "reserved_usd": 0.029628899999999996,
+      "reported_cost_usd": 0.0025075999999999996,
+      "input_rate": 1e-07,
+      "output_rate": 3e-07
+    },
+    {
+      "run": "four-case reliability retest",
+      "cap_usd": 0.5,
+      "calls": 6,
+      "reserved_usd": 0.0074991,
+      "reported_cost_usd": 0.0012552,
+      "input_rate": 1e-07,
+      "output_rate": 3e-07
+    },
+    {
+      "run": "two synthetic UI requests",
+      "calls": 2,
+      "reserved_usd": 0.02,
+      "reported_total_tokens_for_completed_request": 1343,
+      "status": "one timeout; one accepted",
+      "reservation_note": "Conservative $0.01 per short five-record request; actual billing is not asserted."
+    }
+  ],
+  "cumulative_reserved_usd": 0.0591921,
+  "scope": "VisitPrep implementation turn only; prior Watch integration is reported separately. Timeouts may still be billed. No actual personal health records were used."
+}
